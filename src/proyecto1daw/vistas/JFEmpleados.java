@@ -9,12 +9,12 @@ package proyecto1daw.vistas;
  *
  * @author Jaime-torre
  */
-public class TrabajadoresCuadrillas extends javax.swing.JPanel {
+public class JFEmpleados extends javax.swing.JPanel {
 
     /**
      * Creates new form TrabajadoresCuadrillas
      */
-    public TrabajadoresCuadrillas() {
+    public JFEmpleados() {
         initComponents();
     }
 

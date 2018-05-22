@@ -9,12 +9,12 @@ package proyecto1daw.vistas;
  *
  * @author Jaime-torre
  */
-public class SelectFincaAdd extends javax.swing.JFrame {
+public class JFFincaAdd extends javax.swing.JFrame {
 
     /**
      * Creates new form SelectFincaAdd
      */
-    public SelectFincaAdd() {
+    public JFFincaAdd() {
         initComponents();
     }
 
@@ -39,16 +39,17 @@ public class SelectFincaAdd extends javax.swing.JFrame {
         jLabelEncargado = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jListEmpleados = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
-        jTextFieldId = new javax.swing.JTextField();
-        jTextFieldId1 = new javax.swing.JTextField();
-        jTextFieldId2 = new javax.swing.JTextField();
-        jTextFieldId3 = new javax.swing.JTextField();
-        jButtonAceptar = new javax.swing.JButton();
-        jButtonCancelar = new javax.swing.JButton();
+        campoId = new javax.swing.JTextField();
+        campoFechaC = new javax.swing.JTextField();
+        campoNombre = new javax.swing.JTextField();
+        campoSuperficie = new javax.swing.JTextField();
+        botonAceptar = new javax.swing.JButton();
+        botonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Añadir Finca");
 
         jPanelIzq.setBackground(new java.awt.Color(119, 182, 134));
 
@@ -88,6 +89,11 @@ public class SelectFincaAdd extends javax.swing.JFrame {
         buttonGroupTipoEncargado.add(jRadioButtonEnc);
         jRadioButtonEnc.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButtonEnc.setText("Encargado");
+        jRadioButtonEnc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonEncActionPerformed(evt);
+            }
+        });
 
         jLabelEncargado.setForeground(new java.awt.Color(255, 255, 255));
         jLabelEncargado.setText("Encargado");
@@ -134,12 +140,24 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                 .addGap(63, 63, 63))
         );
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        jListEmpleados.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jListEmpleados);
+
+        campoNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoNombreActionPerformed(evt);
+            }
+        });
+
+        campoSuperficie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoSuperficieActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,27 +171,27 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextFieldId1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                                .addComponent(jTextFieldId3, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextFieldId2, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addComponent(campoFechaC, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                                .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(campoNombre, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(jTextFieldId2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextFieldId3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextFieldId1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoFechaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,14 +199,14 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButtonAceptar.setText("Aceptar");
-        jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
+        botonAceptar.setText("Aceptar");
+        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAceptarActionPerformed(evt);
+                botonAceptarActionPerformed(evt);
             }
         });
 
-        jButtonCancelar.setText("Cancelar");
+        botonCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -202,9 +220,9 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addComponent(jButtonAceptar)
+                        .addComponent(botonAceptar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonCancelar)
+                        .addComponent(botonCancelar)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -214,8 +232,8 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAceptar)
-                    .addComponent(jButtonCancelar))
+                    .addComponent(botonAceptar)
+                    .addComponent(botonCancelar))
                 .addContainerGap())
         );
 
@@ -230,9 +248,21 @@ public class SelectFincaAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonTractActionPerformed
 
-    private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAceptarActionPerformed
+    }//GEN-LAST:event_botonAceptarActionPerformed
+
+    private void campoSuperficieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoSuperficieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoSuperficieActionPerformed
+
+    private void campoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoNombreActionPerformed
+
+    private void jRadioButtonEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEncActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonEncActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,44 +281,45 @@ public class SelectFincaAdd extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SelectFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SelectFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SelectFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SelectFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SelectFincaAdd().setVisible(true);
+                new JFFincaAdd().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton botonAceptar;
+    public javax.swing.JButton botonCancelar;
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
-    private javax.swing.JButton jButtonAceptar;
-    private javax.swing.JButton jButtonCancelar;
+    public javax.swing.JTextField campoFechaC;
+    public javax.swing.JTextField campoId;
+    public javax.swing.JTextField campoNombre;
+    public javax.swing.JTextField campoSuperficie;
     private javax.swing.JLabel jLabelEncargado;
     private javax.swing.JLabel jLabelFC;
     private javax.swing.JLabel jLabelId;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelSuperficie;
-    private javax.swing.JList<String> jList1;
+    public javax.swing.JList<String> jListEmpleados;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelIzq;
-    private javax.swing.JRadioButton jRadioButtonEmp;
-    private javax.swing.JRadioButton jRadioButtonEnc;
-    private javax.swing.JRadioButton jRadioButtonTract;
+    public javax.swing.JRadioButton jRadioButtonEmp;
+    public javax.swing.JRadioButton jRadioButtonEnc;
+    public javax.swing.JRadioButton jRadioButtonTract;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextFieldId;
-    private javax.swing.JTextField jTextFieldId1;
-    private javax.swing.JTextField jTextFieldId2;
-    private javax.swing.JTextField jTextFieldId3;
     // End of variables declaration//GEN-END:variables
 }
