@@ -5,24 +5,27 @@
  */
 package proyecto1daw.modelo;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Jaime-torre
  */
 public class Finca {
     private String id;
-    private String localizacion;
+    private String localidad;
     private String encargado;
     private int superficie;
+    private LocalDate fCompra;
+    private LocalDate fFin;
 
-    public Finca() {
-    }
-
-    public Finca(String id, String localizacion, String encargado, int superficie) {
+    public Finca(String id, String localidad, String encargado, int superficie, LocalDate fCompra, LocalDate fFin) {
         this.id = id;
-        this.localizacion = localizacion;
+        this.localidad = localidad;
         this.encargado = encargado;
         this.superficie = superficie;
+        this.fCompra = fCompra;
+        this.fFin = fFin;
     }
 
     public String getId() {
@@ -33,12 +36,12 @@ public class Finca {
         this.id = id;
     }
 
-    public String getLocalizacion() {
-        return localizacion;
+    public String getLocalidad() {
+        return localidad;
     }
 
-    public void setLocalizacion(String localizacion) {
-        this.localizacion = localizacion;
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 
     public String getEncargado() {
@@ -56,6 +59,21 @@ public class Finca {
     public void setSuperficie(int superficie) {
         this.superficie = superficie;
     }
-    
+
+    public LocalDate getfCompra() {
+        return fCompra;
+    }
+
+    public void setfCompra(LocalDate fCompra) {
+        this.fCompra = fCompra;
+    }
+
+    public LocalDate getfFin() {
+        return fFin;
+    }
+
+    public void setfFin(LocalDate fFin) {
+        this.fFin = fFin;
+    }
     
 }

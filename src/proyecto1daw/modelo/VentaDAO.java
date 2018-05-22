@@ -15,67 +15,67 @@ import java.util.ArrayList;
 
 /**
  *
- * @author alumno
+ * @author Jaime
  */
-public class FincaDAO {
-    
-    public ArrayList<Finca> recuperarTodas(){
-        ArrayList<Finca> listaFincas = new ArrayList<Finca>();
+public class VentaDAO {
+    public ArrayList<Venta> recuperarTodas(){
+        ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM FINCA");
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA");
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fCompra = rs.getDate("F_COMPRA").toLocalDate();
                 LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
-                listaFincas.add(new Finca(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(1),fCompra, fFin));
+                listaVentas.add(new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
+                        rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate()));
             }
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Consulta todas las Fincas: "+e.getMessage());
+            System.out.println("Excepcion SQL. Consulta todas las ventas: "+e.getMessage());
         }
-        return listaFincas;
+        return listaVentas;
     }
     
-    public void addFinca(Finca f){
+    public void addVenta(Venta v){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO FINCA(ID_FINCA,LOCALIDAD,SUPERFICIE,F_COMPRA,F_FIN) "
-                + "VALUES(?,?,?,?,?)";
+        String consulta = "INSERT INTO VENTA(ID_VENTA,KG,PRECIO,TAMANIO,COLOR,FECHA) "
+                + "VALUES(?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, f.getId());
-            st.setString(2, f.getLocalidad());
-            st.setInt(3, f.getSuperficie());
-            st.setDate(4, Date.valueOf(f.getfCompra()));
-            st.setDate(5, Date.valueOf(f.getfFin()));
+            st.setString(1, v.getId());
+            st.setInt(2, 0);
+            st.setFloat(3, 0);
+            st.setString(4, "");
+            st.setString(5, "");
+            st.setDate(6, Date.valueOf(v.getFecha()));
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Insertar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Insertar venta: "+e.getMessage());
         }
     }
     
-    public void borrarFinca(String id){
+    public void borrarVenta(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM FINCA WHERE ID_FINCA = ?";
+        String consulta = "DELETE * FROM VENTA WHERE ID_VENTA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
-            
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Borrar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Borrar venta: "+e.getMessage());
         }
     }
     
     public void actualizarCampo(String id, String campo, String nuevoValor){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE FINCA SET ?=? WHERE ID_FINCA = ?";
+        String consulta = "UPDATE VENTA SET ?=? WHERE VENTA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, campo);
@@ -85,7 +85,7 @@ public class FincaDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Actualizar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Actualizar venta: "+e.getMessage());
         }
     }
 }

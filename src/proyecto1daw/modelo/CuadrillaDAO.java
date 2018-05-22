@@ -15,52 +15,49 @@ import java.util.ArrayList;
 
 /**
  *
- * @author alumno
+ * @author Jaime
  */
-public class FincaDAO {
-    
-    public ArrayList<Finca> recuperarTodas(){
-        ArrayList<Finca> listaFincas = new ArrayList<Finca>();
+public class CuadrillaDAO {
+    public ArrayList<Cuadrilla> recuperarTodas(){
+        ArrayList<Cuadrilla> listaCuadrillas = new ArrayList<Cuadrilla>();
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM FINCA");
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM CUADRILLA");
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fCompra = rs.getDate("F_COMPRA").toLocalDate();
                 LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
-                listaFincas.add(new Finca(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(1),fCompra, fFin));
+                listaCuadrillas.add(new Cuadrilla(rs.getString(1), fFin, fFin));
             }
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Consulta todas las Fincas: "+e.getMessage());
+            System.out.println("Excepcion SQL. Consulta todas las cuadrillas: "+e.getMessage());
         }
-        return listaFincas;
+        return listaCuadrillas;
     }
     
-    public void addFinca(Finca f){
+    public void addCuadrilla(Cuadrilla cuad){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO FINCA(ID_FINCA,LOCALIDAD,SUPERFICIE,F_COMPRA,F_FIN) "
-                + "VALUES(?,?,?,?,?)";
+        String consulta = "INSERT INTO CUADRILLA(ID_CUADRILLA,F_CREACION,F_FIN) "
+                + "VALUES(?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, f.getId());
-            st.setString(2, f.getLocalidad());
-            st.setInt(3, f.getSuperficie());
-            st.setDate(4, Date.valueOf(f.getfCompra()));
-            st.setDate(5, Date.valueOf(f.getfFin()));
+            st.setString(1, cuad.getId());
+            st.setDate(4, Date.valueOf(cuad.getfInicio()));
+            st.setDate(5, Date.valueOf(cuad.getfFin()));
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Insertar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Insertar cuadrilla: "+e.getMessage());
         }
     }
     
-    public void borrarFinca(String id){
+    public void borrarCuadrilla(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM FINCA WHERE ID_FINCA = ?";
+        String consulta = "DELETE * FROM CUADRILLA WHERE ID_CUADRILLA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
@@ -68,14 +65,14 @@ public class FincaDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Borrar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Borrar cuadrilla: "+e.getMessage());
         }
     }
     
     public void actualizarCampo(String id, String campo, String nuevoValor){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE FINCA SET ?=? WHERE ID_FINCA = ?";
+        String consulta = "UPDATE CUADRILLA SET ?=? WHERE ID_CUADRILLA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, campo);
@@ -85,7 +82,7 @@ public class FincaDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Actualizar Finca: "+e.getMessage());
+            System.out.println("Excepcion SQL. Actualizar cuadrilla: "+e.getMessage());
         }
     }
 }
