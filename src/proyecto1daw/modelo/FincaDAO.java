@@ -28,17 +28,39 @@ public class FincaDAO {
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fCompra = rs.getDate("F_COMPRA").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
-                listaFincas.add(new Finca(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(1),fCompra, fFin));
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") !=null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                listaFincas.add(new Finca(rs.getString("ID_FINCA"), rs.getString("LOCALIDAD"),
+                        rs.getInt("SUPERFICIE"),fCompra, fFin));
             }
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta todas las Fincas: "+e.getMessage());
+            e.printStackTrace();
         }
         return listaFincas;
     }
     
-    public void addFinca(Finca f){
+    public int contarTractores(String idFinca){
+        int cont=0;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Finca contar tractores: "+e.getMessage());
+        }
+        return cont;
+    }
+    
+    public boolean addFinca(Finca f){
+        boolean res=true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "INSERT INTO FINCA(ID_FINCA,LOCALIDAD,SUPERFICIE,F_COMPRA,F_FIN) "
@@ -49,18 +71,21 @@ public class FincaDAO {
             st.setString(2, f.getLocalidad());
             st.setInt(3, f.getSuperficie());
             st.setDate(4, Date.valueOf(f.getfCompra()));
-            st.setDate(5, Date.valueOf(f.getfFin()));
+//          st.setDate(5, Date.valueOf(f.getfFin()));
+            st.setDate(5, null);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Insertar Finca: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
     public void borrarFinca(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM FINCA WHERE ID_FINCA = ?";
+        String consulta = "DELETE FROM FINCA WHERE ID_FINCA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);

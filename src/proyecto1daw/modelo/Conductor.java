@@ -13,13 +13,17 @@ import java.time.LocalDate;
  *
  * @author Jaime
  */
-public class Conductor extends Empleado{
+public class Conductor extends Trabajador{
     private String permisos;
 
-    public Conductor(String permisos, String dni, String nombre, String apellidos, int edad, LocalDate fNacimiento, int salario, String tlf, LocalDate fContratacion, LocalDate fFin) {
-        super(dni, nombre, apellidos, edad, fNacimiento, salario, tlf, fContratacion, fFin);
+    public Conductor(String dni) {
+        super(dni);
+    }
+    
+    public Conductor(String permisos, String dni, String nombre, String apellidos, LocalDate fNacimiento, LocalDate fContratacion, LocalDate fFin, String tlf, int salario) {
+        super(dni, nombre, apellidos, fNacimiento, fContratacion, fFin, tlf, salario);
         this.permisos = permisos;
-    }    
+    } 
 
     public String getPermisos() {
         return permisos;

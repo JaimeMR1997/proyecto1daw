@@ -19,13 +19,17 @@ public class Finca {
     private LocalDate fCompra;
     private LocalDate fFin;
 
-    public Finca(String id, String localidad, String encargado, int superficie, LocalDate fCompra, LocalDate fFin) {
+    public Finca(String id, String localidad, int superficie, LocalDate fCompra, LocalDate fFin) {
         this.id = id;
         this.localidad = localidad;
-        this.encargado = encargado;
         this.superficie = superficie;
         this.fCompra = fCompra;
         this.fFin = fFin;
+    }
+    
+    public Finca(String id, String localidad, String encargado, int superficie, LocalDate fCompra, LocalDate fFin) {
+        this(id, localidad, superficie, fCompra, fFin);
+        this.encargado=encargado;
     }
 
     public String getId() {

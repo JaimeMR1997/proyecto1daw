@@ -26,10 +26,8 @@ public class VentaDAO {
             PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA");
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                LocalDate fCompra = rs.getDate("F_COMPRA").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
                 listaVentas.add(new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
-                        rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate()));
+                        rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate(),rs.getString("ID_PLANT")));
             }
             accesoBD.close();
         }catch(SQLException e){
@@ -38,7 +36,8 @@ public class VentaDAO {
         return listaVentas;
     }
     
-    public void addVenta(Venta v){
+    public boolean addVenta(Venta v){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "INSERT INTO VENTA(ID_VENTA,KG,PRECIO,TAMANIO,COLOR,FECHA) "
@@ -55,16 +54,19 @@ public class VentaDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Insertar venta: "+e.getMessage());
+            res = false;
         }
+        return res;
     }
     
-    public void borrarVenta(String id){
+    public void borrarVenta(String id,String idPlant){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM VENTA WHERE ID_VENTA = ?";
+        String consulta = "DELETE * FROM VENTA WHERE ID_VENTA = ? AND ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
+            st.setString(2, idPlant);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
@@ -72,20 +74,43 @@ public class VentaDAO {
         }
     }
     
-    public void actualizarCampo(String id, String campo, String nuevoValor){
+    public void actualizarCampo(String id, String idPlant, String campo, String nuevoValor){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE VENTA SET ?=? WHERE VENTA = ?";
+        String consulta = "UPDATE VENTA SET ?=? WHERE ID_VENTA = ? AND ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, campo);
-            st.setString(2, nuevoValor);
-            st.setString(3, id);
+            st.setString(2, idPlant);
+            st.setString(3, nuevoValor);
+            st.setString(4, id);
             
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar venta: "+e.getMessage());
         }
+    }
+    
+    public String buscar(String idVenta, String idPlant, String campo){
+        String s=null;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT ? FROM VENTA WHERE ID_VENTA = ? AND ID_PLANT = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, campo);
+            st.setString(2, idVenta);
+            st.setString(3, idPlant);
+            
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                s = rs.getString(1);
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Buscar venta: "+e.getMessage());
+        }
+        return s;
     }
 }

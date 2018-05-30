@@ -18,22 +18,24 @@ public class Venta {
     private String tamanio;
     private String color;
     private LocalDate fecha;
+    private String idPlantacion;
 
-    public Venta(String idVenta, int kg, float precio, String tamanio, String color, LocalDate fecha) {
-        this.id = idVenta;
+    public Venta(String id, int kg, float precio, String tamanio, String color, LocalDate fecha, String idPlantacion) {
+        this.id = id;
         this.kg = kg;
         this.precio = precio;
         this.tamanio = tamanio;
         this.color = color;
         this.fecha = fecha;
+        this.idPlantacion = idPlantacion;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String idVenta) {
-        this.id = idVenta;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getKg() {
@@ -75,6 +77,12 @@ public class Venta {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-    
-    
+
+    public String getIdPlantacion() {
+        return idPlantacion;
+    }
+
+    public void setIdPlantacion(String idPlantacion) {
+        this.idPlantacion = idPlantacion;
+    }    
 }

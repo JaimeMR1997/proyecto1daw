@@ -9,12 +9,12 @@ package proyecto1daw.vistas;
  *
  * @author Jaime-torre
  */
-public class JFFincaAdd extends javax.swing.JFrame {
+public class JFExplotacionAdd extends javax.swing.JFrame {
 
     /**
      * Creates new form SelectFincaAdd
      */
-    public JFFincaAdd() {
+    public JFExplotacionAdd() {
         initComponents();
     }
 
@@ -31,20 +31,16 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jPanelIzq = new javax.swing.JPanel();
         jLabelSuperficie = new javax.swing.JLabel();
         jLabelId = new javax.swing.JLabel();
-        jLabelLocalidad = new javax.swing.JLabel();
-        jRadioButtonEmp = new javax.swing.JRadioButton();
-        jRadioButtonTract = new javax.swing.JRadioButton();
+        jLabelTipo = new javax.swing.JLabel();
         jLabelFC = new javax.swing.JLabel();
-        jRadioButtonEnc = new javax.swing.JRadioButton();
-        jLabelEncargado = new javax.swing.JLabel();
+        jLabelFC1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListEmpleados = new javax.swing.JList<>();
-        jSeparator1 = new javax.swing.JSeparator();
         campoId = new javax.swing.JTextField();
         campoFechaC = new javax.swing.JTextField();
-        campoLocalidad = new javax.swing.JTextField();
         campoSuperficie = new javax.swing.JTextField();
+        jComboBoxTipo = new javax.swing.JComboBox<>();
+        jComboBoxSubtipo = new javax.swing.JComboBox<>();
+        campoIdFinca = new javax.swing.JTextField();
         botonAceptar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
 
@@ -59,44 +55,14 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelId.setForeground(new java.awt.Color(255, 255, 255));
         jLabelId.setText("ID");
 
-        jLabelLocalidad.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelLocalidad.setText("Localidad");
-
-        jRadioButtonEmp.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonEmp);
-        jRadioButtonEmp.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonEmp.setText("Empleado");
-        jRadioButtonEmp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonEmpActionPerformed(evt);
-            }
-        });
-
-        jRadioButtonTract.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonTract);
-        jRadioButtonTract.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonTract.setText("Tractorista");
-        jRadioButtonTract.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonTractActionPerformed(evt);
-            }
-        });
+        jLabelTipo.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTipo.setText("Tipo");
 
         jLabelFC.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFC.setText("F.Creacion");
 
-        jRadioButtonEnc.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonEnc);
-        jRadioButtonEnc.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonEnc.setText("Encargado");
-        jRadioButtonEnc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonEncActionPerformed(evt);
-            }
-        });
-
-        jLabelEncargado.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelEncargado.setText("Encargado");
+        jLabelFC1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFC1.setText("Finca");
 
         javax.swing.GroupLayout jPanelIzqLayout = new javax.swing.GroupLayout(jPanelIzq);
         jPanelIzq.setLayout(jPanelIzqLayout);
@@ -106,52 +72,27 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelId)
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonEmp)
-                            .addComponent(jRadioButtonEnc)
-                            .addComponent(jRadioButtonTract)))
-                    .addComponent(jLabelLocalidad)
+                    .addComponent(jLabelTipo)
                     .addComponent(jLabelSuperficie)
                     .addComponent(jLabelFC)
-                    .addComponent(jLabelEncargado))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(jLabelFC1))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabelId)
-                .addGap(18, 18, 18)
-                .addComponent(jLabelLocalidad)
-                .addGap(21, 21, 21)
+                .addGap(27, 27, 27)
+                .addComponent(jLabelTipo)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelSuperficie)
-                .addGap(21, 21, 21)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelFC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelEncargado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonEnc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonEmp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonTract)
-                .addGap(63, 63, 63))
+                .addGap(24, 24, 24)
+                .addComponent(jLabelFC1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jListEmpleados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jListEmpleados);
-
-        campoLocalidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoLocalidadActionPerformed(evt);
-            }
-        });
 
         campoSuperficie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,44 +100,44 @@ public class JFFincaAdd extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBoxSubtipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(campoFechaC, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                                .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING)))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(campoIdFinca)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(campoFechaC, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(campoId, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jComboBoxSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(campoLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(campoSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(campoFechaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(campoIdFinca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         botonAceptar.setText("Aceptar");
@@ -229,6 +170,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelIzq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -240,14 +182,6 @@ public class JFFincaAdd extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButtonEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEmpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEmpActionPerformed
-
-    private void jRadioButtonTractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTractActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonTractActionPerformed
-
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonAceptarActionPerformed
@@ -255,14 +189,6 @@ public class JFFincaAdd extends javax.swing.JFrame {
     private void campoSuperficieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoSuperficieActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoSuperficieActionPerformed
-
-    private void campoLocalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLocalidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoLocalidadActionPerformed
-
-    private void jRadioButtonEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEncActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEncActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,21 +207,23 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacionAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacionAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacionAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFFincaAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacionAdd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFFincaAdd().setVisible(true);
+                new JFExplotacionAdd().setVisible(true);
             }
         });
     }
@@ -306,20 +234,16 @@ public class JFFincaAdd extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
     public javax.swing.JTextField campoFechaC;
     public javax.swing.JTextField campoId;
-    public javax.swing.JTextField campoLocalidad;
+    public javax.swing.JTextField campoIdFinca;
     public javax.swing.JTextField campoSuperficie;
-    private javax.swing.JLabel jLabelEncargado;
+    public javax.swing.JComboBox<String> jComboBoxSubtipo;
+    public javax.swing.JComboBox<String> jComboBoxTipo;
     private javax.swing.JLabel jLabelFC;
+    private javax.swing.JLabel jLabelFC1;
     private javax.swing.JLabel jLabelId;
-    private javax.swing.JLabel jLabelLocalidad;
     private javax.swing.JLabel jLabelSuperficie;
-    public javax.swing.JList<String> jListEmpleados;
+    private javax.swing.JLabel jLabelTipo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelIzq;
-    public javax.swing.JRadioButton jRadioButtonEmp;
-    public javax.swing.JRadioButton jRadioButtonEnc;
-    public javax.swing.JRadioButton jRadioButtonTract;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

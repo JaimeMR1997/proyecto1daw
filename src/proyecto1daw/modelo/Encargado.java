@@ -11,11 +11,15 @@ import java.time.LocalDate;
  *
  * @author Jaime
  */
-public class Encargado extends Empleado{
+public class Encargado extends Trabajador{
     private String vhEmpresa;
 
-    public Encargado(String vhEmpresa, String dni, String nombre, String apellidos, int edad, LocalDate fNacimiento, int salario, String tlf, LocalDate fContratacion, LocalDate fFin) {
-        super(dni, nombre, apellidos, edad, fNacimiento, salario, tlf, fContratacion, fFin);
+    public Encargado(String dni) {
+        super(dni);
+    }
+    
+    public Encargado(String vhEmpresa, String dni, String nombre, String apellidos, LocalDate fNacimiento, LocalDate fContratacion, LocalDate fFin, String tlf, int salario) {
+        super(dni, nombre, apellidos, fNacimiento, fContratacion, fFin, tlf, salario);
         this.vhEmpresa = vhEmpresa;
     }
 

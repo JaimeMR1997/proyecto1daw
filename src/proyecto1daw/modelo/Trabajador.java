@@ -13,28 +13,30 @@ import java.time.LocalDate;
  *
  * @author Jaime
  */
-public class Empleado {
+public class Trabajador {
  //dni,nombre,apellidos,edad,f contratacion,salario,telefono
     private String dni;
     private String nombre;
     private String apellidos;
-    private int edad;
     private LocalDate fNacimiento;
-    private int salario;
-    private String tlf;
     private LocalDate fContratacion;
     private LocalDate fFin;
+    private String tlf;
+    private int salario;
 
-    public Empleado(String dni, String nombre, String apellidos, int edad, LocalDate fNacimiento, int salario, String tlf, LocalDate fContratacion, LocalDate fFin) {
+    public Trabajador(String dni) {
+        this.dni = dni;
+    }
+    
+    public Trabajador(String dni, String nombre, String apellidos, LocalDate fNacimiento, LocalDate fContratacion, LocalDate fFin, String tlf, int salario) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.edad = edad;
         this.fNacimiento = fNacimiento;
-        this.salario = salario;
-        this.tlf = tlf;
         this.fContratacion = fContratacion;
         this.fFin = fFin;
+        this.tlf = tlf;
+        this.salario = salario;
     }
 
     public String getDni() {
@@ -61,20 +63,36 @@ public class Empleado {
         this.apellidos = apellidos;
     }
 
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
     public LocalDate getfNacimiento() {
         return fNacimiento;
     }
 
     public void setfNacimiento(LocalDate fNacimiento) {
         this.fNacimiento = fNacimiento;
+    }
+
+    public LocalDate getfContratacion() {
+        return fContratacion;
+    }
+
+    public void setfContratacion(LocalDate fContratacion) {
+        this.fContratacion = fContratacion;
+    }
+
+    public LocalDate getfFin() {
+        return fFin;
+    }
+
+    public void setfFin(LocalDate fFin) {
+        this.fFin = fFin;
+    }
+
+    public String getTlf() {
+        return tlf;
+    }
+
+    public void setTlf(String tlf) {
+        this.tlf = tlf;
     }
 
     public int getSalario() {
@@ -85,13 +103,5 @@ public class Empleado {
         this.salario = salario;
     }
 
-    public String getTlf() {
-        return tlf;
-    }
-
-    public void setTlf(String tlf) {
-        this.tlf = tlf;
-    }
-    
-    
+        
 }

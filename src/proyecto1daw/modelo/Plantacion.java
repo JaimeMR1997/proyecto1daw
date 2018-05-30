@@ -13,15 +13,15 @@ import java.util.Date;
  * @author Jaime
  */
 public class Plantacion {
-    private String idPlant;
+    private String id;
     private String tipo;
     private String varidad;
     private LocalDate fInicio;
     private LocalDate fFin;
     private String idExplotacion;
 
-    public Plantacion(String idPlant, String tipo, String varidad, LocalDate fInicio, LocalDate fFin, String idExplotacion) {
-        this.idPlant = idPlant;
+    public Plantacion(String id, String tipo, String varidad, LocalDate fInicio, LocalDate fFin, String idExplotacion) {
+        this.id = id;
         this.tipo = tipo;
         this.varidad = varidad;
         this.fInicio = fInicio;
@@ -29,12 +29,20 @@ public class Plantacion {
         this.idExplotacion = idExplotacion;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getIdPlant() {
-        return idPlant;
+        return id;
     }
 
     public void setIdPlant(String idPlant) {
-        this.idPlant = idPlant;
+        this.id = idPlant;
     }
 
     public String getTipo() {
@@ -45,11 +53,11 @@ public class Plantacion {
         this.tipo = tipo;
     }
 
-    public String getVaridad() {
+    public String getVariedad() {
         return varidad;
     }
 
-    public void setVaridad(String varidad) {
+    public void setVariedad(String varidad) {
         this.varidad = varidad;
     }
 

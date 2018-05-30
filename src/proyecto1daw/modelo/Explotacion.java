@@ -13,15 +13,19 @@ import java.time.LocalDate;
  */
 public class Explotacion {
     private String id;
+    private int superficie;
     private String tipo;
     private LocalDate fCreacion;
     private LocalDate fFin;
+    private String idFinca;
 
-    public Explotacion(String id, String tipo, LocalDate fCreacion, LocalDate fFin) {
+    public Explotacion(String id, int superficie, String tipo, LocalDate fCreacion, LocalDate fFin, String idFinca) {
         this.id = id;
+        this.superficie = superficie;
         this.tipo = tipo;
         this.fCreacion = fCreacion;
         this.fFin = fFin;
+        this.idFinca = idFinca;
     }
 
     public String getId() {
@@ -55,6 +59,22 @@ public class Explotacion {
     public void setfFin(LocalDate fFin) {
         this.fFin = fFin;
     }
-    
+
+    public int getSuperficie() {
+        return superficie;
+    }
+
+    public void setSuperficie(int superficie) {
+        this.superficie = superficie;
+    }
+
+    public String getIdFinca() {
+        return idFinca;
+    }
+
+    public void setIdFinca(String idFinca) {
+        this.idFinca = idFinca;
+    }
+
     
 }

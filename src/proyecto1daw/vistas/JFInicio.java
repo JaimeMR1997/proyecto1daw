@@ -125,9 +125,9 @@ public class JFInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonEstadisticas;
-    private javax.swing.JButton jButtonFincas;
-    private javax.swing.JButton jButtonTrabajadores;
-    private javax.swing.JButton jButtonTractores;
+    public javax.swing.JButton jButtonEstadisticas;
+    public javax.swing.JButton jButtonFincas;
+    public javax.swing.JButton jButtonTrabajadores;
+    public javax.swing.JButton jButtonTractores;
     // End of variables declaration//GEN-END:variables
 }

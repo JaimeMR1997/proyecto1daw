@@ -17,62 +17,65 @@ import java.util.ArrayList;
  *
  * @author Jaime
  */
-public class CuadrillaDAO {
-    public ArrayList<Cuadrilla> recuperarTodas(){
-        ArrayList<Cuadrilla> listaCuadrillas = new ArrayList<Cuadrilla>();
+public class TractorDAO {
+    public ArrayList<Tractor> recuperarTodos(){
+        ArrayList<Tractor> listaTractores = new ArrayList<Tractor>();
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM CUADRILLA");
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA");
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                LocalDate fCreacion = rs.getDate("F_COMPRA").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
-                listaCuadrillas.add(new Cuadrilla(rs.getString(1), fCreacion, fFin));
+                listaTractores.add(new Tractor(rs.getString("MATRICULA"), rs.getString("MODELO"), 
+                        rs.getInt("POTENCIA"), rs.getInt("ALTURA"), rs.getInt("ANCHO"), rs.getDate("F_ITV").toLocalDate(), rs.getInt("ANIO"),rs.getString("ID_FINCA")));
             }
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Consulta todas las cuadrillas: "+e.getMessage());
+            System.out.println("Excepcion SQL. Consulta todas los tractores: "+e.getMessage());
         }
-        return listaCuadrillas;
+        return listaTractores;
     }
     
-    public void addCuadrilla(Cuadrilla cuad){
+    public void addTractor(Tractor t){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO CUADRILLA(ID_CUADRILLA,F_CREACION,F_FIN) "
-                + "VALUES(?,?,?)";
+        String consulta = "INSERT INTO TRACTOR(MATRICULA,MODELO,POTENCIA,ALTURA,ANCHO,F_ITV,ANIO,ID_FINCA) "
+                + "VALUES(?,?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, cuad.getId());
-            st.setDate(4, Date.valueOf(cuad.getfInicio()));
-            st.setDate(5, Date.valueOf(cuad.getfFin()));
+            st.setString(1, t.getMatricula());
+            st.setString(2, t.getModelo());
+            st.setInt(3, t.getPotencia());
+            st.setInt(4, t.getAltura());
+            st.setInt(5, t.getAncho());
+            st.setDate(6, Date.valueOf(t.getfItv()));
+            st.setInt(7, t.getAnio());
+            st.setString(8, t.getIdFinca());
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Insertar cuadrilla: "+e.getMessage());
+            System.out.println("Excepcion SQL. Insertar tractor: "+e.getMessage());
         }
     }
     
-    public void borrarCuadrilla(String id){
+    public void borrarTractor(String matricula){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM CUADRILLA WHERE ID_CUADRILLA = ?";
+        String consulta = "DELETE * FROM TRACTOR WHERE MATRICULA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, id);
-            
+            st.setString(1, matricula);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Borrar cuadrilla: "+e.getMessage());
+            System.out.println("Excepcion SQL. Borrar tractor: "+e.getMessage());
         }
     }
     
     public void actualizarCampo(String id, String campo, String nuevoValor){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE CUADRILLA SET ?=? WHERE ID_CUADRILLA = ?";
+        String consulta = "UPDATE TRACTOR SET ?=? WHERE MATRICULA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, campo);
@@ -82,7 +85,7 @@ public class CuadrillaDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Actualizar cuadrilla: "+e.getMessage());
+            System.out.println("Excepcion SQL. Actualizar tractor: "+e.getMessage());
         }
     }
 }

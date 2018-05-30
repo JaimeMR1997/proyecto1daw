@@ -9,12 +9,12 @@ package proyecto1daw.vistas;
  *
  * @author Jaime-torre
  */
-public class JFFinca extends javax.swing.JFrame {
+public class JFExplotacion extends javax.swing.JFrame {
 
     /**
      * Creates new form Inicio
      */
-    public JFFinca() {
+    public JFExplotacion() {
         initComponents();
     }
 
@@ -28,11 +28,11 @@ public class JFFinca extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanelTop = new javax.swing.JPanel();
-        listaFincas = new javax.swing.JLabel();
+        jLabelFincaId = new javax.swing.JLabel();
         botonVolver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableFincas = new javax.swing.JTable();
+        jTableExplotaciones = new javax.swing.JTable();
         jPanelBot = new javax.swing.JPanel();
         botonGestionar = new javax.swing.JButton();
         botonAdd = new javax.swing.JButton();
@@ -47,10 +47,10 @@ public class JFFinca extends javax.swing.JFrame {
         jPanelTop.setBackground(new java.awt.Color(119, 182, 134));
         jPanelTop.setToolTipText("");
 
-        listaFincas.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        listaFincas.setForeground(new java.awt.Color(255, 255, 255));
-        listaFincas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        listaFincas.setText("Listado Fincas");
+        jLabelFincaId.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelFincaId.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFincaId.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelFincaId.setText("Finca -");
 
         botonVolver.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         botonVolver.setForeground(new java.awt.Color(255, 255, 255));
@@ -66,55 +66,52 @@ public class JFFinca extends javax.swing.JFrame {
             .addGroup(jPanelTopLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(botonVolver)
-                .addGap(284, 284, 284)
-                .addComponent(listaFincas)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addGap(227, 227, 227)
+                .addComponent(jLabelFincaId)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelTopLayout.setVerticalGroup(
             jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTopLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
                 .addGroup(jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelTopLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(listaFincas))
-                    .addGroup(jPanelTopLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(botonVolver)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(jLabelFincaId)
+                    .addComponent(botonVolver))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jTableFincas.setModel(new javax.swing.table.DefaultTableModel(
+        jTableExplotaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Localizacion", "Superficie", "Fecha compra", "Encargado", "Nº Tractores", "Nº Explotaciones"
+                "ID", "Plant.", "Tipo", "Superficie", "Fecha C"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, false, false
+                false, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -125,8 +122,8 @@ public class JFFinca extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableFincas.setSelectionBackground(new java.awt.Color(182, 223, 178));
-        jScrollPane1.setViewportView(jTableFincas);
+        jTableExplotaciones.setSelectionBackground(new java.awt.Color(182, 223, 178));
+        jScrollPane1.setViewportView(jTableExplotaciones);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -262,11 +259,11 @@ public class JFFinca extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFFinca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFFinca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFFinca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFExplotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -278,7 +275,7 @@ public class JFFinca extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFFinca().setVisible(true);
+                new JFExplotacion().setVisible(true);
             }
         });
     }
@@ -290,11 +287,11 @@ public class JFFinca extends javax.swing.JFrame {
     public javax.swing.JButton botonInfo;
     public javax.swing.JButton botonMod;
     public javax.swing.JButton botonVolver;
+    public javax.swing.JLabel jLabelFincaId;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelBot;
     private javax.swing.JPanel jPanelTop;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable jTableFincas;
-    private javax.swing.JLabel listaFincas;
+    public javax.swing.JTable jTableExplotaciones;
     // End of variables declaration//GEN-END:variables
 }
