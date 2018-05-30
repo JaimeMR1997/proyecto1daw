@@ -28,22 +28,6 @@ public class JFEmpleados extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanelTrabajadores = new javax.swing.JPanel();
-        jPanelTop = new javax.swing.JPanel();
-        listaFincas = new javax.swing.JLabel();
-        jLabelGestionar1 = new javax.swing.JLabel();
-        jCheckBoxTract = new javax.swing.JCheckBox();
-        jCheckBoxEmp1 = new javax.swing.JCheckBox();
-        jCheckBoxEnc = new javax.swing.JCheckBox();
-        jCheckBoxFin = new javax.swing.JCheckBox();
-        jPanelBot = new javax.swing.JPanel();
-        jLabelGestionar = new javax.swing.JLabel();
-        jLabelAdd = new javax.swing.JLabel();
-        jLabelMod = new javax.swing.JLabel();
-        jLabelInfo = new javax.swing.JLabel();
-        jLabelEliminar = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanelCuadrillas = new javax.swing.JPanel();
         jPanelTop1 = new javax.swing.JPanel();
         listaFincas1 = new javax.swing.JLabel();
@@ -66,183 +50,22 @@ public class JFEmpleados extends javax.swing.JPanel {
         jLabelEliminar2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-
-        jPanelTop.setBackground(new java.awt.Color(119, 182, 134));
-        jPanelTop.setToolTipText("");
-
-        listaFincas.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        listaFincas.setForeground(new java.awt.Color(255, 255, 255));
-        listaFincas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        listaFincas.setText("Empleados");
-
-        jLabelGestionar1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelGestionar1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelGestionar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_back.png"))); // NOI18N
-        jLabelGestionar1.setText("Volver");
-
-        jCheckBoxTract.setBackground(new java.awt.Color(119, 182, 134));
-        jCheckBoxTract.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBoxTract.setText("Tractoristas");
-        jCheckBoxTract.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxTractActionPerformed(evt);
-            }
-        });
-
-        jCheckBoxEmp1.setBackground(new java.awt.Color(119, 182, 134));
-        jCheckBoxEmp1.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBoxEmp1.setText("Empleados");
-        jCheckBoxEmp1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxEmp1ActionPerformed(evt);
-            }
-        });
-
-        jCheckBoxEnc.setBackground(new java.awt.Color(119, 182, 134));
-        jCheckBoxEnc.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBoxEnc.setText("Encargados");
-        jCheckBoxEnc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxEncActionPerformed(evt);
-            }
-        });
-
-        jCheckBoxFin.setBackground(new java.awt.Color(119, 182, 134));
-        jCheckBoxFin.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBoxFin.setText("Contratos finalizados");
-        jCheckBoxFin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxFinActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelTopLayout = new javax.swing.GroupLayout(jPanelTop);
-        jPanelTop.setLayout(jPanelTopLayout);
-        jPanelTopLayout.setHorizontalGroup(
-            jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTopLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(jLabelGestionar1)
-                .addGap(184, 184, 184)
-                .addComponent(listaFincas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBoxEmp1)
-                .addGap(25, 25, 25)
-                .addComponent(jCheckBoxTract)
-                .addGap(25, 25, 25)
-                .addComponent(jCheckBoxEnc)
-                .addGap(25, 25, 25)
-                .addComponent(jCheckBoxFin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelTopLayout.setVerticalGroup(
-            jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTopLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(listaFincas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelGestionar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTopLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBoxTract)
-                    .addComponent(jCheckBoxEnc)
-                    .addComponent(jCheckBoxFin)
-                    .addComponent(jCheckBoxEmp1))
-                .addGap(10, 10, 10))
-        );
-
-        jPanelBot.setBackground(new java.awt.Color(119, 182, 134));
-        jPanelBot.setToolTipText("");
-
-        jLabelGestionar.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelGestionar.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelGestionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_gest.png"))); // NOI18N
-        jLabelGestionar.setText("Extender contrato");
-
-        jLabelAdd.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelAdd.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
-        jLabelAdd.setText("Añadir");
-
-        jLabelMod.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelMod.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelMod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
-        jLabelMod.setText("Modificar");
-
-        jLabelInfo.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        jLabelInfo.setText("Informacion");
-
-        jLabelEliminar.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jLabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
-        jLabelEliminar.setText("Eliminar");
-
-        javax.swing.GroupLayout jPanelBotLayout = new javax.swing.GroupLayout(jPanelBot);
-        jPanelBot.setLayout(jPanelBotLayout);
-        jPanelBotLayout.setHorizontalGroup(
-            jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBotLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jLabelGestionar)
-                .addGap(64, 64, 64)
-                .addComponent(jLabelAdd)
-                .addGap(64, 64, 64)
-                .addComponent(jLabelMod)
-                .addGap(64, 64, 64)
-                .addComponent(jLabelInfo)
-                .addGap(64, 64, 64)
-                .addComponent(jLabelEliminar)
-                .addContainerGap(77, Short.MAX_VALUE))
-        );
-        jPanelBotLayout.setVerticalGroup(
-            jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBotLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelGestionar)
-                    .addComponent(jLabelAdd)
-                    .addComponent(jLabelMod)
-                    .addComponent(jLabelInfo)
-                    .addComponent(jLabelEliminar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        javax.swing.GroupLayout jPanelTrabajadoresLayout = new javax.swing.GroupLayout(jPanelTrabajadores);
-        jPanelTrabajadores.setLayout(jPanelTrabajadoresLayout);
-        jPanelTrabajadoresLayout.setHorizontalGroup(
-            jPanelTrabajadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanelBot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
-        );
-        jPanelTrabajadoresLayout.setVerticalGroup(
-            jPanelTrabajadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTrabajadoresLayout.createSequentialGroup()
-                .addComponent(jPanelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelBot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Trabajadores", jPanelTrabajadores);
+        jPanelTrabajadores = new javax.swing.JPanel();
+        jPanelTop = new javax.swing.JPanel();
+        listaFincas = new javax.swing.JLabel();
+        jLabelGestionar1 = new javax.swing.JLabel();
+        jCheckBoxTract = new javax.swing.JCheckBox();
+        jCheckBoxEmp1 = new javax.swing.JCheckBox();
+        jCheckBoxEnc = new javax.swing.JCheckBox();
+        jCheckBoxFin = new javax.swing.JCheckBox();
+        jPanelBot = new javax.swing.JPanel();
+        jLabelCambiar = new javax.swing.JLabel();
+        jLabelAdd = new javax.swing.JLabel();
+        jLabelMod = new javax.swing.JLabel();
+        jLabelInfo = new javax.swing.JLabel();
+        jLabelEliminar = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         jPanelTop1.setBackground(new java.awt.Color(119, 182, 134));
         jPanelTop1.setToolTipText("");
@@ -345,7 +168,7 @@ public class JFEmpleados extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Encargado", "último trab.", "F. Creación"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -449,13 +272,13 @@ public class JFEmpleados extends javax.swing.JPanel {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Cuadrilla", "Fecha", "Horas", "Tipo", "Explotacion", "Encargado"
             }
         ));
         jScrollPane3.setViewportView(jTable3);
@@ -479,6 +302,186 @@ public class JFEmpleados extends javax.swing.JPanel {
         );
 
         jTabbedPane1.addTab("Trabajos", jPanelTrabajos);
+
+        jPanelTop.setBackground(new java.awt.Color(119, 182, 134));
+        jPanelTop.setToolTipText("");
+
+        listaFincas.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        listaFincas.setForeground(new java.awt.Color(255, 255, 255));
+        listaFincas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        listaFincas.setText("Empleados");
+
+        jLabelGestionar1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelGestionar1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelGestionar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_back.png"))); // NOI18N
+        jLabelGestionar1.setText("Volver");
+
+        jCheckBoxTract.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxTract.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxTract.setSelected(true);
+        jCheckBoxTract.setText("Tractoristas");
+        jCheckBoxTract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxTractActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxEmp1.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxEmp1.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEmp1.setSelected(true);
+        jCheckBoxEmp1.setText("Empleados");
+        jCheckBoxEmp1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxEmp1ActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxEnc.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxEnc.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEnc.setSelected(true);
+        jCheckBoxEnc.setText("Encargados");
+        jCheckBoxEnc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxEncActionPerformed(evt);
+            }
+        });
+
+        jCheckBoxFin.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxFin.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxFin.setText("Contratos finalizados");
+        jCheckBoxFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxFinActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTopLayout = new javax.swing.GroupLayout(jPanelTop);
+        jPanelTop.setLayout(jPanelTopLayout);
+        jPanelTopLayout.setHorizontalGroup(
+            jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTopLayout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jLabelGestionar1)
+                .addGap(184, 184, 184)
+                .addComponent(listaFincas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBoxEmp1)
+                .addGap(25, 25, 25)
+                .addComponent(jCheckBoxTract)
+                .addGap(25, 25, 25)
+                .addComponent(jCheckBoxEnc)
+                .addGap(25, 25, 25)
+                .addComponent(jCheckBoxFin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelTopLayout.setVerticalGroup(
+            jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTopLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(listaFincas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelGestionar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTopLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxTract)
+                    .addComponent(jCheckBoxEnc)
+                    .addComponent(jCheckBoxFin)
+                    .addComponent(jCheckBoxEmp1))
+                .addGap(10, 10, 10))
+        );
+
+        jPanelBot.setBackground(new java.awt.Color(119, 182, 134));
+        jPanelBot.setToolTipText("");
+
+        jLabelCambiar.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelCambiar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCambiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_gest.png"))); // NOI18N
+        jLabelCambiar.setText("Cambiar puesto");
+
+        jLabelAdd.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelAdd.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
+        jLabelAdd.setText("Añadir");
+
+        jLabelMod.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelMod.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelMod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
+        jLabelMod.setText("Modificar");
+
+        jLabelInfo.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
+        jLabelInfo.setText("Informacion");
+
+        jLabelEliminar.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabelEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
+        jLabelEliminar.setText("Eliminar");
+
+        javax.swing.GroupLayout jPanelBotLayout = new javax.swing.GroupLayout(jPanelBot);
+        jPanelBot.setLayout(jPanelBotLayout);
+        jPanelBotLayout.setHorizontalGroup(
+            jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBotLayout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(jLabelCambiar)
+                .addGap(64, 64, 64)
+                .addComponent(jLabelAdd)
+                .addGap(64, 64, 64)
+                .addComponent(jLabelMod)
+                .addGap(64, 64, 64)
+                .addComponent(jLabelInfo)
+                .addGap(64, 64, 64)
+                .addComponent(jLabelEliminar)
+                .addContainerGap(97, Short.MAX_VALUE))
+        );
+        jPanelBotLayout.setVerticalGroup(
+            jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBotLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCambiar)
+                    .addComponent(jLabelAdd)
+                    .addComponent(jLabelMod)
+                    .addComponent(jLabelInfo)
+                    .addComponent(jLabelEliminar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "DNI", "Nombre", "Apellidos", "Teléfono", "F. Fin", "F.Inicio"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanelTrabajadoresLayout = new javax.swing.GroupLayout(jPanelTrabajadores);
+        jPanelTrabajadores.setLayout(jPanelTrabajadoresLayout);
+        jPanelTrabajadoresLayout.setHorizontalGroup(
+            jPanelTrabajadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelBot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
+        );
+        jPanelTrabajadoresLayout.setVerticalGroup(
+            jPanelTrabajadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTrabajadoresLayout.createSequentialGroup()
+                .addComponent(jPanelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelBot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Trabajadores", jPanelTrabajadores);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -517,10 +520,10 @@ public class JFEmpleados extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelAdd;
     private javax.swing.JLabel jLabelAdd1;
     private javax.swing.JLabel jLabelAdd2;
+    private javax.swing.JLabel jLabelCambiar;
     private javax.swing.JLabel jLabelEliminar;
     private javax.swing.JLabel jLabelEliminar1;
     private javax.swing.JLabel jLabelEliminar2;
-    private javax.swing.JLabel jLabelGestionar;
     private javax.swing.JLabel jLabelGestionar1;
     private javax.swing.JLabel jLabelGestionar2;
     private javax.swing.JLabel jLabelGestionar3;

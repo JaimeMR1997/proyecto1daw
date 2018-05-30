@@ -41,6 +41,7 @@ public class JFInicioTract extends javax.swing.JFrame {
         verServicios = new javax.swing.JButton();
         jLabelItv = new javax.swing.JLabel();
         jLabelItv1 = new javax.swing.JLabel();
+        botonFinalizar = new javax.swing.JButton();
         jPanelBot = new javax.swing.JPanel();
         jLabelGestionar = new javax.swing.JLabel();
         jLabelAdd = new javax.swing.JLabel();
@@ -91,13 +92,13 @@ public class JFInicioTract extends javax.swing.JFrame {
 
         tablaServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "F. Inicio", "Tractor", "Matricula", "Lugar", "Conductor"
             }
         ));
         jScrollPaneServicios.setViewportView(tablaServicios);
@@ -110,7 +111,7 @@ public class JFInicioTract extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "F. ITV", "Tractor", "Matricula", "Finca"
             }
         ));
         jScrollPaneItv.setViewportView(tablaItv1);
@@ -134,6 +135,13 @@ public class JFInicioTract extends javax.swing.JFrame {
 
         jLabelItv1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelItv1.setText("Servicios sin terminar");
+
+        botonFinalizar.setText("Terminar servicio");
+        botonFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonFinalizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -160,8 +168,10 @@ public class JFInicioTract extends javax.swing.JFrame {
                                 .addComponent(verTractores)
                                 .addGap(188, 188, 188))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(verServicios)))
+                        .addGap(148, 148, 148)
+                        .addComponent(botonFinalizar)
+                        .addGap(24, 24, 24)
+                        .addComponent(verServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -192,7 +202,9 @@ public class JFInicioTract extends javax.swing.JFrame {
                     .addComponent(imgServicios)
                     .addComponent(jScrollPaneServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(verServicios)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(verServicios)
+                    .addComponent(botonFinalizar))
                 .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -288,6 +300,10 @@ public class JFInicioTract extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_verTractoresActionPerformed
 
+    private void botonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFinalizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonFinalizarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -327,6 +343,7 @@ public class JFInicioTract extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonFinalizar;
     private javax.swing.JLabel imgServicios;
     private javax.swing.JLabel imgTractores;
     private javax.swing.JLabel jLabelAdd;
