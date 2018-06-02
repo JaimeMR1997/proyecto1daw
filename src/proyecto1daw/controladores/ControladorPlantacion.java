@@ -263,9 +263,9 @@ public class ControladorPlantacion implements ActionListener {
                     Venta v = new Venta(idVenta, cantidad, precio, tamanio, color, fecha, idPlant);
                     if(nomBoton.equalsIgnoreCase("Aceptar")){   //AÑADIR
                         if(modeloVenta.addVenta(v)){
-                            
+                            JOptionPane.showMessageDialog(vistaTabla, "Venta añadida correctamente");
                         }else{
-                            
+                            JOptionPane.showMessageDialog(vistaTabla, "Se ha producido un error al añadir la venta", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                         
                     }else if(nomBoton.equalsIgnoreCase("Modificar")){//MODIFICAR
@@ -341,18 +341,62 @@ public class ControladorPlantacion implements ActionListener {
     }
 
     private boolean validarDatosPlant() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = true;
+        if(this.vistaAddPlant.campoFPlant.getText().equals("")){
+            res=false;
+        }
+        if(this.vistaAddPlant.campoTipo.getText().equals("")){
+            res=false;
+        }
+        if(this.vistaAddPlant.campoVariedad.getText().equals("")){
+            res=false;
+        }
+        if(this.vistaAddPlant.jCheckBoxFFin.isSelected()){
+            if(this.vistaAddPlant.campoFechaFin.getText().equals("")){
+                res=false;
+            }
+        }
+        return res;
     }
 
     private boolean validarDatosVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean res = true;
+        String fecha = this.vistaAddVenta.campoFecha.getText(); 
+        if(fecha.equals("")){
+            res=false;
+            
+        }else{
+            if(Fechas.parseStringtoLocalDate(fecha) == null){
+                res=false;
+            }
+        }
+        if(this.vistaAddVenta.campoColor.getText().equals("")){
+            res=false;
+        }
+        if(this.vistaAddVenta.campoPrecio.getText().equals("")){
+            res=false;
+        }
+        if(this.vistaAddVenta.jComboTam.getSelectedIndex() == -1){
+            res=false;
+        }
+        
+        int kg = (int) this.vistaAddVenta.jSpinnerKg.getValue();
+        if(kg <= 0){
+            res=false;
+        }
+        return res;
     }
 
     private String generarIdPlant() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String idPlant = null;
+        int num = modeloPlant.contarPlant(idExplotacion);
+        idPlant = idExplotacion+"-"+num;
+        return idPlant;
     }
 
     private String generarIdVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String idVenta = null;
+        
+        return idVenta;
     }
 }

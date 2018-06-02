@@ -95,4 +95,20 @@ public class PlantacionDAO {
         }
         return res;
     }
+
+    public int contarPlant(String idExplotacion) {
+        int res = 1;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT COUNT(*) FROM PLANTACION WHERE ID_EXPLOTACION = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idExplotacion);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Actualizar plantacion: "+e.getMessage());
+        }
+        return res;
+    }
 }
