@@ -71,7 +71,7 @@ public class ControladorExplotacion implements ActionListener{
         this.modTabla.addColumn("Tipo");
         this.modTabla.addColumn("Superficie");
         this.modTabla.addColumn("Fecha Creación");
-        this.cargarExplotaciones(this.modeloExp.recuperarPorFinca(fincaId));
+        this.rellenarTabla(this.modeloExp.recuperarPorFinca(fincaId));
         this.vistaTabla.jTableExplotaciones.setModel(modTabla);
         
         //Cargar opciones tipo Explotacion
@@ -83,11 +83,14 @@ public class ControladorExplotacion implements ActionListener{
         this.vistaAdd.jComboBoxTipo.setSelectedIndex(-1);//Selecciona en blanco
         
         //Poner visible
+        this.vistaAdd.campoId.setEnabled(false);
+        this.vistaAdd.campoIdFinca.setEnabled(false);
         this.vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.vistaTabla.setVisible(true);
         this.vistaTabla.setLocationRelativeTo(null);
         this.vistaAdd.setLocationRelativeTo(null);
         this.vistaTabla.jLabelFincaId.setText("Finca - "+fincaId);
+        this.limpiarCamposAdd();
+        this.vistaTabla.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent ae) {
@@ -97,8 +100,6 @@ public class ControladorExplotacion implements ActionListener{
             if(boton.equals(this.vistaTabla.botonAdd)){                             //AÑADIR 
             //Llamar a ventanaAñadir
             vistaAdd.botonAceptar.setText("Aceptar");
-            this.vistaAdd.campoId.setEnabled(false);
-            this.vistaAdd.campoIdFinca.setEnabled(false);
             this.vistaAdd.campoId.setText(this.generarIdExplotacion());
             this.vistaAdd.campoIdFinca.setText(fincaId);
             
@@ -108,7 +109,7 @@ public class ControladorExplotacion implements ActionListener{
             
         }else if(boton.equals(this.vistaTabla.botonEliminar)){                  //ELIMINAR
             if(this.vistaTabla.jTableExplotaciones.getSelectedRow() != -1){
-                int b= JOptionPane.showConfirmDialog(vistaAdd, "¿Estás seguro de eliminar esta finca?");
+                int b= JOptionPane.showConfirmDialog(vistaAdd, "¿Estás seguro de eliminar esta explotación?");
                 if(b==JOptionPane.YES_OPTION){
                     String idExp=(String) this.vistaTabla.jTableExplotaciones.getValueAt(this.vistaTabla.jTableExplotaciones.getSelectedRow(),0);
                     modeloExp.borrarExplotacion(idExp);
@@ -128,7 +129,7 @@ public class ControladorExplotacion implements ActionListener{
             if(this.vistaTabla.jTableExplotaciones.getSelectedRow() != -1){
                 int filaSel = vistaTabla.jTableExplotaciones.getSelectedRow();
                 String idExp = (String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
-                ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(), new PlantacionDAO(), new VentaDAO(), idExp);
+                ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(), new PlantacionDAO(), new VentaDAO(), idExp,fincaId);
                 this.vistaTabla.dispose();
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -141,7 +142,18 @@ public class ControladorExplotacion implements ActionListener{
             
         }else if(boton.equals(this.vistaTabla.botonMod)){                       //MODIFICAR
             if(this.vistaTabla.jTableExplotaciones.getSelectedRow() != -1){
+                int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
+                String idExp = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
+                String superficie = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 3);
+                String fechaC = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 4);
                 
+                this.vistaAdd.campoId.setText(idExp);
+                this.vistaAdd.campoSuperficie.setText(superficie);
+                this.vistaAdd.campoFechaC.setText(fechaC);
+                this.vistaAdd.campoIdFinca.setText(fincaId);
+                
+                this.vistaAdd.botonAceptar.setText("Modificar");
+                this.vistaAdd.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
@@ -154,25 +166,39 @@ public class ControladorExplotacion implements ActionListener{
             
         }else if(boton.equals(this.vistaAdd.botonAceptar)){                     //AÑADIR ACEPTAR
             
-            if(boton.getText().equalsIgnoreCase("Aceptar") && this.validarDatosAdd()){  //NUEVA FINCA
-                String id = this.vistaAdd.campoId.getText(); //Recupera campos
+            if(this.validarDatosAdd()){  //NUEVA FINCA
+                //Recupera campos
+                String id = this.vistaAdd.campoId.getText(); 
                 int superficie = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
                 String tipo = (String) this.vistaAdd.jComboBoxTipo.getSelectedItem();
                 tipo =tipo + " " + (String) this.vistaAdd.jComboBoxSubtipo.getSelectedItem();
-                LocalDate fCreacion = Fechas.parseStringtoLocalDate(this.vistaAdd.campoFechaC.getText());
+                LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
                 
                 Explotacion exp= new Explotacion(id, superficie, tipo, fCreacion, null, fincaId);
-                if(modeloExp.addExplotacion(exp)){
-                    JOptionPane.showMessageDialog(vistaAdd, "Explotación añadida correctamente");
-                }else{
-                    JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                if(boton.getText().equalsIgnoreCase("Aceptar")){//AÑADIR EXPLOTACION
+                    if(modeloExp.addExplotacion(exp)){
+                        JOptionPane.showMessageDialog(vistaAdd, "Explotación añadida correctamente");
+                    }else{
+                        JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                    }
+                    this.limpiarCamposAdd();
+                    this.vistaAdd.dispose();
+                    this.modTabla.setRowCount(0);
+                    this.rellenarTabla(modeloExp.recuperarPorFinca(fincaId));
+                    
+                }else if(boton.getText().equalsIgnoreCase("Modificar")){ //MODIFICAR EXPLOTACION
+                    String s = actualizarExplotacion(exp);
+                    if(s.charAt(0) == 'E' && s.charAt(1) == 'r'){//Ha habido error
+                        JOptionPane.showMessageDialog(vistaAdd, s, "Error", JOptionPane.ERROR_MESSAGE);
+                    }else{//Todo correcto
+                        JOptionPane.showMessageDialog(vistaAdd, s);
+                        this.limpiarCamposAdd();
+                        this.vistaAdd.dispose();
+                        this.modTabla.setRowCount(0);
+                        this.rellenarTabla(modeloExp.recuperarPorFinca(fincaId));
+                    }
+                    
                 }
-                this.limpiarCamposAdd();
-                this.vistaAdd.dispose();
-                this.modTabla.setRowCount(0);
-                this.rellenarTabla(modeloExp.recuperarPorFinca(fincaId));
-            }else if(boton.getText().equalsIgnoreCase("Modificar") && this.validarDatosAdd()){ //MODIFICAR EXPLOTACION
-                
             }
             
             
@@ -189,21 +215,43 @@ public class ControladorExplotacion implements ActionListener{
         }
         
     }
-    
-    public void rellenarTabla(ArrayList<Explotacion> listaExp){
+
+    private String actualizarExplotacion(Explotacion exp) {
+        String s = "Error:";
+        if(!modeloExp.actualizarCampo(exp.getId(), "SUPERFICIE", exp.getSuperficie()+"")){
+            s+="\nAl modificar la superficie";
+        }
+        if(!modeloExp.actualizarCampo(exp.getId(), "F_CREACION", Fechas.toString(exp.getfCreacion()))){
+            s+="\nAl modificar la fecha de creación";
+        }
+        if(!modeloExp.actualizarCampo(exp.getId(), "TIPO", exp.getTipo())){
+            s+="\nAl modificar el tipo";
+        }
         
+        if(s.equals("Error:")){
+            s="Explotación modificada correctamente.";
+        }
+        return s;
     }
 
     private boolean validarDatosAdd() {
         boolean res=true;
         if(this.vistaAdd.campoSuperficie.getText().equals("")){
             res=false;
+            this.vistaAdd.jLabelErrSup.setVisible(true);
         }else if(this.vistaAdd.campoFechaC.getText().equals("")){
             res=false;
+            this.vistaAdd.jLabelErrFCreacion.setVisible(true);
         }else if(this.vistaAdd.jComboBoxTipo.getSelectedIndex() == -1){
             res=false;
+            this.vistaAdd.jLabelErrTipo.setVisible(true);
         }else if(this.vistaAdd.jComboBoxSubtipo.getSelectedIndex() == -1){
             res=false;
+            this.vistaAdd.jLabelErrTipo.setVisible(true);
+        }else{
+            this.vistaAdd.jLabelErrSup.setVisible(false);
+            this.vistaAdd.jLabelErrFCreacion.setVisible(false);
+            this.vistaAdd.jLabelErrTipo.setVisible(false);
         }
         return res;
     }
@@ -215,6 +263,9 @@ public class ControladorExplotacion implements ActionListener{
         this.vistaAdd.campoId.setText("");
         this.vistaAdd.jComboBoxTipo.setSelectedIndex(-1);
         this.vistaAdd.jComboBoxSubtipo.setSelectedIndex(-1);
+        this.vistaAdd.jLabelErrSup.setVisible(false);
+        this.vistaAdd.jLabelErrFCreacion.setVisible(false);
+        this.vistaAdd.jLabelErrTipo.setVisible(false);
     }
 
     private String generarIdExplotacion() {
@@ -224,14 +275,14 @@ public class ControladorExplotacion implements ActionListener{
         return id;
     }
     
-    public void cargarExplotaciones(ArrayList<Explotacion> listaExp){
+    public void rellenarTabla(ArrayList<Explotacion> listaExp){
         String[] s = new String[5];
         for (Explotacion exp : listaExp) {
             s[0]=exp.getId();
             s[1]=null;
             s[2]=exp.getTipo();
             s[3]=exp.getSuperficie()+"";
-            s[4]=exp.getIdFinca();
+            s[4]=Fechas.toString(exp.getfCreacion());
         }
         this.modTabla.addRow(s);
     }

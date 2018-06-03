@@ -41,6 +41,9 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
         jComboBoxTipo = new javax.swing.JComboBox<>();
         jComboBoxSubtipo = new javax.swing.JComboBox<>();
         campoIdFinca = new javax.swing.JTextField();
+        jLabelErrTipo = new javax.swing.JLabel();
+        jLabelErrSup = new javax.swing.JLabel();
+        jLabelErrFCreacion = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
 
@@ -104,23 +107,36 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
 
         jComboBoxSubtipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabelErrTipo.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErrTipo.setText("Debes seleccionar tipo y subtipo");
+
+        jLabelErrSup.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErrSup.setText("La superficie debe ser un número");
+
+        jLabelErrFCreacion.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelErrFCreacion.setText("La fecha debe tener un formato dd/mm/aa");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(campoIdFinca)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(campoFechaC, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(campoId, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jComboBoxSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBoxSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoIdFinca, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoFechaC, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addComponent(jLabelErrTipo)
+                    .addComponent(jLabelErrSup)
+                    .addComponent(jLabelErrFCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,11 +147,17 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelErrTipo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(campoSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(2, 2, 2)
+                .addComponent(jLabelErrSup)
+                .addGap(2, 2, 2)
                 .addComponent(campoFechaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(10, 10, 10)
+                .addComponent(jLabelErrFCreacion)
+                .addGap(4, 4, 4)
                 .addComponent(campoIdFinca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -160,7 +182,7 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
+                        .addGap(38, 38, 38)
                         .addComponent(botonAceptar)
                         .addGap(18, 18, 18)
                         .addComponent(botonCancelar)
@@ -238,6 +260,9 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
     public javax.swing.JTextField campoSuperficie;
     public javax.swing.JComboBox<String> jComboBoxSubtipo;
     public javax.swing.JComboBox<String> jComboBoxTipo;
+    public javax.swing.JLabel jLabelErrFCreacion;
+    public javax.swing.JLabel jLabelErrSup;
+    public javax.swing.JLabel jLabelErrTipo;
     private javax.swing.JLabel jLabelFC;
     private javax.swing.JLabel jLabelFC1;
     private javax.swing.JLabel jLabelId;

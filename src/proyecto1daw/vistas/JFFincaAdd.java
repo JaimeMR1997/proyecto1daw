@@ -37,6 +37,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelFC = new javax.swing.JLabel();
         jRadioButtonEnc = new javax.swing.JRadioButton();
         jLabelEncargado = new javax.swing.JLabel();
+        etiquetaId = new javax.swing.JLabel();
+        jCheckBoxFFin = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListEmpleados = new javax.swing.JList<>();
@@ -45,6 +47,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
         campoFechaC = new javax.swing.JTextField();
         campoLocalidad = new javax.swing.JTextField();
         campoSuperficie = new javax.swing.JTextField();
+        campoFechaFin = new javax.swing.JTextField();
         botonAceptar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
 
@@ -98,6 +101,17 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelEncargado.setForeground(new java.awt.Color(255, 255, 255));
         jLabelEncargado.setText("Encargado");
 
+        etiquetaId.setForeground(new java.awt.Color(255, 255, 255));
+
+        jCheckBoxFFin.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxFFin.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxFFin.setText("F.Fin");
+        jCheckBoxFFin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxFFinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelIzqLayout = new javax.swing.GroupLayout(jPanelIzq);
         jPanelIzq.setLayout(jPanelIzqLayout);
         jPanelIzqLayout.setHorizontalGroup(
@@ -105,30 +119,39 @@ public class JFFincaAdd extends javax.swing.JFrame {
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelId)
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonEmp)
-                            .addComponent(jRadioButtonEnc)
-                            .addComponent(jRadioButtonTract)))
                     .addComponent(jLabelLocalidad)
                     .addComponent(jLabelSuperficie)
                     .addComponent(jLabelFC)
-                    .addComponent(jLabelEncargado))
+                    .addComponent(jLabelEncargado)
+                    .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelIzqLayout.createSequentialGroup()
+                            .addComponent(jLabelId)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(etiquetaId))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelIzqLayout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jRadioButtonEmp)
+                                .addComponent(jRadioButtonEnc)
+                                .addComponent(jRadioButtonTract))))
+                    .addComponent(jCheckBoxFFin))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jLabelId)
-                .addGap(18, 18, 18)
+                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelId)
+                    .addComponent(etiquetaId))
+                .addGap(21, 21, 21)
                 .addComponent(jLabelLocalidad)
                 .addGap(21, 21, 21)
                 .addComponent(jLabelSuperficie)
                 .addGap(21, 21, 21)
                 .addComponent(jLabelFC)
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBoxFFin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelEncargado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -169,17 +192,15 @@ public class JFFincaAdd extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(campoFechaC, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                                 .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +213,9 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addComponent(campoSuperficie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(campoFechaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,14 +263,6 @@ public class JFFincaAdd extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButtonEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEmpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEmpActionPerformed
-
-    private void jRadioButtonTractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTractActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonTractActionPerformed
-
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonAceptarActionPerformed
@@ -263,6 +278,18 @@ public class JFFincaAdd extends javax.swing.JFrame {
     private void jRadioButtonEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEncActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonEncActionPerformed
+
+    private void jRadioButtonTractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTractActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonTractActionPerformed
+
+    private void jRadioButtonEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEmpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonEmpActionPerformed
+
+    private void jCheckBoxFFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFFinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxFFinActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,9 +332,12 @@ public class JFFincaAdd extends javax.swing.JFrame {
     public javax.swing.JButton botonCancelar;
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
     public javax.swing.JTextField campoFechaC;
+    public javax.swing.JTextField campoFechaFin;
     public javax.swing.JTextField campoId;
     public javax.swing.JTextField campoLocalidad;
     public javax.swing.JTextField campoSuperficie;
+    public javax.swing.JLabel etiquetaId;
+    public javax.swing.JCheckBox jCheckBoxFFin;
     private javax.swing.JLabel jLabelEncargado;
     private javax.swing.JLabel jLabelFC;
     private javax.swing.JLabel jLabelId;

@@ -34,11 +34,11 @@ public class TrabajadorDAO {
             
             if(!(t instanceof Conductor) &&!(t instanceof Encargado)){ //Trabajadores normales
                 consultaInsertar.setString(1, "TRABAJADOR");
-                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.parseLocalDtoString(fFin));
+                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));
                 
             }else if(!(t instanceof Encargado)){                        //Conductores
                 consultaInsertar.setString(1, "CONDUCTOR");
-                this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.parseLocalDtoString(fFin));   
+                this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.toString(fFin));   
             }
             
             consultaInsertar.executeUpdate();

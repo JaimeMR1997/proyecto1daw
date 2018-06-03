@@ -97,20 +97,23 @@ public class FincaDAO {
         }
     }
     
-    public void actualizarCampo(String id, String campo, String nuevoValor){
+    public boolean actualizarCampo(String id, String campo, String nuevoValor){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE FINCA SET ?=? WHERE ID_FINCA = ?";
+        String consulta = "UPDATE FINCA SET "+campo+"=? WHERE ID_FINCA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, campo);
-            st.setString(2, nuevoValor);
-            st.setString(3, id);
+            //st.setString(1, campo);
+            st.setString(1, nuevoValor);
+            st.setString(2, id);
             
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar Finca: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
 }

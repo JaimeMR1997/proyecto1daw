@@ -77,21 +77,23 @@ public class ExplotacionDAO {
         }
     }
 
-    public void actualizarCampo(String id, String campo, String nuevoValor){
+    public boolean actualizarCampo(String id, String campo, String nuevoValor){
+        boolean res=true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE EXPLOTACION SET ?=? WHERE ID_EXPLOTACION = ?";
+        String consulta = "UPDATE EXPLOTACION SET "+campo+"=? WHERE ID_EXPLOTACION = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, campo);
-            st.setString(2, nuevoValor);
-            st.setString(3, id);
+            st.setString(1, nuevoValor);
+            st.setString(2, id);
             
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar explotacion: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
     public ArrayList<Explotacion> recuperarPorFinca(String idFinca){

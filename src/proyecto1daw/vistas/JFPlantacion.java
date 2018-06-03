@@ -38,7 +38,7 @@ public class JFPlantacion extends javax.swing.JFrame {
         jTablePlantaciones = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableVentas = new javax.swing.JTable();
-        jLabelPlantacion = new javax.swing.JLabel();
+        jLabelCantidadIngresos = new javax.swing.JLabel();
         jLabelVentas = new javax.swing.JLabel();
         botonAddPlant = new javax.swing.JButton();
         botonModVenta = new javax.swing.JButton();
@@ -49,7 +49,10 @@ public class JFPlantacion extends javax.swing.JFrame {
         jLabelFFin = new javax.swing.JLabel();
         campoFVenta = new javax.swing.JTextField();
         jLabelFVenta = new javax.swing.JLabel();
-        botonBuscar = new javax.swing.JButton();
+        botonBuscarPlant = new javax.swing.JButton();
+        jLabelPlantacion = new javax.swing.JLabel();
+        jLabelIngresos = new javax.swing.JLabel();
+        botonBuscarVenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mi programa - Fincas");
@@ -79,7 +82,7 @@ public class JFPlantacion extends javax.swing.JFrame {
                 .addComponent(botonVolver)
                 .addGap(254, 254, 254)
                 .addComponent(jLabelExplotacion)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(550, Short.MAX_VALUE))
         );
         jPanelTopLayout.setVerticalGroup(
             jPanelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,36 +166,36 @@ public class JFPlantacion extends javax.swing.JFrame {
 
         jTableVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Fecha", "KG", "€/Kg", "Color"
+                "Id", "KG", "€/Kg", "Color", "TOTAL €€€", "Fecha"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -206,10 +209,10 @@ public class JFPlantacion extends javax.swing.JFrame {
         jTableVentas.setSelectionBackground(new java.awt.Color(182, 223, 178));
         jScrollPane2.setViewportView(jTableVentas);
 
-        jLabelPlantacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabelPlantacion.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelPlantacion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelPlantacion.setText("Plantacion");
+        jLabelCantidadIngresos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelCantidadIngresos.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCantidadIngresos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelCantidadIngresos.setText("0.0€");
 
         jLabelVentas.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabelVentas.setForeground(new java.awt.Color(255, 255, 255));
@@ -251,18 +254,34 @@ public class JFPlantacion extends javax.swing.JFrame {
         jLabelFVenta.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFVenta.setText("Fecha de venta");
 
-        botonBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        botonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_buscar.png"))); // NOI18N
-        botonBuscar.setText("Buscar");
-        botonBuscar.setBorderPainted(false);
-        botonBuscar.setContentAreaFilled(false);
+        botonBuscarPlant.setForeground(new java.awt.Color(255, 255, 255));
+        botonBuscarPlant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_buscar.png"))); // NOI18N
+        botonBuscarPlant.setText("Buscar");
+        botonBuscarPlant.setBorderPainted(false);
+        botonBuscarPlant.setContentAreaFilled(false);
+
+        jLabelPlantacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabelPlantacion.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelPlantacion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelPlantacion.setText("Plantaciones");
+
+        jLabelIngresos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelIngresos.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelIngresos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelIngresos.setText("Ingresos plantación:");
+
+        botonBuscarVenta.setForeground(new java.awt.Color(255, 255, 255));
+        botonBuscarVenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_buscar.png"))); // NOI18N
+        botonBuscarVenta.setText("Buscar");
+        botonBuscarVenta.setBorderPainted(false);
+        botonBuscarVenta.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(148, 148, 148)
+                .addGap(123, 123, 123)
                 .addComponent(jLabelPlantacion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelVentas)
@@ -270,39 +289,54 @@ public class JFPlantacion extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(campoFIn)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabelFFin)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(campoFFin))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(campoFVenta))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabelFVenta))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelFPlant))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                                .addComponent(botonBuscar)
-                                .addGap(38, 38, 38))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(botonAddPlant)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonModPlant)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonEliminarPlant)))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelFPlant)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(botonBuscarPlant)
+                                        .addGap(81, 81, 81))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(botonBuscarVenta)
+                                        .addGap(79, 79, 79))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabelIngresos)
+                                        .addGap(40, 40, 40))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(campoFVenta))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabelFVenta)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(campoFFin, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(campoFIn)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabelFFin)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                        .addComponent(jLabelCantidadIngresos)
+                        .addGap(120, 120, 120)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(botonAddVenta)
@@ -316,9 +350,9 @@ public class JFPlantacion extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPlantacion)
-                    .addComponent(jLabelVentas))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelVentas)
+                    .addComponent(jLabelPlantacion))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,8 +368,7 @@ public class JFPlantacion extends javax.swing.JFrame {
                                 .addComponent(botonAddPlant)
                                 .addComponent(botonAddVenta)
                                 .addComponent(botonModPlant)
-                                .addComponent(botonEliminarPlant)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(botonEliminarPlant))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabelFPlant)
@@ -345,13 +378,19 @@ public class JFPlantacion extends javax.swing.JFrame {
                         .addComponent(jLabelFFin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(campoFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(8, 8, 8)
+                        .addComponent(botonBuscarPlant)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelFVenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(campoFVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonBuscar)
-                        .addGap(68, 68, 68))))
+                        .addGap(18, 18, 18)
+                        .addComponent(botonBuscarVenta)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelIngresos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelCantidadIngresos)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -421,19 +460,22 @@ public class JFPlantacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton botonAddPlant;
     public javax.swing.JButton botonAddVenta;
-    public javax.swing.JButton botonBuscar;
+    public javax.swing.JButton botonBuscarPlant;
+    public javax.swing.JButton botonBuscarVenta;
     public javax.swing.JButton botonEliminarPlant;
     public javax.swing.JButton botonEliminarVent;
     public javax.swing.JButton botonModPlant;
     public javax.swing.JButton botonModVenta;
     public javax.swing.JButton botonVolver;
-    private javax.swing.JTextField campoFFin;
-    private javax.swing.JTextField campoFIn;
-    private javax.swing.JTextField campoFVenta;
+    public javax.swing.JTextField campoFFin;
+    public javax.swing.JTextField campoFIn;
+    public javax.swing.JTextField campoFVenta;
+    public javax.swing.JLabel jLabelCantidadIngresos;
     public javax.swing.JLabel jLabelExplotacion;
     private javax.swing.JLabel jLabelFFin;
     private javax.swing.JLabel jLabelFPlant;
     private javax.swing.JLabel jLabelFVenta;
+    private javax.swing.JLabel jLabelIngresos;
     public javax.swing.JLabel jLabelPlantacion;
     public javax.swing.JLabel jLabelVentas;
     private javax.swing.JPanel jPanel2;

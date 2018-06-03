@@ -46,7 +46,7 @@ public class JFVentaAdd extends javax.swing.JFrame {
         campoPrecio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Añadir Finca");
+        setTitle("Añadir Venta");
 
         jPanelIzq.setBackground(new java.awt.Color(119, 182, 134));
 
@@ -63,8 +63,10 @@ public class JFVentaAdd extends javax.swing.JFrame {
         jLabelTamanio.setText("Tamaño");
 
         jLabelIdVenta.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelIdVenta.setText("IDVENTA");
 
         jLabelIdPlant.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelIdPlant.setText("IDPLANT");
 
         jLabelPrecio.setForeground(new java.awt.Color(255, 255, 255));
         jLabelPrecio.setText("Precio");
@@ -74,42 +76,40 @@ public class JFVentaAdd extends javax.swing.JFrame {
         jPanelIzqLayout.setHorizontalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
-                .addGap(13, 13, 13)
                 .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelPrecio)
-                    .addComponent(jLabelTamanio)
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addComponent(jLabelKg)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelIdVenta))
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelPrecio)
+                            .addComponent(jLabelTamanio)
+                            .addComponent(jLabelKg)
+                            .addComponent(jLabelColor)
+                            .addComponent(jLabelFPlant)))
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addComponent(jLabelColor)
+                        .addContainerGap()
+                        .addComponent(jLabelIdPlant)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabelIdPlant))
-                    .addComponent(jLabelFPlant))
-                .addContainerGap(46, Short.MAX_VALUE))
+                        .addComponent(jLabelIdVenta)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelKg)
-                    .addComponent(jLabelIdVenta))
-                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabelColor))
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabelIdPlant)))
-                .addGap(18, 18, 18)
+                .addComponent(jLabelKg)
+                .addGap(24, 24, 24)
+                .addComponent(jLabelColor)
+                .addGap(28, 28, 28)
                 .addComponent(jLabelTamanio)
                 .addGap(27, 27, 27)
                 .addComponent(jLabelFPlant)
                 .addGap(30, 30, 30)
                 .addComponent(jLabelPrecio)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelIdPlant)
+                    .addComponent(jLabelIdVenta))
+                .addContainerGap())
         );
 
         campoColor.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +162,7 @@ public class JFVentaAdd extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(campoPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +191,7 @@ public class JFVentaAdd extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelIzq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

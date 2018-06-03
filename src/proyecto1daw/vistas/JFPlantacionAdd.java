@@ -43,7 +43,7 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
         botonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Añadir Finca");
+        setTitle("Añadir plantación");
 
         jPanelIzq.setBackground(new java.awt.Color(119, 182, 134));
 
@@ -60,6 +60,8 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
         jCheckBoxFFin.setForeground(new java.awt.Color(255, 255, 255));
         jCheckBoxFFin.setText("Fecha fin");
 
+        jLabelIdPlant.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelIdPlant.setText("IDPLANT");
         jLabelIdPlant.setFocusable(false);
 
         javax.swing.GroupLayout jPanelIzqLayout = new javax.swing.GroupLayout(jPanelIzq);
@@ -71,31 +73,30 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelIzqLayout.createSequentialGroup()
-                                .addComponent(jLabelTipo)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelIdPlant))
+                            .addComponent(jLabelTipo)
                             .addComponent(jLabelVariedad)
                             .addComponent(jLabelFPlant)))
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jCheckBoxFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelIdPlant)
+                            .addComponent(jCheckBoxFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelTipo)
-                    .addComponent(jLabelIdPlant))
+                .addComponent(jLabelTipo)
                 .addGap(21, 21, 21)
                 .addComponent(jLabelVariedad)
                 .addGap(24, 24, 24)
                 .addComponent(jLabelFPlant)
                 .addGap(21, 21, 21)
                 .addComponent(jCheckBoxFFin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelIdPlant)
+                .addGap(28, 28, 28))
         );
 
         campoVariedad.addActionListener(new java.awt.event.ActionListener() {
