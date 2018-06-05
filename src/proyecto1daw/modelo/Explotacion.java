@@ -6,6 +6,8 @@
 package proyecto1daw.modelo;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +20,7 @@ public class Explotacion {
     private LocalDate fCreacion;
     private LocalDate fFin;
     private String idFinca;
+    private ArrayList<Plantacion> listaPlant;
 
     public Explotacion(String id, int superficie, String tipo, LocalDate fCreacion, LocalDate fFin, String idFinca) {
         this.id = id;
@@ -26,6 +29,32 @@ public class Explotacion {
         this.fCreacion = fCreacion;
         this.fFin = fFin;
         this.idFinca = idFinca;
+        
+        PlantacionDAO modeloPlant = new PlantacionDAO();
+        this.listaPlant = modeloPlant.recuperarPorExp(this.id);
+    }
+    
+    public boolean hayPlantacion(){
+        boolean res = false;
+        for (Plantacion p : this.listaPlant) {
+            if(p.estaActiva()){
+                res=true;
+            }
+        }
+        return res;
+    }
+    
+    public String calcularEstado(){
+        //Este método se llama asi para futura ampliacion
+        //Se planea avisar de cuando no es rentable mantener la plantacion
+        //Para ello se necesitarian saber gastos
+        
+        //De momento solo devuelve Plantado/Sin plantar
+        String res = "Sin plantar";
+        if(hayPlantacion()){
+            res="Plantado";
+        }
+        return res;
     }
 
     public String getId() {
@@ -74,6 +103,14 @@ public class Explotacion {
 
     public void setIdFinca(String idFinca) {
         this.idFinca = idFinca;
+    }
+
+    public ArrayList<Plantacion> getListaPlant() {
+        return listaPlant;
+    }
+
+    public void setListaPlant(ArrayList<Plantacion> listaPlant) {
+        this.listaPlant = listaPlant;
     }
 
     

@@ -70,7 +70,7 @@ public class TrabajadorDAO {
         }
     }
     
-    public void asignarEncargado(String dni,String idFinca){
+    public void asignarFinca(String dni,String idFinca){
         this.asignarEncargado(dni, idFinca,null);
     }
     

@@ -7,12 +7,15 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
@@ -30,13 +33,11 @@ import proyecto1daw.vistas.JFInicio;
  *
  * @author alumno
  */
-public class ControladorFinca implements ActionListener{
+public class ControladorFinca implements ActionListener,MouseListener{
     private JFFinca vistaTabla;
     private JFFincaAdd vistaAdd;
     private FincaDAO modelo;
     private DefaultTableModel modTabla;
-    private DefaultListModel modListaAdd;
-    private TrabajadorDAO modeloTrab;
 
     public ControladorFinca(JFFinca vistaTabla, FincaDAO modelo,JFFincaAdd vistaAddFinca) {
         this.vistaTabla = vistaTabla;
@@ -44,7 +45,6 @@ public class ControladorFinca implements ActionListener{
         this.vistaAdd=vistaAddFinca;
         this.vistaTabla.setLocationRelativeTo(null);
         this.vistaAdd.setLocationRelativeTo(null);
-        this.modeloTrab = new TrabajadorDAO();
         
         //Asignar action listener a botones
         this.vistaTabla.botonAdd.addActionListener(this);
@@ -56,10 +56,9 @@ public class ControladorFinca implements ActionListener{
         //Los de AddFinca tambien
         this.vistaAdd.botonAceptar.addActionListener(this);
         this.vistaAdd.botonCancelar.addActionListener(this);
-        this.vistaAdd.jRadioButtonEmp.addActionListener(this);
-        this.vistaAdd.jRadioButtonEnc.addActionListener(this);
-        this.vistaAdd.jRadioButtonTract.addActionListener(this);
         this.vistaAdd.jCheckBoxFFin.addActionListener(this);
+        //Añadir mouse listener a tabla
+        this.vistaTabla.jTableFincas.addMouseListener(this);
         
         //Cargar datos en tabla
         modTabla=new DefaultTableModel();
@@ -73,9 +72,6 @@ public class ControladorFinca implements ActionListener{
         rellenarTabla(modelo.recuperarTodas());
         this.vistaTabla.jTableFincas.setModel(modTabla);
         
-        //Modelo JlistTrabajadores
-        modListaAdd= new DefaultListModel();
-        this.vistaAdd.jListEmpleados.setModel(modListaAdd);
         this.vistaAdd.campoFechaFin.setEnabled(false);
         
         this.vistaTabla.setVisible(true);
@@ -83,111 +79,66 @@ public class ControladorFinca implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource().equals(vistaTabla.botonVolver)){                  //VOLVER
-            //Volver a Inicio
-            ControladorInicio conInicio = new ControladorInicio(new JFInicio());
-            this.vistaTabla.dispose();
-        }else if(ae.getSource().equals(vistaTabla.botonGestionar)){         //GESTIONAR
-            //Abrir ventana gestion fincva seleccionada
+        if(ae.getSource().equals(vistaTabla.botonVolver)){                      //VOLVER
+            volver();
+        }else if(ae.getSource().equals(vistaTabla.botonGestionar)){              //GESTIONAR
+            //Abrir ventana gestion finca seleccionada
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
-                //Abre explotaciones de esa Finca
-                int fila = this.vistaTabla.jTableFincas.getSelectedRow();
-                String finca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
-                this.vistaTabla.dispose();
-                ControladorExplotacion conExplotacion = new ControladorExplotacion(new JFExplotacion(), new ExplotacionDAO(), new JFExplotacionAdd(),finca);
+                abrirVentanaExplotaciones();
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
-        }else if(ae.getSource().equals(vistaTabla.botonAdd)){               //ABRIR AÑADIR
+        }else if(ae.getSource().equals(vistaTabla.botonAdd)){               //ABRIR AÑADIR 
             //Llamar a ventanaAñadir
             vistaAdd.botonAceptar.setText("Aceptar");
-            this.habilitarCampEncargado(true);
+            this.limpiarCamposAdd();
             vistaAdd.setVisible(true);
             vistaAdd.setAlwaysOnTop(true);
                     
         }else if(ae.getSource().equals(vistaTabla.botonMod)){                //MODIFICAR
-            
-            habilitarCampEncargado(false);
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
-                //Carga los datos de la tabla al formulario
-                
-                int filaSelec=this.vistaTabla.jTableFincas.getSelectedRow();
-                String id=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,0);
-                String localizacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,1);
-                String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,2);
-                String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,3);
-                this.vistaAdd.campoId.setText(id);
-                this.vistaAdd.campoLocalidad.setText(localizacion);
-                this.vistaAdd.campoSuperficie.setText(superficie);
-                this.vistaAdd.campoFechaC.setText(fCreacion);
-                this.vistaAdd.etiquetaId.setText(id);
-                
-                vistaAdd.botonAceptar.setText("Modificar");
-                vistaAdd.setVisible(true);
+                abrirModificar();
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
             
         }else if(ae.getSource().equals(vistaTabla.botonInfo)){              //INFORMACION
-            System.out.println("Informacion: AUN EN DESARROLLO");
-            //Sustituir por buscar??
+            if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
+                System.out.println("En desarrollo");
+            }else{
+                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+            }
+            
         }else if(ae.getSource().equals(vistaTabla.botonEliminar)){          //ELIMINAR
             
             //Pregunta antes de eliminar completamente
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
-                int b= JOptionPane.showConfirmDialog(vistaAdd, "¿Estás seguro de eliminar esta finca?");
-                if(b==JOptionPane.YES_OPTION){
-                    String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),0);
-                    modelo.borrarFinca(idFinca);
-                    
-                    this.limpiarCamposAdd();
-                    this.vistaAdd.dispose();
-                    this.modTabla.setRowCount(0);
-                    this.rellenarTabla(modelo.recuperarTodas());
-                }
+                int confirmacion = JOptionPane.showConfirmDialog(vistaAdd,
+                        "¿Estás seguro de eliminar esta finca?");
+                eliminarFinca(confirmacion);
             }else{
-                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
+                        + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
         }else if(ae.getSource().equals(vistaAdd.botonAceptar)){                 //ACEPTAR_AÑADIR
             String nombreBoton=((JButton)ae.getSource()).getText();
             if(this.validarDatosAdd()){
-                //Recupera campos
-                String id = this.vistaAdd.campoId.getText(); 
-                String localidad = this.vistaAdd.campoLocalidad.getText();
-                int superficie = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
-                LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
-                LocalDate fFin = Fechas.toLocalDate(this.vistaAdd.campoFechaFin.getText());
-
-                Finca f = new Finca(id, localidad, superficie, fCreacion, fFin);
-                
+                Finca f = getFinca();
                 if(nombreBoton.equalsIgnoreCase("Aceptar")){        //NUEVA FINCA
                     if(modelo.addFinca(f)){
                         JOptionPane.showMessageDialog(vistaAdd, "Finca añadida correctamente");
                     }else{
                         JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                     }
-                    //Añade finca al encargado
-                    if(this.vistaAdd.jListEmpleados.getSelectedValue() != null){
-                        String dni=this.vistaAdd.jListEmpleados.getSelectedValue(); //Coge el DNI
-                        dni=dni.substring(0, dni.indexOf(":"));
-                        Trabajador t = new Trabajador(dni);
-                        modeloTrab.asignarEncargado(dni, f.getId());
-                    }
 
-                    this.limpiarCamposAdd();
-                    this.vistaAdd.dispose();
-                    this.modTabla.setRowCount(0);
-                    this.rellenarTabla(modelo.recuperarTodas());
+                    actualizarTabla();
                 }else if(nombreBoton.equalsIgnoreCase("Modificar")){    //MODIFICAR FINCA                    
                     String s = modificarFinca(f);
                     if(s.charAt(0) == 'E'){//Se ha producido error
                         JOptionPane.showMessageDialog(vistaAdd, s, "Error", JOptionPane.ERROR_MESSAGE);
                     }else{//Todo correcto
                         JOptionPane.showMessageDialog(vistaAdd, s);
-                        this.limpiarCamposAdd();
-                        this.vistaAdd.dispose();
-                        this.modTabla.setRowCount(0);
-                        this.rellenarTabla(modelo.recuperarTodas());
+                        actualizarTabla();
                     }
                     
                 }
@@ -196,25 +147,6 @@ public class ControladorFinca implements ActionListener{
         }else if(ae.getSource().equals(vistaAdd.botonCancelar)){                 //CANCELAR_AÑADIR
             limpiarCamposAdd();
             this.vistaAdd.dispose();
-            
-        }else if(ae.getSource().equals(vistaAdd.jRadioButtonEmp)){                 //RADIO TRABAJADOR
-            //Cargar en Jlist Empleados
-            modListaAdd.clear();
-            this.rellenarLista(modeloTrab.recuperarTrabajadores());
-            //Si se selecciona uno se cambia al tipo Encargado
-        }else if(ae.getSource().equals(vistaAdd.jRadioButtonEnc)){                //RADIO ENCARGADO
-            //Cargar en Jlist Encargados
-            modListaAdd.clear();
-            ArrayList<Trabajador> lista = new ArrayList<Trabajador>();
-            lista.addAll(modeloTrab.recuperarEncargados());
-            this.rellenarLista(lista);
-            
-        }else if(ae.getSource().equals(vistaAdd.jRadioButtonTract)){            //RADIO TRACTORISTA
-            //Cargar en Jlist Tractoristas
-            modListaAdd.clear();
-            ArrayList<Trabajador> lista = new ArrayList<Trabajador>();
-            lista.addAll(modeloTrab.recuperarConductores());
-            this.rellenarLista(lista);
             
         }else if(ae.getSource().equals(this.vistaAdd.jCheckBoxFFin)){           //CHECBOX FECHA FIN
             if(this.isFFinSelected()){
@@ -225,12 +157,62 @@ public class ControladorFinca implements ActionListener{
         }
     }
 
-    private void habilitarCampEncargado(boolean modo) {
-        //Valido para habilitar y deshabilitar
-        this.vistaAdd.jRadioButtonEmp.setEnabled(modo);
-        this.vistaAdd.jRadioButtonEnc.setEnabled(modo);
-        this.vistaAdd.jRadioButtonTract.setEnabled(modo);
-        this.vistaAdd.jListEmpleados.setEnabled(modo);
+    private Finca getFinca() throws NumberFormatException {
+        //Recupera campos
+        String id = this.vistaAdd.campoId.getText();
+        String localidad = this.vistaAdd.campoLocalidad.getText();
+        int superficie = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
+        LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
+        LocalDate fFin = Fechas.toLocalDate(this.vistaAdd.campoFechaFin.getText());
+        Finca f = new Finca(id, localidad, superficie, fCreacion, fFin);
+        return f;
+    }
+
+    private void actualizarTabla() {
+        this.vistaAdd.dispose();
+        this.modTabla.setRowCount(0);
+        this.rellenarTabla(modelo.recuperarTodas());
+    }
+
+    private void eliminarFinca(int confirmacion) {
+        if(confirmacion==JOptionPane.YES_OPTION){
+            String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),0);
+            modelo.borrarFinca(idFinca);
+            this.limpiarCamposAdd();
+            actualizarTabla();
+        }
+    }
+
+    private void abrirModificar() {
+        //Carga los datos de la tabla al formulario
+        int filaSelec=this.vistaTabla.jTableFincas.getSelectedRow();
+        String id=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,0);
+        String localizacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,1);
+        String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,2);
+        String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,3);
+        this.vistaAdd.campoId.setText(id);
+        this.vistaAdd.campoLocalidad.setText(localizacion);
+        this.vistaAdd.campoSuperficie.setText(superficie);
+        this.vistaAdd.campoFechaC.setText(fCreacion);
+        this.vistaAdd.etiquetaId.setText(id);
+        
+        vistaAdd.botonAceptar.setText("Modificar");
+        vistaAdd.setVisible(true);
+    }
+
+    private void volver() {
+        //VOLVER
+        //Volver a Inicio
+        ControladorInicio conInicio = new ControladorInicio(new JFInicio());
+        this.vistaTabla.dispose();
+    }
+
+    private void abrirVentanaExplotaciones() {
+        //Abre explotaciones de esa Finca
+        int fila = this.vistaTabla.jTableFincas.getSelectedRow();
+        String finca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
+        ControladorExplotacion conExplotacion = new ControladorExplotacion(new JFExplotacion(), new ExplotacionDAO(), new JFExplotacionAdd(),finca);
+        this.vistaTabla.dispose();
     }
 
     private String modificarFinca(Finca f) {
@@ -269,7 +251,6 @@ public class ControladorFinca implements ActionListener{
         this.vistaAdd.campoFechaFin.setText("");
         this.vistaAdd.etiquetaId.setText("");
         this.vistaAdd.jCheckBoxFFin.setSelected(false);
-        modListaAdd.clear();
     }
     
     public boolean isFFinSelected(){
@@ -278,12 +259,6 @@ public class ControladorFinca implements ActionListener{
             res=true;
         }
         return res;
-    }
-    
-    public void rellenarLista(ArrayList<Trabajador> listaTrabajadores){ //Cargar trabajador en lista
-        for (Trabajador t : listaTrabajadores) {
-            modListaAdd.addElement(t.getDni()+": "+t.getNombre()+" "+t.getApellidos());
-        }
     }
     
     public void rellenarTabla(ArrayList<Finca> listaFincas){
@@ -334,5 +309,36 @@ public class ControladorFinca implements ActionListener{
             }
         }
         return res;
+    }
+
+    
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    
+    public void mousePressed(MouseEvent me) {
+        JTable tabla = (JTable) me.getSource();
+            int fila = tabla.getSelectedRow();
+            double cantidad = 0;
+            
+            if(fila != -1 && me.getClickCount() == 2){
+                abrirVentanaExplotaciones();
+            }
+    }
+
+    
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseExited(MouseEvent me) {
+        
     }
 }

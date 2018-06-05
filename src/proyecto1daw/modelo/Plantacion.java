@@ -29,6 +29,17 @@ public class Plantacion {
         this.idExplotacion = idExplotacion;
     }
 
+    public boolean estaActiva(){
+        boolean res = true;
+        if(LocalDate.now().isBefore(fInicio)){
+            res = false;
+        }
+        if(fFin != null && LocalDate.now().isAfter(fFin)){
+            res=false;
+        }
+        return res;
+    }
+    
     public String getId() {
         return id;
     }

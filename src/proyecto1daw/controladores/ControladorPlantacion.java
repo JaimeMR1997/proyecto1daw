@@ -36,7 +36,7 @@ import proyecto1daw.vistas.JFVentaAdd;
  *
  * @author Jaime
  */
-public class ControladorPlantacion implements ActionListener {
+public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private JFPlantacion vistaTabla;
     private JFPlantacionAdd vistaAddPlant;
@@ -100,7 +100,7 @@ public class ControladorPlantacion implements ActionListener {
         this.vistaTabla.jTablePlantaciones.setModel(modTablaPlant);
         this.vistaTabla.jTableVentas.setModel(modTablaVentas);
         //Añadir listener raton a tabla Plantaciones
-        this.vistaTabla.jTablePlantaciones.addMouseListener(new OyenteRaton());
+        this.vistaTabla.jTablePlantaciones.addMouseListener(this);
 
         //Establecer opciones Tamaño Venta
         opcsTam = new DefaultComboBoxModel();
@@ -136,8 +136,9 @@ public class ControladorPlantacion implements ActionListener {
                 this.vistaAddPlant.setVisible(true);
 
             } else if (boton.equals(this.vistaTabla.botonVolver)){              //VOLVER
+                ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion()
+                        ,new ExplotacionDAO(), new JFExplotacionAdd(), idFinca);
                 this.vistaTabla.dispose();
-                ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion(),new ExplotacionDAO(), new JFExplotacionAdd(), idFinca);
                 
             }else if (boton.equals(this.vistaTabla.botonModPlant)) {                       //MODIFICAR PLANTACION
                 int filaSel = this.vistaTabla.jTablePlantaciones.getSelectedRow();
@@ -147,7 +148,7 @@ public class ControladorPlantacion implements ActionListener {
                     String variedad = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 2);
                     String fPlant = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 3);
                     
-                    this.vistaAddPlant.jLabelIdPlant.setText(idPlant);//Está oculta siempre
+                    this.vistaAddPlant.jLabelIdPlant.setText(idPlant);
                     this.vistaAddPlant.campoTipo.setText(tipo);
                     this.vistaAddPlant.campoVariedad.setText(variedad);
                     this.vistaAddPlant.campoFPlant.setText(fPlant);
@@ -160,12 +161,24 @@ public class ControladorPlantacion implements ActionListener {
                 }
 
             } else if (boton.equals(this.vistaTabla.botonEliminarPlant)) {               //ELIMINAR PLANTACION
+
                 if (this.vistaTabla.jTablePlantaciones.getSelectedRow() != -1) {
-                    int resp = JOptionPane.showConfirmDialog(this.vistaTabla, "¿Estás seguro de eliminar esta plantación?\nSe eliminarán todas sus ventas");
+                    int resp = JOptionPane.showConfirmDialog(this.vistaTabla, 
+                            "¿Estás seguro de eliminar esta plantación?\nSe eliminarán todas sus ventas");
+                    
                     if(resp == JOptionPane.YES_OPTION){
-                        //borrar
+                        int filaSelVenta = this.vistaTabla.jTablePlantaciones.getSelectedRow();
+                        String idPlant=(String) this.vistaTabla.jTablePlantaciones.getValueAt(filaSelVenta,0);
+                        if(this.modeloVenta.borrarVentasPlantacion(idPlant)){
+                            this.modeloPlant.borrarPlantacion(idPlant);
+                            this.actualizarTablaPlant();
+                            JOptionPane.showMessageDialog(vistaTabla, "Ventas y plantación borrados correctamente.");
+                        }else{
+                            JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al eliminar las plantaciones."
+                                    + "\nContacta con tu administrador si el problema persiste.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
-                } else {
+                } else { //No hay fila sel
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una plantacion", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
@@ -240,8 +253,7 @@ public class ControladorPlantacion implements ActionListener {
                             JOptionPane.showMessageDialog(vistaTabla, "Plantación añadida correctamente.");
                             this.limpiarCamposAddPlant();
                             this.vistaAddPlant.dispose();
-                            this.modTablaPlant.setRowCount(0);
-                            this.rellenarTablaPlant(modeloPlant.recuperarPorExp(idExplotacion));
+                            actualizarTablaPlant();
                         }else{//error
                             JOptionPane.showMessageDialog(vistaTabla, "Se ha prodcido un error al añadir la plantación.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -254,8 +266,7 @@ public class ControladorPlantacion implements ActionListener {
                             JOptionPane.showMessageDialog(this.vistaTabla, "Plantacion modificada correctamente");
                             this.limpiarCamposAddPlant();
                             this.vistaAddPlant.dispose();
-                            this.modTablaPlant.setRowCount(0);
-                            this.rellenarTablaPlant(modeloPlant.recuperarPorExp(idExplotacion));
+                            actualizarTablaPlant();
                         }
                         
                     }
@@ -350,6 +361,11 @@ public class ControladorPlantacion implements ActionListener {
             }//else if(checkbox.equals(this.vistaTabla.jCheckBoxTerm){}
         }
 
+    }
+
+    private void actualizarTablaPlant() {
+        this.modTablaPlant.setRowCount(0);
+        this.rellenarTablaPlant(modeloPlant.recuperarPorExp(idExplotacion));
     }
 
     private String actualizarPlant(Plantacion p) {
@@ -480,15 +496,23 @@ public class ControladorPlantacion implements ActionListener {
         String idPlant = null;
         int num = modeloPlant.contarPlant(idExplotacion);
         idPlant = idExplotacion+"-"+num;
+        while(modeloPlant.recuperarPorId(idPlant).size() > 0){
+            num++;
+            idPlant = idExplotacion+"-"+num;
+        }
         return idPlant;
     }
 
     private String generarIdVenta() {
         String idVenta = null;
         String idPlant = this.vistaAddVenta.jLabelIdPlant.getText();
-        String fecha = this.vistaAddVenta.campoFecha.getText();
-        int num = modeloVenta.contarVentas(idPlant, fecha);
-        idVenta=fecha+"-"+num;
+        LocalDate fecha = Fechas.toLocalDate(this.vistaAddVenta.campoFecha.getText());
+        int num = modeloVenta.contarVentas(idPlant, fecha)+1;
+        idVenta=Fechas.toString(fecha)+"-"+num;
+        while(modeloVenta.recuperarPorId(idVenta, idPlant) != null){
+            num++;
+            idVenta=Fechas.toString(fecha)+"-"+num;
+        }
         return idVenta;
     }
 
@@ -548,11 +572,13 @@ public class ControladorPlantacion implements ActionListener {
         }
         return res;
     }
-    
-    private class OyenteRaton implements MouseListener{
-        //Asociado solo a tabla plantaciones
-        public void mouseClicked(MouseEvent me) {
-            JTable tabla = (JTable) me.getSource();
+
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    public void mousePressed(MouseEvent me) {
+        JTable tabla = (JTable) me.getSource();
             int fila = tabla.getSelectedRow();
             double cantidad = 0;
             
@@ -565,26 +591,21 @@ public class ControladorPlantacion implements ActionListener {
             }
             
             vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
-        }
-
-        
-        public void mousePressed(MouseEvent me) {
-            
-        }
-
-        
-        public void mouseReleased(MouseEvent me) {
-            
-        }
-
-        
-        public void mouseEntered(MouseEvent me) {
-            
-        }
-
-        public void mouseExited(MouseEvent me) {
-            
-        }
-    
     }
+
+    
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseExited(MouseEvent me) {
+        
+    }
+    
 }

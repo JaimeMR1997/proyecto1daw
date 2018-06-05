@@ -7,6 +7,8 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -14,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.ExplotacionDAO;
@@ -33,7 +36,7 @@ import proyecto1daw.vistas.JFPlantacion;
  *
  * @author Jaime
  */
-public class ControladorExplotacion implements ActionListener{
+public class ControladorExplotacion implements ActionListener,MouseListener{
     private JFExplotacion vistaTabla;
     private JFExplotacionAdd vistaAdd;
     private ExplotacionDAO modeloExp;
@@ -63,6 +66,9 @@ public class ControladorExplotacion implements ActionListener{
         this.vistaAdd.botonCancelar.addActionListener(this);
         this.vistaAdd.jComboBoxTipo.addActionListener(this);
         this.vistaAdd.jComboBoxSubtipo.addActionListener(this);
+        
+        //Asociar mouse Listener a Tabla
+        this.vistaTabla.jTableExplotaciones.addMouseListener(this);
         
         //Cargar tabla
         this.modTabla = new DefaultTableModel();
@@ -127,10 +133,7 @@ public class ControladorExplotacion implements ActionListener{
         
         else if(boton.equals(this.vistaTabla.botonGestionar)){                  //GESTIONAR
             if(this.vistaTabla.jTableExplotaciones.getSelectedRow() != -1){
-                int filaSel = vistaTabla.jTableExplotaciones.getSelectedRow();
-                String idExp = (String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
-                ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(), new PlantacionDAO(), new VentaDAO(), idExp,fincaId);
-                this.vistaTabla.dispose();
+                    abrirVentanaPlantaciones();
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
@@ -216,6 +219,13 @@ public class ControladorExplotacion implements ActionListener{
         
     }
 
+    private void abrirVentanaPlantaciones() {
+        int filaSel = vistaTabla.jTableExplotaciones.getSelectedRow();
+        String idExp = (String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
+        ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(), new PlantacionDAO(), new VentaDAO(), idExp,fincaId);
+        this.vistaTabla.dispose();
+    }
+
     private String actualizarExplotacion(Explotacion exp) {
         String s = "Error:";
         if(!modeloExp.actualizarCampo(exp.getId(), "SUPERFICIE", exp.getSuperficie()+"")){
@@ -279,7 +289,7 @@ public class ControladorExplotacion implements ActionListener{
         String[] s = new String[5];
         for (Explotacion exp : listaExp) {
             s[0]=exp.getId();
-            s[1]=null;
+            s[1]=exp.calcularEstado();//Iconos
             s[2]=exp.getTipo();
             s[3]=exp.getSuperficie()+"";
             s[4]=Fechas.toString(exp.getfCreacion());
@@ -312,6 +322,36 @@ public class ControladorExplotacion implements ActionListener{
             }
             this.vistaAdd.jComboBoxSubtipo.setSelectedIndex(-1);
         }
+    }
+
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    
+    public void mousePressed(MouseEvent me) {
+        JTable tabla = (JTable) me.getSource();
+            int fila = tabla.getSelectedRow();
+            double cantidad = 0;
+            
+            if(fila != -1 && me.getClickCount() == 2){
+                abrirVentanaPlantaciones();
+            }
+    }
+
+    
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    
+    public void mouseExited(MouseEvent me) {
+        
     }
 }
 

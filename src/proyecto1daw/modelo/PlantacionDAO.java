@@ -23,11 +23,17 @@ public class PlantacionDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM PLANTACION WHERE"
-                    + " ID_EXPLOTACION = ? AND F_INICIO>? AND F_FIN<?");
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM PLANTACION "
+                    + "WHERE ID_EXPLOTACION = ? AND F_INICIO > ? "
+                    + "AND (F_FIN < ? OR F_FIN IS NULL)");
             st.setString(1, idExp);
             st.setDate(2, Date.valueOf(fInicio));
-            st.setDate(3, Date.valueOf(fFin));
+            if(fFin != null){
+                st.setDate(3, Date.valueOf(fFin));
+            }else{
+                st.setDate(3, null);
+            }
+            
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 fInicio = rs.getDate("F_INICIO").toLocalDate();
@@ -42,11 +48,37 @@ public class PlantacionDAO {
             }
             accesoBD.close();
         }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta plantaciones por fecha: "+e.getMessage());
+        }
+        return listaPlantaciones;
+    }
+    
+    public ArrayList<Plantacion> recuperarPorId(String idPlant){
+        ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM PLANTACION WHERE ID_PLANT = ?");
+            st.setString(1, idPlant);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fInicio = rs.getDate("F_INICIO").toLocalDate();
+                
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                
+                listaPlantaciones.add(new Plantacion(rs.getString("ID_PLANT"), rs.getString("TIPO"), 
+                        rs.getString("VARIEDAD"), fInicio, fFin, rs.getString("ID_EXPLOTACION")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta plantaciones por explotacion: "+e.getMessage());
         }
         return listaPlantaciones;
     }
-            
+    
     public ArrayList<Plantacion> recuperarPorExp(String idExp){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
         try{
@@ -123,10 +155,10 @@ public class PlantacionDAO {
         return res;
     }
 
-    public void borrarExplotacion(String id){
+    public void borrarPlantacion(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM PLANTACION WHERE ID_PLANT = ?";
+        String consulta = "DELETE FROM PLANTACION WHERE ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
@@ -141,12 +173,11 @@ public class PlantacionDAO {
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE PLANTACION SET ?=? WHERE ID_PLANT = ?";
+        String consulta = "UPDATE PLANTACION SET "+campo+"=? WHERE ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, campo);
-            st.setString(2, nuevoValor);
-            st.setString(3, id);
+            st.setString(1, nuevoValor);
+            st.setString(2, id);
             
             st.executeUpdate();
             accesoBD.close();

@@ -18,6 +18,27 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class VentaDAO {
+    public Venta recuperarPorId(String idVenta,String idPlant){
+        Venta v = null;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA WHERE ID_PLANT = ? AND ID_PLANT = ?");
+            st.setString(1, idVenta);
+            st.setString(2, idPlant);
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                v = new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
+                        rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate(),rs.getString("ID_PLANT"));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta ventas por ID: "+e.getMessage());
+        }
+        return v;
+    }
+
     public ArrayList<Venta> recuperarPorFecha(LocalDate fecha,String idPlant){
         ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
@@ -101,7 +122,8 @@ public class VentaDAO {
         return res;
     }
     
-    public void borrarVenta(String id,String idPlant){
+    public boolean borrarVenta(String id,String idPlant){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "DELETE FROM VENTA WHERE ID_VENTA = ? AND ID_PLANT = ?";
@@ -113,7 +135,26 @@ public class VentaDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Borrar venta: "+e.getMessage());
+            res=false;
         }
+        return res;
+    }
+    
+    public boolean borrarVentasPlantacion(String idPlant) {
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "DELETE FROM VENTA WHERE ID_PLANT = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idPlant);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Borrar ventas por plantacion: "+e.getMessage());
+            res=false;
+        }
+        return res;
     }
     
     public boolean actualizarCampo(String id, String idPlant, String campo, String nuevoValor){
@@ -158,14 +199,14 @@ public class VentaDAO {
         return res;
     }
 
-    public int contarVentas(String idPlant, String fecha) {
+    public int contarVentas(String idPlant, LocalDate fecha) {
         int res = -1;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "SELECT COUNT(*) AS NUM FROM VENTA WHERE FECHA = ? AND ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, fecha);
+            st.setDate(1, Date.valueOf(fecha));
             st.setString(2, idPlant);
             
             ResultSet rs = st.executeQuery();

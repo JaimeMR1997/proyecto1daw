@@ -32,17 +32,10 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelSuperficie = new javax.swing.JLabel();
         jLabelId = new javax.swing.JLabel();
         jLabelLocalidad = new javax.swing.JLabel();
-        jRadioButtonEmp = new javax.swing.JRadioButton();
-        jRadioButtonTract = new javax.swing.JRadioButton();
         jLabelFC = new javax.swing.JLabel();
-        jRadioButtonEnc = new javax.swing.JRadioButton();
-        jLabelEncargado = new javax.swing.JLabel();
         etiquetaId = new javax.swing.JLabel();
         jCheckBoxFFin = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListEmpleados = new javax.swing.JList<>();
-        jSeparator1 = new javax.swing.JSeparator();
         campoId = new javax.swing.JTextField();
         campoFechaC = new javax.swing.JTextField();
         campoLocalidad = new javax.swing.JTextField();
@@ -65,41 +58,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelLocalidad.setForeground(new java.awt.Color(255, 255, 255));
         jLabelLocalidad.setText("Localidad");
 
-        jRadioButtonEmp.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonEmp);
-        jRadioButtonEmp.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonEmp.setText("Empleado");
-        jRadioButtonEmp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonEmpActionPerformed(evt);
-            }
-        });
-
-        jRadioButtonTract.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonTract);
-        jRadioButtonTract.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonTract.setText("Tractorista");
-        jRadioButtonTract.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonTractActionPerformed(evt);
-            }
-        });
-
         jLabelFC.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFC.setText("F.Creacion");
-
-        jRadioButtonEnc.setBackground(new java.awt.Color(119, 182, 134));
-        buttonGroupTipoEncargado.add(jRadioButtonEnc);
-        jRadioButtonEnc.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioButtonEnc.setText("Encargado");
-        jRadioButtonEnc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonEncActionPerformed(evt);
-            }
-        });
-
-        jLabelEncargado.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelEncargado.setText("Encargado");
 
         etiquetaId.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -122,18 +82,10 @@ public class JFFincaAdd extends javax.swing.JFrame {
                     .addComponent(jLabelLocalidad)
                     .addComponent(jLabelSuperficie)
                     .addComponent(jLabelFC)
-                    .addComponent(jLabelEncargado)
-                    .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelIzqLayout.createSequentialGroup()
-                            .addComponent(jLabelId)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(etiquetaId))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelIzqLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jRadioButtonEmp)
-                                .addComponent(jRadioButtonEnc)
-                                .addComponent(jRadioButtonTract))))
+                    .addGroup(jPanelIzqLayout.createSequentialGroup()
+                        .addComponent(jLabelId)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                        .addComponent(etiquetaId))
                     .addComponent(jCheckBoxFFin))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -152,23 +104,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addComponent(jLabelFC)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBoxFFin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelEncargado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonEnc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonEmp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButtonTract)
-                .addGap(63, 63, 63))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jListEmpleados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jListEmpleados);
 
         campoLocalidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,20 +124,15 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(campoFechaC, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                                .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(campoFechaC, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                        .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,11 +147,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addComponent(campoFechaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
 
         botonAceptar.setText("Aceptar");
@@ -275,18 +203,6 @@ public class JFFincaAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoLocalidadActionPerformed
 
-    private void jRadioButtonEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEncActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEncActionPerformed
-
-    private void jRadioButtonTractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonTractActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonTractActionPerformed
-
-    private void jRadioButtonEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEmpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEmpActionPerformed
-
     private void jCheckBoxFFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFFinActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxFFinActionPerformed
@@ -338,18 +254,11 @@ public class JFFincaAdd extends javax.swing.JFrame {
     public javax.swing.JTextField campoSuperficie;
     public javax.swing.JLabel etiquetaId;
     public javax.swing.JCheckBox jCheckBoxFFin;
-    private javax.swing.JLabel jLabelEncargado;
     private javax.swing.JLabel jLabelFC;
     private javax.swing.JLabel jLabelId;
     private javax.swing.JLabel jLabelLocalidad;
     private javax.swing.JLabel jLabelSuperficie;
-    public javax.swing.JList<String> jListEmpleados;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelIzq;
-    public javax.swing.JRadioButton jRadioButtonEmp;
-    public javax.swing.JRadioButton jRadioButtonEnc;
-    public javax.swing.JRadioButton jRadioButtonTract;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
