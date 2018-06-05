@@ -86,31 +86,29 @@ public class ControladorFinca implements ActionListener,MouseListener{
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
                 abrirVentanaExplotaciones();
             }else{
-                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
+                        + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
-        }else if(ae.getSource().equals(vistaTabla.botonAdd)){               //ABRIR AÑADIR 
-            //Llamar a ventanaAñadir
-            vistaAdd.botonAceptar.setText("Aceptar");
-            this.limpiarCamposAdd();
-            vistaAdd.setVisible(true);
-            vistaAdd.setAlwaysOnTop(true);
-                    
+        }else if(ae.getSource().equals(vistaTabla.botonAdd)){                           
+            abrirAdd();
+            
         }else if(ae.getSource().equals(vistaTabla.botonMod)){                //MODIFICAR
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
                 abrirModificar();
             }else{
-                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
+                        + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
             
         }else if(ae.getSource().equals(vistaTabla.botonInfo)){              //INFORMACION
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
                 System.out.println("En desarrollo");
             }else{
-                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
+                        + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
             
         }else if(ae.getSource().equals(vistaTabla.botonEliminar)){          //ELIMINAR
-            
             //Pregunta antes de eliminar completamente
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
                 int confirmacion = JOptionPane.showConfirmDialog(vistaAdd,
@@ -127,11 +125,11 @@ public class ControladorFinca implements ActionListener,MouseListener{
                 if(nombreBoton.equalsIgnoreCase("Aceptar")){        //NUEVA FINCA
                     if(modelo.addFinca(f)){
                         JOptionPane.showMessageDialog(vistaAdd, "Finca añadida correctamente");
+                        actualizarTabla();
                     }else{
                         JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                     }
-
-                    actualizarTabla();
+                    
                 }else if(nombreBoton.equalsIgnoreCase("Modificar")){    //MODIFICAR FINCA                    
                     String s = modificarFinca(f);
                     if(s.charAt(0) == 'E'){//Se ha producido error
@@ -155,6 +153,16 @@ public class ControladorFinca implements ActionListener,MouseListener{
                 this.vistaAdd.campoFechaFin.setEnabled(false);
             }
         }
+    }
+
+    private void abrirAdd() throws SecurityException {
+        //ABRIR AÑADIR
+        //Llamar a ventanaAñadir
+        this.vistaAdd.campoId.setEnabled(true);
+        vistaAdd.botonAceptar.setText("Aceptar");
+        this.limpiarCamposAdd();
+        vistaAdd.setVisible(true);
+        vistaAdd.setAlwaysOnTop(true);
     }
 
     private Finca getFinca() throws NumberFormatException {
@@ -191,6 +199,7 @@ public class ControladorFinca implements ActionListener,MouseListener{
         String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,2);
         String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,3);
         this.vistaAdd.campoId.setText(id);
+        this.vistaAdd.campoId.setEnabled(false);
         this.vistaAdd.campoLocalidad.setText(localizacion);
         this.vistaAdd.campoSuperficie.setText(superficie);
         this.vistaAdd.campoFechaC.setText(fCreacion);
@@ -216,6 +225,7 @@ public class ControladorFinca implements ActionListener,MouseListener{
     }
 
     private String modificarFinca(Finca f) {
+        //Como mensaje de error la primera letra debe ser 'E' no puede cambiarse
         String res="Error:";
         String idAnt = this.vistaAdd.etiquetaId.getText();
         
