@@ -34,29 +34,33 @@ public class JFEmpleados extends javax.swing.JFrame {
         jTabbedPane = new javax.swing.JTabbedPane();
         jPanelCuadrilla = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        jTableCuadrilla = new javax.swing.JTable();
         jPanelBot2 = new javax.swing.JPanel();
         botonGestionarCuad = new javax.swing.JButton();
-        botonAdd2 = new javax.swing.JButton();
-        botonMod2 = new javax.swing.JButton();
-        botonInfo2 = new javax.swing.JButton();
-        botonEliminar2 = new javax.swing.JButton();
+        botonAddCuad = new javax.swing.JButton();
+        botonModCuad = new javax.swing.JButton();
+        botonInfoCuad = new javax.swing.JButton();
+        botonEliminarCuad = new javax.swing.JButton();
         jPanelEmpleados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableEmple = new javax.swing.JTable();
         jPanelBot = new javax.swing.JPanel();
-        botonGestionar = new javax.swing.JButton();
-        botonAdd = new javax.swing.JButton();
-        botonMod = new javax.swing.JButton();
-        botonInfo = new javax.swing.JButton();
-        botonEliminar = new javax.swing.JButton();
+        botonGestionarEmp = new javax.swing.JButton();
+        botonAddEmp = new javax.swing.JButton();
+        botonModEmp = new javax.swing.JButton();
+        botonInfoEmp = new javax.swing.JButton();
+        botonEliminarEmp = new javax.swing.JButton();
+        jCheckBoxEmple = new javax.swing.JCheckBox();
+        jCheckBoxTract = new javax.swing.JCheckBox();
+        jCheckBoxEnc = new javax.swing.JCheckBox();
+        jCheckBoxFinalizado = new javax.swing.JCheckBox();
         jPanelTrabajos = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        jTableTrab = new javax.swing.JTable();
         jPanelBot4 = new javax.swing.JPanel();
-        botonAdd4 = new javax.swing.JButton();
-        botonMod4 = new javax.swing.JButton();
-        botonEliminar4 = new javax.swing.JButton();
+        botonAddTrab = new javax.swing.JButton();
+        botonModTrab = new javax.swing.JButton();
+        botonEliminarTrab = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mi programa - Fincas");
@@ -68,7 +72,7 @@ public class JFEmpleados extends javax.swing.JFrame {
         listaFincas.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         listaFincas.setForeground(new java.awt.Color(255, 255, 255));
         listaFincas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        listaFincas.setText("Cuadrillas");
+        listaFincas.setText("Cuadrillas y Empleados");
 
         botonVolver.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         botonVolver.setForeground(new java.awt.Color(255, 255, 255));
@@ -84,7 +88,7 @@ public class JFEmpleados extends javax.swing.JFrame {
             .addGroup(jPanelTopLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(botonVolver)
-                .addGap(233, 233, 233)
+                .addGap(137, 137, 137)
                 .addComponent(listaFincas)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -101,7 +105,9 @@ public class JFEmpleados extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTabbedPane.setBackground(new java.awt.Color(119, 182, 134));
+
+        jTableCuadrilla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -109,10 +115,10 @@ public class JFEmpleados extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Encargado", "F Inicio", "Ult Trabajo"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(jTableCuadrilla);
 
         jPanelBot2.setBackground(new java.awt.Color(119, 182, 134));
         jPanelBot2.setToolTipText("");
@@ -128,50 +134,50 @@ public class JFEmpleados extends javax.swing.JFrame {
             }
         });
 
-        botonAdd2.setForeground(new java.awt.Color(255, 255, 255));
-        botonAdd2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
-        botonAdd2.setText("Añadir");
-        botonAdd2.setBorderPainted(false);
-        botonAdd2.setContentAreaFilled(false);
-        botonAdd2.addActionListener(new java.awt.event.ActionListener() {
+        botonAddCuad.setForeground(new java.awt.Color(255, 255, 255));
+        botonAddCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
+        botonAddCuad.setText("Añadir");
+        botonAddCuad.setBorderPainted(false);
+        botonAddCuad.setContentAreaFilled(false);
+        botonAddCuad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAdd2ActionPerformed(evt);
+                botonAddCuadActionPerformed(evt);
             }
         });
 
-        botonMod2.setForeground(new java.awt.Color(255, 255, 255));
-        botonMod2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
-        botonMod2.setText("Modificar");
-        botonMod2.setBorderPainted(false);
-        botonMod2.setContentAreaFilled(false);
+        botonModCuad.setForeground(new java.awt.Color(255, 255, 255));
+        botonModCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
+        botonModCuad.setText("Modificar");
+        botonModCuad.setBorderPainted(false);
+        botonModCuad.setContentAreaFilled(false);
 
-        botonInfo2.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfo2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfo2.setText("Información");
-        botonInfo2.setBorderPainted(false);
-        botonInfo2.setContentAreaFilled(false);
+        botonInfoCuad.setForeground(new java.awt.Color(255, 255, 255));
+        botonInfoCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
+        botonInfoCuad.setText("Información");
+        botonInfoCuad.setBorderPainted(false);
+        botonInfoCuad.setContentAreaFilled(false);
 
-        botonEliminar2.setForeground(new java.awt.Color(255, 255, 255));
-        botonEliminar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
-        botonEliminar2.setText("Eliminar");
-        botonEliminar2.setBorderPainted(false);
-        botonEliminar2.setContentAreaFilled(false);
+        botonEliminarCuad.setForeground(new java.awt.Color(255, 255, 255));
+        botonEliminarCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
+        botonEliminarCuad.setText("Eliminar");
+        botonEliminarCuad.setBorderPainted(false);
+        botonEliminarCuad.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanelBot2Layout = new javax.swing.GroupLayout(jPanelBot2);
         jPanelBot2.setLayout(jPanelBot2Layout);
         jPanelBot2Layout.setHorizontalGroup(
             jPanelBot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBot2Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(72, 72, 72)
                 .addComponent(botonGestionarCuad)
-                .addGap(79, 79, 79)
-                .addComponent(botonAdd2)
-                .addGap(80, 80, 80)
-                .addComponent(botonMod2)
-                .addGap(79, 79, 79)
-                .addComponent(botonInfo2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonEliminar2)
+                .addGap(70, 70, 70)
+                .addComponent(botonAddCuad)
+                .addGap(71, 71, 71)
+                .addComponent(botonModCuad)
+                .addGap(70, 70, 70)
+                .addComponent(botonInfoCuad)
+                .addGap(18, 69, Short.MAX_VALUE)
+                .addComponent(botonEliminarCuad)
                 .addGap(89, 89, 89))
         );
         jPanelBot2Layout.setVerticalGroup(
@@ -180,10 +186,10 @@ public class JFEmpleados extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanelBot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonGestionarCuad)
-                    .addComponent(botonAdd2)
-                    .addComponent(botonMod2)
-                    .addComponent(botonInfo2)
-                    .addComponent(botonEliminar2))
+                    .addComponent(botonAddCuad)
+                    .addComponent(botonModCuad)
+                    .addComponent(botonInfoCuad)
+                    .addComponent(botonEliminarCuad))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -192,9 +198,9 @@ public class JFEmpleados extends javax.swing.JFrame {
         jPanelCuadrillaLayout.setHorizontalGroup(
             jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCuadrillaLayout.createSequentialGroup()
-                .addGroup(jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelBot2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelBot2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 946, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelCuadrillaLayout.setVerticalGroup(
@@ -207,61 +213,63 @@ public class JFEmpleados extends javax.swing.JFrame {
 
         jTabbedPane.addTab("Cuadrillas", jPanelCuadrilla);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jPanelEmpleados.setBackground(new java.awt.Color(119, 182, 134));
+
+        jTableEmple.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "DNI", "Nombre ", "Apellidos", "Tlf", "F Inicio", "F Fin"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableEmple);
 
         jPanelBot.setBackground(new java.awt.Color(119, 182, 134));
         jPanelBot.setToolTipText("");
 
-        botonGestionar.setForeground(new java.awt.Color(255, 255, 255));
-        botonGestionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_gest.png"))); // NOI18N
-        botonGestionar.setText("Gestionar");
-        botonGestionar.setBorderPainted(false);
-        botonGestionar.setContentAreaFilled(false);
-        botonGestionar.addActionListener(new java.awt.event.ActionListener() {
+        botonGestionarEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonGestionarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_gest.png"))); // NOI18N
+        botonGestionarEmp.setText("Ascender");
+        botonGestionarEmp.setBorderPainted(false);
+        botonGestionarEmp.setContentAreaFilled(false);
+        botonGestionarEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonGestionarActionPerformed(evt);
+                botonGestionarEmpActionPerformed(evt);
             }
         });
 
-        botonAdd.setForeground(new java.awt.Color(255, 255, 255));
-        botonAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
-        botonAdd.setText("Añadir");
-        botonAdd.setBorderPainted(false);
-        botonAdd.setContentAreaFilled(false);
-        botonAdd.addActionListener(new java.awt.event.ActionListener() {
+        botonAddEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonAddEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
+        botonAddEmp.setText("Añadir");
+        botonAddEmp.setBorderPainted(false);
+        botonAddEmp.setContentAreaFilled(false);
+        botonAddEmp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAddActionPerformed(evt);
+                botonAddEmpActionPerformed(evt);
             }
         });
 
-        botonMod.setForeground(new java.awt.Color(255, 255, 255));
-        botonMod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
-        botonMod.setText("Modificar");
-        botonMod.setBorderPainted(false);
-        botonMod.setContentAreaFilled(false);
+        botonModEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonModEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
+        botonModEmp.setText("Modificar");
+        botonModEmp.setBorderPainted(false);
+        botonModEmp.setContentAreaFilled(false);
 
-        botonInfo.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfo.setText("Información");
-        botonInfo.setBorderPainted(false);
-        botonInfo.setContentAreaFilled(false);
+        botonInfoEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonInfoEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
+        botonInfoEmp.setText("Información");
+        botonInfoEmp.setBorderPainted(false);
+        botonInfoEmp.setContentAreaFilled(false);
 
-        botonEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        botonEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
-        botonEliminar.setText("Eliminar");
-        botonEliminar.setBorderPainted(false);
-        botonEliminar.setContentAreaFilled(false);
+        botonEliminarEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonEliminarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
+        botonEliminarEmp.setText("Eliminar");
+        botonEliminarEmp.setBorderPainted(false);
+        botonEliminarEmp.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanelBotLayout = new javax.swing.GroupLayout(jPanelBot);
         jPanelBot.setLayout(jPanelBotLayout);
@@ -269,15 +277,15 @@ public class JFEmpleados extends javax.swing.JFrame {
             jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotLayout.createSequentialGroup()
                 .addGap(90, 90, 90)
-                .addComponent(botonGestionar)
-                .addGap(79, 79, 79)
-                .addComponent(botonAdd)
-                .addGap(80, 80, 80)
-                .addComponent(botonMod)
-                .addGap(79, 79, 79)
-                .addComponent(botonInfo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(botonEliminar)
+                .addComponent(botonGestionarEmp)
+                .addGap(70, 70, 70)
+                .addComponent(botonAddEmp)
+                .addGap(68, 68, 68)
+                .addComponent(botonModEmp)
+                .addGap(70, 70, 70)
+                .addComponent(botonInfoEmp)
+                .addGap(18, 69, Short.MAX_VALUE)
+                .addComponent(botonEliminarEmp)
                 .addGap(89, 89, 89))
         );
         jPanelBotLayout.setVerticalGroup(
@@ -285,94 +293,126 @@ public class JFEmpleados extends javax.swing.JFrame {
             .addGroup(jPanelBotLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonGestionar)
-                    .addComponent(botonAdd)
-                    .addComponent(botonMod)
-                    .addComponent(botonInfo)
-                    .addComponent(botonEliminar))
+                    .addComponent(botonGestionarEmp)
+                    .addComponent(botonAddEmp)
+                    .addComponent(botonModEmp)
+                    .addComponent(botonInfoEmp)
+                    .addComponent(botonEliminarEmp))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jCheckBoxEmple.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxEmple.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEmple.setText("Empleado");
+
+        jCheckBoxTract.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxTract.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxTract.setText("Tractorista");
+
+        jCheckBoxEnc.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxEnc.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEnc.setText("Encargado");
+
+        jCheckBoxFinalizado.setBackground(new java.awt.Color(119, 182, 134));
+        jCheckBoxFinalizado.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxFinalizado.setText("Contrato finalizado");
 
         javax.swing.GroupLayout jPanelEmpleadosLayout = new javax.swing.GroupLayout(jPanelEmpleados);
         jPanelEmpleados.setLayout(jPanelEmpleadosLayout);
         jPanelEmpleadosLayout.setHorizontalGroup(
             jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
-                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelBot, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelBot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 948, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(jCheckBoxEmple)
+                .addGap(110, 110, 110)
+                .addComponent(jCheckBoxTract)
+                .addGap(78, 78, 78)
+                .addComponent(jCheckBoxEnc)
+                .addGap(98, 98, 98)
+                .addComponent(jCheckBoxFinalizado)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelEmpleadosLayout.setVerticalGroup(
             jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEmpleadosLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxEmple)
+                    .addComponent(jCheckBoxTract)
+                    .addComponent(jCheckBoxEnc)
+                    .addComponent(jCheckBoxFinalizado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelBot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane.addTab("Empleados", jPanelEmpleados);
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        jTableTrab.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Cuadrilla", "Fecha", "Horas", "Tipo", "Explotacion"
             }
         ));
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(jTableTrab);
 
         jPanelBot4.setBackground(new java.awt.Color(119, 182, 134));
         jPanelBot4.setToolTipText("");
 
-        botonAdd4.setForeground(new java.awt.Color(255, 255, 255));
-        botonAdd4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
-        botonAdd4.setText("Añadir");
-        botonAdd4.setBorderPainted(false);
-        botonAdd4.setContentAreaFilled(false);
-        botonAdd4.addActionListener(new java.awt.event.ActionListener() {
+        botonAddTrab.setForeground(new java.awt.Color(255, 255, 255));
+        botonAddTrab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_add.png"))); // NOI18N
+        botonAddTrab.setText("Añadir");
+        botonAddTrab.setBorderPainted(false);
+        botonAddTrab.setContentAreaFilled(false);
+        botonAddTrab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAdd4ActionPerformed(evt);
+                botonAddTrabActionPerformed(evt);
             }
         });
 
-        botonMod4.setForeground(new java.awt.Color(255, 255, 255));
-        botonMod4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
-        botonMod4.setText("Modificar");
-        botonMod4.setBorderPainted(false);
-        botonMod4.setContentAreaFilled(false);
+        botonModTrab.setForeground(new java.awt.Color(255, 255, 255));
+        botonModTrab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_edit.png"))); // NOI18N
+        botonModTrab.setText("Modificar");
+        botonModTrab.setBorderPainted(false);
+        botonModTrab.setContentAreaFilled(false);
 
-        botonEliminar4.setForeground(new java.awt.Color(255, 255, 255));
-        botonEliminar4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
-        botonEliminar4.setText("Eliminar");
-        botonEliminar4.setBorderPainted(false);
-        botonEliminar4.setContentAreaFilled(false);
+        botonEliminarTrab.setForeground(new java.awt.Color(255, 255, 255));
+        botonEliminarTrab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
+        botonEliminarTrab.setText("Eliminar");
+        botonEliminarTrab.setBorderPainted(false);
+        botonEliminarTrab.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanelBot4Layout = new javax.swing.GroupLayout(jPanelBot4);
         jPanelBot4.setLayout(jPanelBot4Layout);
         jPanelBot4Layout.setHorizontalGroup(
             jPanelBot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBot4Layout.createSequentialGroup()
-                .addGap(276, 276, 276)
-                .addComponent(botonAdd4)
-                .addGap(80, 80, 80)
-                .addComponent(botonMod4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
-                .addComponent(botonEliminar4)
-                .addGap(89, 89, 89))
+                .addGap(159, 159, 159)
+                .addComponent(botonAddTrab)
+                .addGap(162, 162, 162)
+                .addComponent(botonModTrab)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                .addComponent(botonEliminarTrab)
+                .addGap(158, 158, 158))
         );
         jPanelBot4Layout.setVerticalGroup(
             jPanelBot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBot4Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanelBot4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonAdd4)
-                    .addComponent(botonMod4)
-                    .addComponent(botonEliminar4))
+                    .addComponent(botonAddTrab)
+                    .addComponent(botonModTrab)
+                    .addComponent(botonEliminarTrab))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -423,25 +463,25 @@ public class JFEmpleados extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAddActionPerformed
+    private void botonAddEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAddEmpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonAddActionPerformed
+    }//GEN-LAST:event_botonAddEmpActionPerformed
 
-    private void botonGestionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGestionarActionPerformed
+    private void botonGestionarEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGestionarEmpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonGestionarActionPerformed
+    }//GEN-LAST:event_botonGestionarEmpActionPerformed
 
     private void botonGestionarCuadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGestionarCuadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGestionarCuadActionPerformed
 
-    private void botonAdd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAdd2ActionPerformed
+    private void botonAddCuadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAddCuadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonAdd2ActionPerformed
+    }//GEN-LAST:event_botonAddCuadActionPerformed
 
-    private void botonAdd4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAdd4ActionPerformed
+    private void botonAddTrabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAddTrabActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonAdd4ActionPerformed
+    }//GEN-LAST:event_botonAddTrabActionPerformed
 
     /**
      * @param args the command line arguments
@@ -482,20 +522,24 @@ public class JFEmpleados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton botonAdd;
-    public javax.swing.JButton botonAdd2;
-    public javax.swing.JButton botonAdd4;
-    public javax.swing.JButton botonEliminar;
-    public javax.swing.JButton botonEliminar2;
-    public javax.swing.JButton botonEliminar4;
-    public javax.swing.JButton botonGestionar;
+    public javax.swing.JButton botonAddCuad;
+    public javax.swing.JButton botonAddEmp;
+    public javax.swing.JButton botonAddTrab;
+    public javax.swing.JButton botonEliminarCuad;
+    public javax.swing.JButton botonEliminarEmp;
+    public javax.swing.JButton botonEliminarTrab;
     public javax.swing.JButton botonGestionarCuad;
-    public javax.swing.JButton botonInfo;
-    public javax.swing.JButton botonInfo2;
-    public javax.swing.JButton botonMod;
-    public javax.swing.JButton botonMod2;
-    public javax.swing.JButton botonMod4;
+    public javax.swing.JButton botonGestionarEmp;
+    public javax.swing.JButton botonInfoCuad;
+    public javax.swing.JButton botonInfoEmp;
+    public javax.swing.JButton botonModCuad;
+    public javax.swing.JButton botonModEmp;
+    public javax.swing.JButton botonModTrab;
     public javax.swing.JButton botonVolver;
+    public javax.swing.JCheckBox jCheckBoxEmple;
+    public javax.swing.JCheckBox jCheckBoxEnc;
+    public javax.swing.JCheckBox jCheckBoxFinalizado;
+    public javax.swing.JCheckBox jCheckBoxTract;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelBot;
     private javax.swing.JPanel jPanelBot2;
@@ -507,10 +551,10 @@ public class JFEmpleados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTabbedPane jTabbedPane;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable5;
+    public javax.swing.JTabbedPane jTabbedPane;
+    public javax.swing.JTable jTableCuadrilla;
+    public javax.swing.JTable jTableEmple;
+    public javax.swing.JTable jTableTrab;
     private javax.swing.JLabel listaFincas;
     // End of variables declaration//GEN-END:variables
 }
