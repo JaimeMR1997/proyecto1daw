@@ -132,7 +132,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
                         .addComponent(campoSuperficie, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(campoLocalidad, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,7 +170,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
+                        .addGap(38, 38, 38)
                         .addComponent(botonAceptar)
                         .addGap(18, 18, 18)
                         .addComponent(botonCancelar)

@@ -84,6 +84,8 @@ public class VentaDAO {
         ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
             Conexion c = new Conexion();
+            
+            
             Connection accesoBD = c.getConexion();
             PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA");
             ResultSet rs = st.executeQuery();
@@ -91,6 +93,8 @@ public class VentaDAO {
                 listaVentas.add(new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
                         rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate(),rs.getString("ID_PLANT")));
             }
+            
+            
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta todas las ventas: "+e.getMessage());

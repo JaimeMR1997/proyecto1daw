@@ -7,6 +7,7 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,7 +18,9 @@ import proyecto1daw.modelo.CuadrillaDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.TrabajadorDAO;
+import proyecto1daw.modelo.Trabajo;
 import proyecto1daw.vistas.JFEmpleados;
+import proyecto1daw.vistas.JFInicio;
 
 /**
  *
@@ -35,25 +38,43 @@ public class ControladorEmpleado implements ActionListener{
         this.vistaTabla = vistaTabla;
         this.modeloCuad = new CuadrillaDAO();
         this.modeloEmple = new TrabajadorDAO();
+        //Asociar listener a botones
+        this.vistaTabla.botonVolver.addActionListener(this);
+        this.vistaTabla.botonGestionarCuad.addActionListener(this);
+        this.vistaTabla.botonAddCuad.addActionListener(this);
+        this.vistaTabla.botonModCuad.addActionListener(this);
+        this.vistaTabla.botonInfoCuad.addActionListener(this);
+        this.vistaTabla.botonEliminarCuad.addActionListener(this);
+        this.vistaTabla.botonGestionarEmp.addActionListener(this);
+        this.vistaTabla.botonAddEmp.addActionListener(this);
+        this.vistaTabla.botonModEmp.addActionListener(this);
+        this.vistaTabla.botonInfoEmp.addActionListener(this);
+        this.vistaTabla.botonEliminarEmp.addActionListener(this);
+        this.vistaTabla.botonAddTrab.addActionListener(this);
+        this.vistaTabla.botonModTrab.addActionListener(this);
+        this.vistaTabla.botonEliminarTrab.addActionListener(this);
         //Modelos de tablas
         this.modTablaCuad = new DefaultTableModel();
         this.modTablaEmple = new DefaultTableModel();
         this.modTablaTrabajos = new DefaultTableModel();
         //Añadir columnas Cuadrilla
-        this.modTablaCuad.addColumn("");
-        this.modTablaCuad.addColumn("");
-        this.modTablaCuad.addColumn("");
-        this.modTablaCuad.addColumn("");
+        this.modTablaCuad.addColumn("ID");
+        this.modTablaCuad.addColumn("Encargado");
+        this.modTablaCuad.addColumn("Fecha inicio");
+        this.modTablaCuad.addColumn("Último trabajo");
         //Añadir columnas Empleados
-        this.modTablaEmple.addColumn("");
-        this.modTablaEmple.addColumn("");
-        this.modTablaEmple.addColumn("");
-        this.modTablaEmple.addColumn("");
+        this.modTablaEmple.addColumn("DNI");
+        this.modTablaEmple.addColumn("Nombre");
+        this.modTablaEmple.addColumn("Apellidos");
+        this.modTablaEmple.addColumn("Tlf");
+        this.modTablaEmple.addColumn("F. Inicio");
+        this.modTablaEmple.addColumn("F. Fin");
         //Añadir columnas Trabajos
-        this.modTablaTrabajos.addColumn("");
-        this.modTablaTrabajos.addColumn("");
-        this.modTablaTrabajos.addColumn("");
-        this.modTablaTrabajos.addColumn("");
+        this.modTablaTrabajos.addColumn("Cuadrilla");
+        this.modTablaTrabajos.addColumn("Fecha");
+        this.modTablaTrabajos.addColumn("Horas");
+        this.modTablaTrabajos.addColumn("Tipo");
+        this.modTablaTrabajos.addColumn("Explotacion");
         //Añadir modelos a las tablas
         this.vistaTabla.jTableCuadrilla.setModel(modTablaCuad);
         this.vistaTabla.jTableEmple.setModel(modTablaEmple);
@@ -61,7 +82,8 @@ public class ControladorEmpleado implements ActionListener{
         //Cargar tabla Cuadrilla porque es la primera que se ve
         this.cargarTablaCuadrillas();
         //Mostrar vista
-        
+        this.vistaTabla.setLocationRelativeTo(null);
+        this.vistaTabla.setVisible(true);
         //Cargar otras 2 tablas
         this.cargarTablaEmple();
         this.cargarTablaTrab();
@@ -116,6 +138,8 @@ public class ControladorEmpleado implements ActionListener{
                             "¿Estás seguro de eliminar este trabajo?");
                     eliminarTrabajo(confirmacion);
                 }
+            }else if(boton.equals(this.vistaTabla.botonVolver)){                    //VOLVER A INICIO
+                volver();
             }
         }else if(ae.getSource() instanceof  JCheckBox){
             JCheckBox checkbox = (JCheckBox) ae.getSource();
@@ -157,98 +181,117 @@ public class ControladorEmpleado implements ActionListener{
 
     private void cargarTablaEmple() {
         ArrayList<Trabajador> listaEmple = new ArrayList<>();
-        if(isContFinSelected()){
-            if(isEmpleadoSelected()){
-            
-            }
-            if(isTractoristaSelected()){
-
-            }
-            if(isEncargadoSelected()){
-
-            }
-        }else{
-            if(isEmpleadoSelected()){
-            
-            }
-            if(isTractoristaSelected()){
-
-            }
-            if(isEncargadoSelected()){
-
-            }
+        if(isEmpleadoSelected()){
+            listaEmple.addAll(modeloEmple.recuperarTrabajadores());
+        }
+        if(isTractoristaSelected()){
+            listaEmple.addAll(modeloEmple.recuperarConductores());
+        }
+        if(isEncargadoSelected()){
+            listaEmple.addAll(modeloEmple.recuperarEncargados());
         }
         
         String fila[] = new String[6];
         for (Trabajador t : listaEmple) {
+            
+            if(!isContFinSelected() && t.getfFin()!= null){
+                if(t.getfFin().isBefore(LocalDate.now())){
+                    continue;//Se salta los empleados con contrato finalizado
+                }
+            }
             fila[0]=t.getDni();//dni
             fila[1]=t.getNombre(); //nombre
             fila[2]=t.getApellidos();//apellidos
             fila[3]=t.getTlf();//tlf
             fila[4]=Fechas.toString(t.getfContratacion());//f inicio
             fila[5]=Fechas.toString(t.getfFin());//f fin
-            this.modTablaCuad.addRow(fila);
+            this.modTablaEmple.addRow(fila);
+        }
+    }
+
+    private void cargarTablaTrab(Cuadrilla c) {
+        ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos(c);
+        String fila[] = new String[5];
+        for (Trabajo trabajo : listaTrabajos) {
+            fila[0]=trabajo.getIdCuadrilla(); //CUADRILLA
+            fila[1]=Fechas.toString(trabajo.getFecha());//FECHA
+            fila[2]=trabajo.getHoras()+"";//HORAS
+            fila[3]=trabajo.getTipo();//TIPO
+            fila[4]=trabajo.getIdExplotacion();//EXPLOTACION
+            this.modTablaTrabajos.addRow(fila);
         }
     }
 
     private void cargarTablaTrab() {
+        ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos();
+        String fila[] = new String[5];
+        for (Trabajo trabajo : listaTrabajos) {
+            fila[0]=trabajo.getIdCuadrilla(); //CUADRILLA
+            fila[1]=Fechas.toString(trabajo.getFecha());//FECHA
+            fila[2]=trabajo.getHoras()+"";//HORAS
+            fila[3]=trabajo.getTipo();//TIPO
+            fila[4]=trabajo.getIdExplotacion();//EXPLOTACION
+            this.modTablaTrabajos.addRow(fila);
+        }
+    }
+    
+    private void abrirAddCuadrilla() {
         
     }
 
-    private void abrirAddCuadrilla() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private void abrirAddTrabajo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void abrirModCuadrilla() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void eliminarCuadrilla(int confirmacion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void abrirVentanaAscenso() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void abrirAddEmple() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void eliminarTrabajador(int confirmacion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void abrirModTrabajo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void eliminarTrabajo(int confirmacion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private void abrirModEmple() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     private boolean isEmpleadoSelected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.vistaTabla.jCheckBoxEmple.isSelected();
     }
 
     private boolean isTractoristaSelected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.vistaTabla.jCheckBoxTract.isSelected();
     }
 
     private boolean isEncargadoSelected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.vistaTabla.jCheckBoxEnc.isSelected();
     }
 
     private boolean isContFinSelected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.vistaTabla.jCheckBoxFinalizado.isSelected();
     }
-    
+
+    private void volver() {
+        ControladorInicio contInicio = new ControladorInicio(new JFInicio());
+    }
 }

@@ -133,7 +133,7 @@
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="86" green="b6" red="77" type="rgb"/>
+              <Color blue="b6" green="d2" red="ad" type="rgb"/>
             </Property>
           </Properties>
           <AuxValues>

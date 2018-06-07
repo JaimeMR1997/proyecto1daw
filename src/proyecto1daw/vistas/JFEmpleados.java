@@ -105,7 +105,7 @@ public class JFEmpleados extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jTabbedPane.setBackground(new java.awt.Color(119, 182, 134));
+        jTabbedPane.setBackground(new java.awt.Color(173, 210, 182));
 
         jTableCuadrilla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -85,4 +85,42 @@ public class CuadrillaDAO {
             System.out.println("Excepcion SQL. Actualizar cuadrilla: "+e.getMessage());
         }
     }
+
+    public ArrayList<Trabajo> recuperarTrabajos(Cuadrilla cuad) {
+        ArrayList<Trabajo> listaTrabajos=  new ArrayList<Trabajo>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM TRABAJA WHERE ID_CUADRILLA=?");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fecha = rs.getDate("FECHA").toLocalDate();
+                listaTrabajos.add(new Trabajo(rs.getString("ID_CUADRILLA"), fecha,
+                        rs.getInt("HORAS"), rs.getString("TIPO"), rs.getString("ID_EXPLOTACION")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta trabajos por cuadrilla: "+e.getMessage());
+        }
+        return listaTrabajos;
+    }
+    
+    public ArrayList<Trabajo> recuperarTrabajos() {
+        ArrayList<Trabajo> listaTrabajos=  new ArrayList<Trabajo>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM TRABAJA");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fecha = rs.getDate("FECHA").toLocalDate();
+                listaTrabajos.add(new Trabajo(rs.getString("ID_CUADRILLA"), fecha,
+                        rs.getInt("HORAS"), rs.getString("TIPO"), rs.getString("ID_EXPLOTACION")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta todos los trabajos: "+e.getMessage());
+        }
+        return listaTrabajos;
+    }
 }
