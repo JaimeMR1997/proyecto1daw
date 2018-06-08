@@ -144,7 +144,8 @@ public class TrabajadorDAO {
         return listaEncargados;
     }
     
-    public void addTrabajador(Trabajador t){
+    public boolean addTrabajador(Trabajador t){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO) "
@@ -164,7 +165,63 @@ public class TrabajadorDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Insertar trabajadores: "+e.getMessage());
+            res=false;
         }
+        return res;
+    }
+    
+    public boolean addConductor(Conductor conduct){
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,PERMISOS) "
+                + "VALUES(?,?,?,?,?,?,?,?,?)";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, conduct.getDni());
+            st.setString(2, conduct.getNombre());
+            st.setString(3, conduct.getApellidos());
+            st.setDate(4, Date.valueOf(conduct.getfNacimiento()));
+            st.setDate(5, Date.valueOf(conduct.getfContratacion()));
+            st.setDate(6, Date.valueOf(conduct.getfFin()));
+            st.setString(7, conduct.getTlf());
+            st.setInt(8, conduct.getSalario());
+            st.setString(9, conduct.getPermisos());
+            
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Insertar trabajadores: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+    
+    public boolean addEncargado(Encargado enc){
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,VH_EMPRESA) "
+                + "VALUES(?,?,?,?,?,?,?,?,?)";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, enc.getDni());
+            st.setString(2, enc.getNombre());
+            st.setString(3, enc.getApellidos());
+            st.setDate(4, Date.valueOf(enc.getfNacimiento()));
+            st.setDate(5, Date.valueOf(enc.getfContratacion()));
+            st.setDate(6, Date.valueOf(enc.getfFin()));
+            st.setString(7, enc.getTlf());
+            st.setInt(8, enc.getSalario());
+            st.setString(9, enc.getVhEmpresa());
+            
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Insertar trabajadores: "+e.getMessage());
+            res=false;
+        }
+        return res;
     }
     
     public void borrarTrabajador(String id){
