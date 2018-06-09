@@ -236,7 +236,7 @@ public class ControladorEmpleado implements ActionListener{
     }
     
     private void abrirAddCuadrilla() {
-        
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(false, vistaTabla,modeloCuad);
     }
 
     private void abrirAddTrabajo() {

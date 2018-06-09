@@ -5,10 +5,10 @@
  */
 package Principal;
 
-import proyecto1daw.controladores.ControladorFinca;
-import proyecto1daw.modelo.FincaDAO;
-import proyecto1daw.vistas.JFFinca;
-import proyecto1daw.vistas.JFFincaAdd;
+import proyecto1daw.controladores.ControladorInicio;
+import proyecto1daw.vistas.JFInicio;
+
+
 
 /**
  *
@@ -20,11 +20,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFFinca vistaFinca = new JFFinca();
-        FincaDAO modeloFincaDao = new FincaDAO();
-        JFFincaAdd vistaFincaAdd = new JFFincaAdd();
-        ControladorFinca controlador = new ControladorFinca(vistaFinca, modeloFincaDao,vistaFincaAdd);
-        vistaFinca.setVisible(true);
+        ControladorInicio contIni = new ControladorInicio(new JFInicio());
     }
     
 }
