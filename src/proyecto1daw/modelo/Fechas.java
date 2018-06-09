@@ -55,4 +55,8 @@ public class Fechas {
 
         return f;
     }
+
+    public static void validarDni() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
