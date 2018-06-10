@@ -42,19 +42,14 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
      * @param vistaTabla
      * @param modelo
      */
-    public ControladorAddCuad(boolean mod, JFEmpleados vistaTabla, CuadrillaDAO modelo){
+    public ControladorAddCuad(JFEmpleados vistaTabla, CuadrillaDAO modelo){
         this.vistaAdd = new JFCuadAdd();
         this.vistaTabla = vistaTabla;
         this.modeloCuad = modelo;
         this.modeloTrab = new TrabajadorDAO();
         this.modLista = new DefaultListModel<Trabajador>();
-        this.accionEsMod = mod;
+        boolean accionEsMod = false;
         
-        if(mod){//Modificar
-            this.vistaAdd.botonAceptar.setText("Modificar");
-        }else{//Añadir
-            this.vistaAdd.botonAceptar.setText("Añadir");
-        }
         //Asociar Action listeners
         this.vistaAdd.botonAceptar.addActionListener(this);
         this.vistaAdd.botonCancelar.addActionListener(this);
@@ -66,6 +61,8 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         this.vistaAdd.campoFInicio.addFocusListener(this);
         //Asociar modelo a lista
         this.vistaAdd.jList.setModel(modLista);
+        
+        this.vistaAdd.botonAceptar.setText("Añadir");
         //Rellenar datos
         this.vistaAdd.campoId.setText(generarIdCuad());
         this.vistaAdd.campoFInicio.setText(Fechas.toString(LocalDate.now()));
@@ -76,6 +73,21 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         this.vistaAdd.setLocationRelativeTo(null);
         this.vistaAdd.setVisible(true);
     }
+
+    public ControladorAddCuad(Cuadrilla cuadrilla,JFEmpleados vistaTabla, CuadrillaDAO modeloCuad) {
+        this(vistaTabla, modeloCuad);
+        
+        boolean accionEsMod = true;
+        this.vistaAdd.botonAceptar.setText("Modificar");
+        this.vistaAdd.campoId.setText(cuadrilla.getId());
+        this.vistaAdd.campoFInicio.setText(Fechas.toString(cuadrilla.getfInicio()));
+        this.vistaAdd.campoFInicio.setEnabled(false);
+        if(cuadrilla.getfFin() != null){
+            this.vistaAdd.campoFFin.setText(Fechas.toString(cuadrilla.getfFin()));
+        }
+    }
+    
+    
 
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(this.vistaAdd.botonAceptar)){                  //ACEPTAR
@@ -160,11 +172,8 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         }
         //AÑADIR ENCARGADO O ASCENDER 
         Object o = vistaAdd.jList.getSelectedValue();
-        
-//        String s = vistaAdd.jList.getSelectedValue();
-//        String tipo = s.substring(s.lastIndexOf(" "));
-//        String dni = s.substring(0, s.indexOf(" "));
         Trabajador t = (Trabajador) o;
+        
         if(t instanceof Conductor){
             //t = new Conductor(dni);
             if(!modeloTrab.ascensoEncargado(t, LocalDate.now())){
@@ -179,14 +188,11 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
                 res+="\nAl ascender al trabajador a encargado";
             }
         }
-        if(!modeloCuad.asignarEncargado(t,cuad)){
-            res+="\nAl asignar el encargado";
-        }
         if(res.equals("Error ")){ //Si no ha habido error el texto sera solo "Error "
             if(!modeloCuad.asignarEncargado(t,cuad)){ //Si hay error se almacena
                 res+="\nAl asignar el encargado";
             }else{
-                res="";//No ha habido ningun error
+                res=" ";//No ha habido ningun error
             }
         }
         return res;
