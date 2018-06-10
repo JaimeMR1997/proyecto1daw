@@ -56,7 +56,50 @@ public class Fechas {
         return f;
     }
 
-    public static void validarDni() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static boolean validarDni(String nif) {
+        boolean res = true;
+        nif=nif.toUpperCase();
+        if(nif.length() == 9){
+            char ultimoCar = nif.charAt(nif.length()-1);
+            if(!Character.isAlphabetic(ultimoCar)){
+                res=false;   
+            }else{
+                if(nif.charAt(0) == 'X'){                       //NIE
+                    //Quita el primer caracter y el ultimo
+                    nif = nif.substring(1, nif.length()-1);
+                }else{                                          //DNI
+                    nif = nif.substring(0, nif.length()-1);
+                    //Quita el ultimo caracter
+                }
+                for (int i = 0; i < nif.length(); i++) {
+                    if(!Character.isDigit(nif.charAt(i))){
+                        res=false;
+                        break;
+                    }
+                }
+            }
+            
+        }else if(nif.length() == 10){                           //NIE de 10 caracteres
+            char ultimoCar = nif.charAt(nif.length()-1);
+            if(!Character.isAlphabetic(ultimoCar)){
+                res=false;   
+            }else{
+                if(nif.charAt(0) == 'X'){                       //NIE
+                    //Quita el primer caracter y el ultimo
+                    nif = nif.substring(1, nif.length()-1);
+                    for (int i = 0; i < nif.length(); i++) {
+                        if(!Character.isDigit(nif.charAt(i))){
+                            res=false;
+                            break;
+                        }
+                    }
+                }else{                                          //DNI
+                    res=false;
+                }
+            }
+        }else{
+            res = false;
+        }
+        return res;
     }
 }

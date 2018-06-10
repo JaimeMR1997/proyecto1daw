@@ -113,5 +113,14 @@ public class Explotacion {
         this.listaPlant = listaPlant;
     }
 
+    public int getNum(){
+        String num = id.substring(id.indexOf("-")+1);
+        return Integer.parseInt(num);
+    }
+    
+    public String toString() {
+        return getNum() + " - " + getTipo() + " " + getSuperficie()+" ha";
+    }
+
     
 }

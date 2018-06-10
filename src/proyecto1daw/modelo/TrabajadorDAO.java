@@ -19,37 +19,39 @@ import java.util.ArrayList;
  */
 public class TrabajadorDAO {
     
-    public void ascensoEncargado(Trabajador t,LocalDate fFin){
+    public boolean ascensoEncargado(Trabajador t,LocalDate fFin){
+        boolean res = true;
         if(fFin==null){
             fFin=LocalDate.now();
         }
         
         String insertarCons = "INSERT INTO ENCARGADO(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
-                + " SELECT * FROM ? WHERE DNI=?";
+                + " SELECT * FROM ";//trabajador o ocnductor WHERE DNI=?";
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         try{
-            PreparedStatement consultaInsertar = accesoBD.prepareStatement(insertarCons);
-            consultaInsertar.setString(2, t.getDni());
-            
-            if(!(t instanceof Conductor) &&!(t instanceof Encargado)){ //Trabajadores normales
-                consultaInsertar.setString(1, "TRABAJADOR");
+            if(!(t instanceof Conductor) && !(t instanceof Encargado)){ //Trabajadores normales
+                insertarCons+="TRABAJADOR WHERE DNI = ?";
                 this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));
                 
             }else if(!(t instanceof Encargado)){                        //Conductores
-                consultaInsertar.setString(1, "CONDUCTOR");
+                insertarCons+="CONDUCTOR WHERE DNI = ?";
                 this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.toString(fFin));   
             }
             
-            consultaInsertar.executeUpdate();
+            PreparedStatement st = accesoBD.prepareStatement(insertarCons);
+            st.setString(1, t.getDni());
+            st.executeUpdate();
             PreparedStatement consultaActContrato = accesoBD.prepareStatement("UPDATE ENCARGADO SET F_CONT=?");
             consultaActContrato.setDate(1, Date.valueOf(LocalDate.now())); 
             consultaActContrato.executeUpdate();    //Actualiza la fecha a la de contratacion a la de hoy
             //Para cambiar la fecha por otra habrá que modificar al encargado desde otra parte
             
         }catch(SQLException e){
-            System.out.println("Excepcion SQL.(Finca)ascender encargado: "+e.getMessage());
+            System.out.println("Excepcion SQL. Ascender a encargado: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
     public void asignarEncargado(String dni,String idFinca,LocalDate fInicio){
@@ -91,7 +93,10 @@ public class TrabajadorDAO {
             while(rs.next()){
                 LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
                 LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();    
+                }
                 listaTrabajadores.add(new Trabajador(rs.getString("DNI"), rs.getString("NOMBRE"),
                         rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
             }
@@ -157,7 +162,11 @@ public class TrabajadorDAO {
             st.setString(3, t.getApellidos());
             st.setDate(4, Date.valueOf(t.getfNacimiento()));
             st.setDate(5, Date.valueOf(t.getfContratacion()));
-            st.setDate(6, Date.valueOf(t.getfFin()));
+            Date fechaFin = null;
+            if(t.getfFin() != null){
+                fechaFin = Date.valueOf(t.getfFin());
+            }
+            st.setDate(6,fechaFin);
             st.setString(7, t.getTlf());
             st.setInt(8, t.getSalario());
             
@@ -174,7 +183,7 @@ public class TrabajadorDAO {
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,PERMISOS) "
+        String consulta = "INSERT INTO CONDUCTOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,PERMISOS) "
                 + "VALUES(?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
@@ -191,7 +200,7 @@ public class TrabajadorDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Insertar trabajadores: "+e.getMessage());
+            System.out.println("Excepcion SQL. Insertar conductor: "+e.getMessage());
             res=false;
         }
         return res;
@@ -201,7 +210,7 @@ public class TrabajadorDAO {
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,VH_EMPRESA) "
+        String consulta = "INSERT INTO ENCARGADO(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO,VH_EMPRESA) "
                 + "VALUES(?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
@@ -218,7 +227,7 @@ public class TrabajadorDAO {
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Insertar trabajadores: "+e.getMessage());
+            System.out.println("Excepcion SQL. Insertar encargado: "+e.getMessage());
             res=false;
         }
         return res;
@@ -241,12 +250,10 @@ public class TrabajadorDAO {
     private void actualizarCampo(String tabla,String id, String campo, String nuevoValor) throws SQLException{
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE ? SET ?=? WHERE DNI = ?";
+        String consulta = "UPDATE "+tabla+" SET "+campo+"=? WHERE DNI = ?";
         PreparedStatement st = accesoBD.prepareStatement(consulta);
-        st.setString(1, tabla);
-        st.setString(2, campo);
-        st.setString(3, nuevoValor);
-        st.setString(4, id);
+        st.setString(1, nuevoValor);
+        st.setString(2, id);
 
         st.executeUpdate();
         accesoBD.close();

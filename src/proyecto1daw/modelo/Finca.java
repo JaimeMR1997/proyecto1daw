@@ -79,5 +79,11 @@ public class Finca {
     public void setfFin(LocalDate fFin) {
         this.fFin = fFin;
     }
+
+   
+    public String toString() {
+        return id +" - "+ superficie + " ha";
+    }
+ 
     
 }

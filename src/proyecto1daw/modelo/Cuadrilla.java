@@ -47,5 +47,10 @@ public class Cuadrilla {
     public void setfFin(LocalDate fFin) {
         this.fFin = fFin;
     }
+
+    public String toString() {
+        return "Cuadrilla - " + id;
+    }
+    
     
 }

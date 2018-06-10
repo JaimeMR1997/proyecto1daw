@@ -66,6 +66,7 @@ public class JFCuadAdd extends javax.swing.JFrame {
         jRadioEmpleado.setBackground(new java.awt.Color(119, 182, 134));
         buttonGroupTipoEncargado.add(jRadioEmpleado);
         jRadioEmpleado.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioEmpleado.setSelected(true);
         jRadioEmpleado.setText("Trabajador");
 
         jRadioTractorista.setBackground(new java.awt.Color(119, 182, 134));
@@ -76,7 +77,6 @@ public class JFCuadAdd extends javax.swing.JFrame {
         jRadioEncargado.setBackground(new java.awt.Color(119, 182, 134));
         buttonGroupTipoEncargado.add(jRadioEncargado);
         jRadioEncargado.setForeground(new java.awt.Color(255, 255, 255));
-        jRadioEncargado.setSelected(true);
         jRadioEncargado.setText("Encargado");
         jRadioEncargado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,7 +114,7 @@ public class JFCuadAdd extends javax.swing.JFrame {
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabelTipo)
-                .addGap(21, 21, 21)
+                .addGap(30, 30, 30)
                 .addComponent(jLabelVariedad)
                 .addGap(20, 20, 20)
                 .addComponent(jCheckBoxFFin)
@@ -155,13 +155,13 @@ public class JFCuadAdd extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList);
 
         jErrorFCreacion.setForeground(java.awt.Color.red);
-        jErrorFCreacion.setText("Texto");
+        jErrorFCreacion.setText(" ");
 
         jErrorFechaFin.setForeground(java.awt.Color.red);
-        jErrorFechaFin.setText("Texto");
+        jErrorFechaFin.setText(" ");
 
         jErrorEncargado.setForeground(java.awt.Color.red);
-        jErrorEncargado.setText("Texto");
+        jErrorEncargado.setText(" ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -177,14 +177,12 @@ public class JFCuadAdd extends javax.swing.JFrame {
                     .addComponent(jErrorFCreacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jErrorFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(botonAceptar)
-                                .addGap(18, 18, 18)
-                                .addComponent(botonCancelar))
-                            .addComponent(jErrorEncargado))
-                        .addGap(0, 57, Short.MAX_VALUE)))
+                        .addGap(17, 17, 17)
+                        .addComponent(botonAceptar)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonCancelar)
+                        .addGap(0, 57, Short.MAX_VALUE))
+                    .addComponent(jErrorEncargado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(

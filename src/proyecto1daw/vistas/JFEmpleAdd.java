@@ -36,9 +36,9 @@ public class JFEmpleAdd extends javax.swing.JFrame {
         campoNombre = new javax.swing.JTextField();
         campoDni = new javax.swing.JTextField();
         campoApellidos = new javax.swing.JTextField();
-        botonReset = new javax.swing.JButton();
+        botonLimpiar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
-        botonAceptar1 = new javax.swing.JButton();
+        botonAceptar = new javax.swing.JButton();
         jLabelNombre = new javax.swing.JLabel();
         jLabelApellidos = new javax.swing.JLabel();
         jLabelDni = new javax.swing.JLabel();
@@ -51,22 +51,33 @@ public class JFEmpleAdd extends javax.swing.JFrame {
         campoFCont = new javax.swing.JTextField();
         jLabelFechaCont = new javax.swing.JLabel();
         campoFFinCont = new javax.swing.JTextField();
-        jLabelFCont = new javax.swing.JLabel();
-        campoDni6 = new javax.swing.JTextField();
+        campoPermisos = new javax.swing.JTextField();
         jLabelPermisos = new javax.swing.JLabel();
-        campoDni7 = new javax.swing.JTextField();
+        campoVHEmpresa = new javax.swing.JTextField();
         jLabelVHEmpresa = new javax.swing.JLabel();
+        errNombre = new javax.swing.JLabel();
+        errApellidos = new javax.swing.JLabel();
+        errDni = new javax.swing.JLabel();
+        errFNac = new javax.swing.JLabel();
+        errTlf = new javax.swing.JLabel();
+        errSalario = new javax.swing.JLabel();
+        errFCont = new javax.swing.JLabel();
+        errFFin = new javax.swing.JLabel();
+        errPermisos = new javax.swing.JLabel();
+        errVhEmpresa = new javax.swing.JLabel();
+        jCheckBoxFFin = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Añadir empleado");
         setBackground(new java.awt.Color(119, 182, 134));
 
-        jPanelBot.setBackground(new java.awt.Color(119, 182, 134));
+        jPanelBot.setBackground(new java.awt.Color(176, 210, 184));
 
-        jPanelLista.setBackground(new java.awt.Color(176, 210, 184));
+        jPanelLista.setBackground(new java.awt.Color(119, 182, 134));
 
-        jRadioEncargado.setBackground(new java.awt.Color(176, 210, 184));
+        jRadioEncargado.setBackground(new java.awt.Color(119, 182, 134));
         buttonGroupTipoEncargado.add(jRadioEncargado);
+        jRadioEncargado.setForeground(new java.awt.Color(255, 255, 255));
         jRadioEncargado.setText("Encargado");
         jRadioEncargado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,12 +85,15 @@ public class JFEmpleAdd extends javax.swing.JFrame {
             }
         });
 
-        jRadioTractorista.setBackground(new java.awt.Color(176, 210, 184));
+        jRadioTractorista.setBackground(new java.awt.Color(119, 182, 134));
         buttonGroupTipoEncargado.add(jRadioTractorista);
+        jRadioTractorista.setForeground(new java.awt.Color(255, 255, 255));
         jRadioTractorista.setText("Conductor");
 
-        jRadioEmpleado.setBackground(new java.awt.Color(176, 210, 184));
+        jRadioEmpleado.setBackground(new java.awt.Color(119, 182, 134));
         buttonGroupTipoEncargado.add(jRadioEmpleado);
+        jRadioEmpleado.setForeground(new java.awt.Color(255, 255, 255));
+        jRadioEmpleado.setSelected(true);
         jRadioEmpleado.setText("Trabajador");
 
         javax.swing.GroupLayout jPanelListaLayout = new javax.swing.GroupLayout(jPanelLista);
@@ -87,13 +101,13 @@ public class JFEmpleAdd extends javax.swing.JFrame {
         jPanelListaLayout.setHorizontalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(47, 47, 47)
                 .addComponent(jRadioEmpleado)
-                .addGap(26, 26, 26)
+                .addGap(53, 53, 53)
                 .addComponent(jRadioTractorista)
-                .addGap(39, 39, 39)
+                .addGap(54, 54, 54)
                 .addComponent(jRadioEncargado)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanelListaLayout.setVerticalGroup(
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,137 +126,170 @@ public class JFEmpleAdd extends javax.swing.JFrame {
             }
         });
 
-        botonReset.setBackground(new java.awt.Color(119, 182, 134));
-        botonReset.setText("Limpiar");
-        botonReset.addActionListener(new java.awt.event.ActionListener() {
+        botonLimpiar.setText("Limpiar");
+        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonResetActionPerformed(evt);
+                botonLimpiarActionPerformed(evt);
             }
         });
 
-        botonCancelar.setBackground(new java.awt.Color(119, 182, 134));
         botonCancelar.setText("Cancelar");
 
-        botonAceptar1.setBackground(new java.awt.Color(119, 182, 134));
-        botonAceptar1.setText("Aceptar");
-        botonAceptar1.addActionListener(new java.awt.event.ActionListener() {
+        botonAceptar.setText("Aceptar");
+        botonAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAceptar1ActionPerformed(evt);
+                botonAceptarActionPerformed(evt);
             }
         });
 
-        jLabelNombre.setForeground(new java.awt.Color(255, 255, 255));
         jLabelNombre.setText("Nombre");
 
-        jLabelApellidos.setForeground(new java.awt.Color(255, 255, 255));
         jLabelApellidos.setText("Apellidos");
 
-        jLabelDni.setForeground(new java.awt.Color(255, 255, 255));
         jLabelDni.setText("DNI");
 
-        jLabelFNac.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFNac.setText("Fecha nacimiento");
 
-        jLabelTlf.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTlf.setText("Teléfono");
 
-        jLabelSalario.setForeground(new java.awt.Color(255, 255, 255));
         jLabelSalario.setText("Salario");
 
-        jLabelFechaCont.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFechaCont.setText("Fecha contratación");
 
-        jLabelFCont.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFCont.setText("Fecha fin contrato");
+        campoFFinCont.setEnabled(false);
 
-        campoDni6.setEnabled(false);
+        campoPermisos.setEnabled(false);
 
-        jLabelPermisos.setForeground(new java.awt.Color(255, 255, 255));
         jLabelPermisos.setText("Permisos");
         jLabelPermisos.setEnabled(false);
 
-        campoDni7.setEnabled(false);
+        campoVHEmpresa.setEnabled(false);
 
-        jLabelVHEmpresa.setForeground(new java.awt.Color(255, 255, 255));
         jLabelVHEmpresa.setText("Matrícula VH empresa");
         jLabelVHEmpresa.setEnabled(false);
+
+        errNombre.setForeground(java.awt.Color.red);
+        errNombre.setText(" ");
+
+        errApellidos.setForeground(java.awt.Color.red);
+        errApellidos.setText(" ");
+
+        errDni.setForeground(java.awt.Color.red);
+        errDni.setText(" ");
+
+        errFNac.setForeground(java.awt.Color.red);
+        errFNac.setText(" ");
+
+        errTlf.setForeground(java.awt.Color.red);
+        errTlf.setText(" ");
+
+        errSalario.setForeground(java.awt.Color.red);
+        errSalario.setText(" ");
+
+        errFCont.setForeground(java.awt.Color.red);
+        errFCont.setText(" ");
+
+        errFFin.setForeground(java.awt.Color.red);
+        errFFin.setText(" ");
+
+        errPermisos.setForeground(java.awt.Color.red);
+        errPermisos.setText(" ");
+
+        errVhEmpresa.setForeground(java.awt.Color.red);
+        errVhEmpresa.setText(" ");
+
+        jCheckBoxFFin.setBackground(new java.awt.Color(176, 210, 184));
+        jCheckBoxFFin.setText("Fecha fin de contrato");
 
         javax.swing.GroupLayout jPanelBotLayout = new javax.swing.GroupLayout(jPanelBot);
         jPanelBot.setLayout(jPanelBotLayout);
         jPanelBotLayout.setHorizontalGroup(
             jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelLista, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelBotLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBotLayout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(botonAceptar1)
-                        .addGap(24, 24, 24)
-                        .addComponent(botonReset)
-                        .addGap(24, 24, 24)
-                        .addComponent(botonCancelar)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoFCont, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelFechaCont)
+                            .addComponent(errFCont, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBoxFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(errFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(campoFFinCont)
+                                .addGap(13, 13, 13)))
+                        .addGap(18, 18, 18))
                     .addGroup(jPanelBotLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
+                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addComponent(jLabelDni)
+                                .addGap(198, 198, 198))
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addComponent(campoDni)
+                                .addGap(66, 66, 66)))
                         .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelBotLayout.createSequentialGroup()
                                 .addComponent(jLabelFNac)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(campoFNac)))
+                            .addComponent(campoFNac))
+                        .addGap(31, 31, 31))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelApellidos)
-                                .addGap(118, 118, 118))
-                            .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(campoApellidos)))))
-                .addContainerGap())
-            .addComponent(jPanelLista, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanelBotLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelBotLayout.createSequentialGroup()
-                        .addComponent(jLabelNombre)
-                        .addGap(128, 302, Short.MAX_VALUE))
-                    .addGroup(jPanelBotLayout.createSequentialGroup()
-                        .addComponent(campoTlf, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addComponent(jLabelSalario)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addComponent(campoSalario)
-                                .addContainerGap())))
-                    .addGroup(jPanelBotLayout.createSequentialGroup()
-                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addComponent(campoFCont, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
                                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanelBotLayout.createSequentialGroup()
-                                        .addComponent(jLabelFCont)
-                                        .addGap(74, 74, 74))
-                                    .addComponent(campoFFinCont)))
-                            .addComponent(jLabelDni)
-                            .addComponent(jLabelTlf)
-                            .addComponent(jLabelFechaCont))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabelTlf)
+                                    .addComponent(campoTlf, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(errDni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addComponent(errTlf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(22, 22, 22)))
+                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelSalario)
+                            .addComponent(errFNac, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(errSalario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(campoSalario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31))
                     .addGroup(jPanelBotLayout.createSequentialGroup()
                         .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelBotLayout.createSequentialGroup()
-                                .addComponent(campoDni6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
+                                .addGap(27, 27, 27)
+                                .addComponent(botonAceptar)
+                                .addGap(63, 63, 63)
+                                .addComponent(botonLimpiar)
+                                .addGap(45, 45, 45)
+                                .addComponent(botonCancelar))
+                            .addComponent(jLabelPermisos)
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
                                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelNombre)
+                                    .addComponent(campoNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(errNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(66, 66, 66)
+                                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(errApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelApellidos)
+                                    .addComponent(campoApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelBotLayout.createSequentialGroup()
+                        .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanelBotLayout.createSequentialGroup()
+                                .addComponent(errPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(95, 95, 95)
+                                .addComponent(errVhEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelBotLayout.createSequentialGroup()
+                                .addComponent(campoPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(95, 95, 95)
+                                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabelVHEmpresa)
-                                    .addComponent(campoDni7, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabelPermisos))
-                        .addGap(0, 18, Short.MAX_VALUE))))
+                                    .addComponent(campoVHEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
         );
         jPanelBotLayout.setVerticalGroup(
             jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,45 +302,65 @@ public class JFEmpleAdd extends javax.swing.JFrame {
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(3, 3, 3)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(errNombre)
+                    .addComponent(errApellidos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDni)
                     .addComponent(jLabelFNac))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoFNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(campoFNac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(errFNac)
+                    .addComponent(errDni, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelTlf)
                     .addComponent(jLabelSalario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoTlf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(errTlf, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(errSalario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelFechaCont)
-                    .addComponent(jLabelFCont))
+                    .addComponent(jCheckBoxFFin)
+                    .addComponent(jLabelFechaCont))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoFCont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoFFinCont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(3, 3, 3)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(errFCont)
+                    .addComponent(errFFin))
+                .addGap(1, 1, 1)
                 .addComponent(jPanelLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelVHEmpresa, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelPermisos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(campoPermisos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoVHEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPermisos)
-                    .addComponent(jLabelVHEmpresa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(errPermisos)
+                    .addComponent(errVhEmpresa))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoDni6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoDni7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonReset)
+                    .addComponent(botonLimpiar)
                     .addComponent(botonCancelar)
-                    .addComponent(botonAceptar1))
+                    .addComponent(botonAceptar))
                 .addGap(14, 14, 14))
         );
 
@@ -301,7 +368,9 @@ public class JFEmpleAdd extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelBot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,17 +380,17 @@ public class JFEmpleAdd extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonResetActionPerformed
+    private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonResetActionPerformed
+    }//GEN-LAST:event_botonLimpiarActionPerformed
 
     private void campoApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoApellidosActionPerformed
 
-    private void botonAceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptar1ActionPerformed
+    private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_botonAceptar1ActionPerformed
+    }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void jRadioEncargadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioEncargadoActionPerformed
         // TODO add your handling code here:
@@ -378,34 +447,44 @@ public class JFEmpleAdd extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton botonAceptar1;
+    public javax.swing.JButton botonAceptar;
     public javax.swing.JButton botonCancelar;
-    public javax.swing.JButton botonReset;
+    public javax.swing.JButton botonLimpiar;
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
     public javax.swing.JTextField campoApellidos;
     public javax.swing.JTextField campoDni;
-    public javax.swing.JTextField campoDni6;
-    public javax.swing.JTextField campoDni7;
     public javax.swing.JTextField campoFCont;
     public javax.swing.JTextField campoFFinCont;
     public javax.swing.JTextField campoFNac;
     public javax.swing.JTextField campoNombre;
+    public javax.swing.JTextField campoPermisos;
     public javax.swing.JTextField campoSalario;
     public javax.swing.JTextField campoTlf;
+    public javax.swing.JTextField campoVHEmpresa;
+    public javax.swing.JLabel errApellidos;
+    public javax.swing.JLabel errDni;
+    public javax.swing.JLabel errFCont;
+    public javax.swing.JLabel errFFin;
+    public javax.swing.JLabel errFNac;
+    public javax.swing.JLabel errNombre;
+    public javax.swing.JLabel errPermisos;
+    public javax.swing.JLabel errSalario;
+    public javax.swing.JLabel errTlf;
+    public javax.swing.JLabel errVhEmpresa;
+    public javax.swing.JCheckBox jCheckBoxFFin;
     private javax.swing.JLabel jLabelApellidos;
     private javax.swing.JLabel jLabelDni;
-    private javax.swing.JLabel jLabelFCont;
     private javax.swing.JLabel jLabelFNac;
     private javax.swing.JLabel jLabelFechaCont;
     private javax.swing.JLabel jLabelNombre;
-    private javax.swing.JLabel jLabelPermisos;
+    public javax.swing.JLabel jLabelPermisos;
     private javax.swing.JLabel jLabelSalario;
     private javax.swing.JLabel jLabelTlf;
-    private javax.swing.JLabel jLabelVHEmpresa;
+    public javax.swing.JLabel jLabelVHEmpresa;
     private javax.swing.JPanel jPanelBot;
     private javax.swing.JPanel jPanelLista;
-    private javax.swing.JRadioButton jRadioEmpleado;
-    private javax.swing.JRadioButton jRadioEncargado;
-    private javax.swing.JRadioButton jRadioTractorista;
+    public javax.swing.JRadioButton jRadioEmpleado;
+    public javax.swing.JRadioButton jRadioEncargado;
+    public javax.swing.JRadioButton jRadioTractorista;
     // End of variables declaration//GEN-END:variables
 }

@@ -33,6 +33,10 @@ public class Encargado extends Trabajador{
         this.vhEmpresa = vhEmpresa;
     }
 
+    public String toString() {
+        return super.toString()+" - Encargado";
+    }
+
     
     
 }

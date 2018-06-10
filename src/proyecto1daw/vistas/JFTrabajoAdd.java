@@ -44,6 +44,12 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
         jSpinnerHoras = new javax.swing.JSpinner();
         jComboFinca = new javax.swing.JComboBox<>();
         jComboExp = new javax.swing.JComboBox<>();
+        errCuad = new javax.swing.JLabel();
+        errFecha = new javax.swing.JLabel();
+        errHoras = new javax.swing.JLabel();
+        errTarea = new javax.swing.JLabel();
+        errFinca = new javax.swing.JLabel();
+        errExplotacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Añadir trabajo");
@@ -90,13 +96,13 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
                 .addComponent(jLabelCuadrilla)
                 .addGap(24, 24, 24)
                 .addComponent(jLabelFecha)
-                .addGap(24, 24, 24)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelHoras)
                 .addGap(24, 24, 24)
                 .addComponent(jLabelTarea)
-                .addGap(24, 24, 24)
+                .addGap(33, 33, 33)
                 .addComponent(jLabelFinca)
-                .addGap(24, 24, 24)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelExplotacion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -122,6 +128,24 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
 
         jComboExp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        errCuad.setForeground(java.awt.Color.red);
+        errCuad.setText(" ");
+
+        errFecha.setForeground(java.awt.Color.red);
+        errFecha.setText(" ");
+
+        errHoras.setForeground(java.awt.Color.red);
+        errHoras.setText(" ");
+
+        errTarea.setForeground(java.awt.Color.red);
+        errTarea.setText(" ");
+
+        errFinca.setForeground(java.awt.Color.red);
+        errFinca.setText(" ");
+
+        errExplotacion.setForeground(java.awt.Color.red);
+        errExplotacion.setText(" ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -142,14 +166,24 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jSpinnerHoras, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(campoFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                                    .addComponent(jComboCuad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(campoFecha, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboCuad, javax.swing.GroupLayout.Alignment.LEADING, 0, 168, Short.MAX_VALUE))))
+                        .addGap(0, 67, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboFinca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboExp, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(errExplotacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(errFinca, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboExp, javax.swing.GroupLayout.Alignment.LEADING, 0, 205, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(errCuad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(errFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(errHoras, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(errTarea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jComboFinca, javax.swing.GroupLayout.Alignment.LEADING, 0, 204, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -157,17 +191,29 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jComboCuad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(2, 2, 2)
+                .addComponent(errCuad)
+                .addGap(2, 2, 2)
                 .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(5, 5, 5)
+                .addComponent(errFecha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(3, 3, 3)
+                .addComponent(errHoras)
+                .addGap(1, 1, 1)
                 .addComponent(campoTarea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(5, 5, 5)
+                .addComponent(errTarea)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboFinca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(2, 2, 2)
+                .addComponent(errFinca)
+                .addGap(2, 2, 2)
                 .addComponent(jComboExp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errExplotacion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
@@ -181,7 +227,8 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelIzq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,9 +306,15 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
     public javax.swing.JTextField campoFecha;
     public javax.swing.JTextField campoTarea;
-    private javax.swing.JComboBox<String> jComboCuad;
-    private javax.swing.JComboBox<String> jComboExp;
-    private javax.swing.JComboBox<String> jComboFinca;
+    public javax.swing.JLabel errCuad;
+    public javax.swing.JLabel errExplotacion;
+    public javax.swing.JLabel errFecha;
+    public javax.swing.JLabel errFinca;
+    public javax.swing.JLabel errHoras;
+    public javax.swing.JLabel errTarea;
+    public javax.swing.JComboBox<String> jComboCuad;
+    public javax.swing.JComboBox<String> jComboExp;
+    public javax.swing.JComboBox<String> jComboFinca;
     private javax.swing.JLabel jLabelCuadrilla;
     private javax.swing.JLabel jLabelExplotacion;
     private javax.swing.JLabel jLabelFecha;
@@ -270,6 +323,6 @@ public class JFTrabajoAdd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTarea;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelIzq;
-    private javax.swing.JSpinner jSpinnerHoras;
+    public javax.swing.JSpinner jSpinnerHoras;
     // End of variables declaration//GEN-END:variables
 }

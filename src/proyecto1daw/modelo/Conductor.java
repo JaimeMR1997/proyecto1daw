@@ -33,4 +33,7 @@ public class Conductor extends Trabajador{
         this.permisos = permisos;
     }
     
+    public String toString() {
+        return super.toString()+" - Conductor";
+    }
 }

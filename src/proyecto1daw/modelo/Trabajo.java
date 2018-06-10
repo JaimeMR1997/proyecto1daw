@@ -15,14 +15,14 @@ public class Trabajo {
    private String idCuadrilla;
    private LocalDate fecha;
    private int horas;
-   private String tipo;
+   private String tarea;
    private String idExplotacion;
 
     public Trabajo(String idCuadrilla, LocalDate fecha, int horas, String tipo, String idExplotacion) {
         this.idCuadrilla = idCuadrilla;
         this.fecha = fecha;
         this.horas = horas;
-        this.tipo = tipo;
+        this.tarea = tipo;
         this.idExplotacion = idExplotacion;
     }
    
@@ -57,12 +57,12 @@ public class Trabajo {
         this.horas = horas;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTarea() {
+        return tarea;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTarea(String tarea) {
+        this.tarea = tarea;
     }
 
     public String getIdExplotacion() {

@@ -303,14 +303,17 @@ public class JFEmpleados extends javax.swing.JFrame {
 
         jCheckBoxEmple.setBackground(new java.awt.Color(119, 182, 134));
         jCheckBoxEmple.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEmple.setSelected(true);
         jCheckBoxEmple.setText("Empleado");
 
         jCheckBoxTract.setBackground(new java.awt.Color(119, 182, 134));
         jCheckBoxTract.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxTract.setSelected(true);
         jCheckBoxTract.setText("Tractorista");
 
         jCheckBoxEnc.setBackground(new java.awt.Color(119, 182, 134));
         jCheckBoxEnc.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBoxEnc.setSelected(true);
         jCheckBoxEnc.setText("Encargado");
 
         jCheckBoxFinalizado.setBackground(new java.awt.Color(119, 182, 134));

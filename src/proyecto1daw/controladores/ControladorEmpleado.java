@@ -13,8 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Conductor;
 import proyecto1daw.modelo.Cuadrilla;
 import proyecto1daw.modelo.CuadrillaDAO;
+import proyecto1daw.modelo.Encargado;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.TrabajadorDAO;
@@ -53,6 +55,11 @@ public class ControladorEmpleado implements ActionListener{
         this.vistaTabla.botonAddTrab.addActionListener(this);
         this.vistaTabla.botonModTrab.addActionListener(this);
         this.vistaTabla.botonEliminarTrab.addActionListener(this);
+        //Añadir listenes a jcheckbox
+        this.vistaTabla.jCheckBoxEmple.addActionListener(this);
+        this.vistaTabla.jCheckBoxTract.addActionListener(this);
+        this.vistaTabla.jCheckBoxEnc.addActionListener(this);
+        this.vistaTabla.jCheckBoxFinalizado.addActionListener(this);
         //Modelos de tablas
         this.modTablaCuad = new DefaultTableModel();
         this.modTablaEmple = new DefaultTableModel();
@@ -63,6 +70,7 @@ public class ControladorEmpleado implements ActionListener{
         this.modTablaCuad.addColumn("Fecha inicio");
         this.modTablaCuad.addColumn("Último trabajo");
         //Añadir columnas Empleados
+        this.modTablaEmple.addColumn("Tipo");
         this.modTablaEmple.addColumn("DNI");
         this.modTablaEmple.addColumn("Nombre");
         this.modTablaEmple.addColumn("Apellidos");
@@ -97,8 +105,10 @@ public class ControladorEmpleado implements ActionListener{
             }else if(boton.equals(this.vistaTabla.botonAddCuad)){                   //AÑADIR CUADRILLA
                 abrirAddCuadrilla();
             }else if(boton.equals(this.vistaTabla.botonModCuad)){                   //MODIFICAR CUACRILLA
-                if(getSelFilaTrab()!= -1){
+                if(getSelFilaCuad()!= -1){
                     abrirModCuadrilla();   
+                }else{
+                    JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una cuadrilla", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
             }else if(boton.equals(this.vistaTabla.botonInfoCuad)){                  //INFORMACION CUADRILLA
                 System.out.println("EN DESARROLLO");
@@ -107,9 +117,8 @@ public class ControladorEmpleado implements ActionListener{
                     int confirmacion= JOptionPane.showConfirmDialog(vistaTabla, 
                             "¿Estás seguro de eliminar esta Cuadrilla y todos sus trabajos?");
                     eliminarCuadrilla(confirmacion);
-                }else{
-                    
                 }
+                
             }else if(boton.equals(this.vistaTabla.botonGestionarEmp)){              //GESTIONAR EMPLEADO
                 abrirVentanaAscenso();
             }else if(boton.equals(this.vistaTabla.botonAddEmp)){                    //AÑADIR EMPLEADO
@@ -142,16 +151,8 @@ public class ControladorEmpleado implements ActionListener{
                 volver();
             }
         }else if(ae.getSource() instanceof  JCheckBox){
-            JCheckBox checkbox = (JCheckBox) ae.getSource();
-            if(checkbox.equals(this.vistaTabla.jCheckBoxEmple)){                    //JCHECHBOX EMPLEADO
-                
-            }else if(checkbox.equals(this.vistaTabla.jCheckBoxTract)){              //JCHECHBOX TRACTORISTA
-                
-            }else if(checkbox.equals(this.vistaTabla.jCheckBoxEnc)){                //JCHECHBOX ENCARGADO
-                
-            }else if(checkbox.equals(this.vistaTabla.jCheckBoxFinalizado)){         //JCHECHBOX CONT FINALIZADOS
-                
-            }
+             //JCHECHBOX EMPLEADOS,ETC
+            cargarTablaEmple();
         }
     }
 
@@ -168,18 +169,25 @@ public class ControladorEmpleado implements ActionListener{
     }
     
     private void cargarTablaCuadrillas() {
+        modTablaCuad.setRowCount(0);
         ArrayList<Cuadrilla> listaCuad = this.modeloCuad.recuperarTodas();
         String fila[] = new String[4];
+        Trabajo t = null;
         for (Cuadrilla c : listaCuad) {
+            t = modeloCuad.recuperarUltTrabajo(c);
             fila[0]=c.getId();
-            fila[1]=""; //Encargado
+            fila[1]=modeloCuad.getDniEncargado(c); //Encargado
             fila[2]=Fechas.toString(c.getfInicio());
-            fila[3]="";//Ultimo trabajo
+            if(t != null){
+                fila[3]=t.getTarea()+" - "+t.getIdExplotacion();
+            }//Ultimo trabajo
             this.modTablaCuad.addRow(fila);
+            t = null;
         }
     }
 
     private void cargarTablaEmple() {
+        this.modTablaEmple.setRowCount(0);
         ArrayList<Trabajador> listaEmple = new ArrayList<>();
         if(isEmpleadoSelected()){
             listaEmple.addAll(modeloEmple.recuperarTrabajadores());
@@ -194,17 +202,31 @@ public class ControladorEmpleado implements ActionListener{
         String fila[] = new String[6];
         for (Trabajador t : listaEmple) {
             
+            String tipo = "";
+            if(t instanceof Conductor){
+                tipo= "Conductos";
+            }else if(t instanceof Encargado){
+                tipo = "Encargado";
+            }else{
+                tipo = "Empleado";
+            }
+            
             if(!isContFinSelected() && t.getfFin()!= null){
                 if(t.getfFin().isBefore(LocalDate.now())){
                     continue;//Se salta los empleados con contrato finalizado
                 }
             }
-            fila[0]=t.getDni();//dni
-            fila[1]=t.getNombre(); //nombre
-            fila[2]=t.getApellidos();//apellidos
-            fila[3]=t.getTlf();//tlf
-            fila[4]=Fechas.toString(t.getfContratacion());//f inicio
-            fila[5]=Fechas.toString(t.getfFin());//f fin
+            fila[0]=tipo;//tipo
+            fila[1]=t.getDni();//dni
+            fila[2]=t.getNombre(); //nombre
+            fila[3]=t.getApellidos();//apellidos
+            fila[4]=t.getTlf();//tlf
+            fila[5]=Fechas.toString(t.getfContratacion());//f inicio
+            if(t.getfFin() != null){                              //f fin
+                fila[5]=Fechas.toString(t.getfFin());
+            }else{
+                fila[5]=null;
+            }
             this.modTablaEmple.addRow(fila);
         }
     }
@@ -216,7 +238,7 @@ public class ControladorEmpleado implements ActionListener{
             fila[0]=trabajo.getIdCuadrilla(); //CUADRILLA
             fila[1]=Fechas.toString(trabajo.getFecha());//FECHA
             fila[2]=trabajo.getHoras()+"";//HORAS
-            fila[3]=trabajo.getTipo();//TIPO
+            fila[3]=trabajo.getTarea();//TIPO
             fila[4]=trabajo.getIdExplotacion();//EXPLOTACION
             this.modTablaTrabajos.addRow(fila);
         }
@@ -229,7 +251,7 @@ public class ControladorEmpleado implements ActionListener{
             fila[0]=trabajo.getIdCuadrilla(); //CUADRILLA
             fila[1]=Fechas.toString(trabajo.getFecha());//FECHA
             fila[2]=trabajo.getHoras()+"";//HORAS
-            fila[3]=trabajo.getTipo();//TIPO
+            fila[3]=trabajo.getTarea();//TIPO
             fila[4]=trabajo.getIdExplotacion();//EXPLOTACION
             this.modTablaTrabajos.addRow(fila);
         }
@@ -240,15 +262,21 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirAddTrabajo() {
-        
+        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(vistaTabla, modeloCuad, modeloEmple);
     }
 
     private void abrirModCuadrilla() {
-        
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(true,vistaTabla, modeloCuad);
     }
 
     private void eliminarCuadrilla(int confirmacion) {
-        
+        if(confirmacion == JOptionPane.YES_OPTION){
+            String idCuad = (String) vistaTabla.jTableCuadrilla.getValueAt(getSelFilaCuad(), 0);
+            if(modeloCuad.borrarCuadrilla(idCuad)){
+                JOptionPane.showMessageDialog(vistaTabla, "Cuadrilla eliminada correctamente");
+                cargarTablaCuadrillas();
+            }
+        }
     }
 
     private void abrirVentanaAscenso() {
@@ -256,7 +284,7 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirAddEmple() {
-        
+        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple);
     }
 
     private void eliminarTrabajador(int confirmacion) {
@@ -264,7 +292,7 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirModTrabajo() {
-        
+        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(vistaTabla, modeloCuad, modeloEmple, true);
     }
 
     private void eliminarTrabajo(int confirmacion) {
@@ -272,7 +300,7 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirModEmple() {
-        
+        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple, true);
     }
 
     private boolean isEmpleadoSelected() {
@@ -293,5 +321,6 @@ public class ControladorEmpleado implements ActionListener{
 
     private void volver() {
         ControladorInicio contInicio = new ControladorInicio(new JFInicio());
+        this.vistaTabla.dispose();
     }
 }

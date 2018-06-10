@@ -103,5 +103,10 @@ public class Trabajador {
         this.salario = salario;
     }
 
-        
+    @Override
+    public String toString() {
+        return dni+" - "+nombre + " " + apellidos;
+    }
+
+    
 }
