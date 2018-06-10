@@ -68,12 +68,42 @@ public class CuadrillaDAO {
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE FROM CUADRILLA WHERE ID_CUADRILLA = ?";
+        String consulta = "";
         try{
+            try{
+                consulta="DELETE FROM LIDERA WHERE ID_CUADRILLA=?";
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, id);
+                st.executeUpdate();
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Borrar Cuadrilla - asignacion encargado: "+e.getMessage());
+            }
+            
+            try{
+            consulta="DELETE FROM TRABAJA WHERE ID_CUADRILLA=?";
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
-            
             st.executeUpdate();
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Borrar Cuadrilla - trabajos cuadrilla: "+e.getMessage());
+            }
+            
+            try{
+            consulta="DELETE FROM FORMA WHERE ID_CUADRILLA=?";
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, id);
+            st.executeUpdate();
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Borrar Cuadrilla - asignaciones trabajadores: "+e.getMessage());
+            }
+            
+            consulta = "DELETE FROM CUADRILLA WHERE ID_CUADRILLA = ?";            
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, id);
+            st.executeUpdate();
+            
+            
+            
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Borrar cuadrilla: "+e.getMessage());
@@ -270,9 +300,10 @@ public class CuadrillaDAO {
         Cuadrilla cuad = null;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "SELECT * FROM CUADRILLA";
+        String consulta = "SELECT * FROM CUADRILLA WHERE ID_CUADRILLA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 LocalDate fCreacion = rs.getDate("F_CREACION").toLocalDate();
