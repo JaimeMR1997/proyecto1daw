@@ -49,8 +49,8 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
     private DefaultComboBoxModel modComboSubtipo;
     private Finca finca;
 
-    public ControladorExplotacion(ExplotacionDAO modeloExp, Finca finca) {
-        this.vistaTabla = new JFExplotacion();
+    public ControladorExplotacion(JFExplotacion vistaTabla, ExplotacionDAO modeloExp, Finca finca) {
+        this.vistaTabla = vistaTabla;
         this.vistaAdd = new JFExplotacionAdd();
         this.modeloExp = modeloExp;
         this.finca = finca;
@@ -253,7 +253,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
     private void abrirVentanaPlantaciones() {
         int filaSel = vistaTabla.jTableExplotaciones.getSelectedRow();
         String idExp = (String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
-        ControladorPlantacion contPlant = new ControladorPlantacion(idExp, finca);
+        ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(),idExp, finca);
         this.vistaTabla.dispose();
     }
 

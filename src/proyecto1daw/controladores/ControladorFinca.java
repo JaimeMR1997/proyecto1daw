@@ -22,6 +22,7 @@ import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.FincaDAO;
 import proyecto1daw.modelo.Finca;
+import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFFinca;
 import proyecto1daw.vistas.JFFincaAdd;
 import proyecto1daw.vistas.JFInicio;
@@ -163,7 +164,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         }
     }
 
-    private void abrirAdd() throws SecurityException {
+    private void abrirAdd() {
         //ABRIR AÑADIR
         //Llamar a ventanaAñadir
         this.vistaAdd.campoId.setEnabled(true);
@@ -229,7 +230,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         int fila = this.vistaTabla.jTableFincas.getSelectedRow();
         String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
         Finca finca = modeloFinca.recuperarPorId(idFinca);
-        ControladorExplotacion conExplotacion = new ControladorExplotacion(modeloExp, finca);
+        ControladorExplotacion conExplotacion = new ControladorExplotacion(new JFExplotacion(),modeloExp, finca);
         this.vistaTabla.dispose();
     }
 
@@ -392,6 +393,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
             vistaAdd.errId.setText("ID debe tener menos de 20 caracteres");
             res=false;
         }else{
+            String id = vistaAdd.campoId.getText();
+            for (int i = 0; i < id.length(); i++) {
+                //if(Character.)
+            }
             vistaAdd.errId.setText(" ");
         }
         return res;

@@ -26,6 +26,7 @@ import proyecto1daw.modelo.Plantacion;
 import proyecto1daw.modelo.PlantacionDAO;
 import proyecto1daw.modelo.Venta;
 import proyecto1daw.modelo.VentaDAO;
+import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFPlantacion;
 import proyecto1daw.vistas.JFPlantacionAdd;
 import proyecto1daw.vistas.JFVentaAdd;
@@ -37,7 +38,6 @@ import proyecto1daw.vistas.JFVentaAdd;
 public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private JFPlantacion vistaTabla;
-    private JFPlantacionAdd vistaAddPlant;
     private JFVentaAdd vistaAddVenta;
     private PlantacionDAO modeloPlant;
     private VentaDAO modeloVenta;
@@ -47,9 +47,8 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private String idExplotacion;
     private Finca finca;
 
-    public ControladorPlantacion(String idExplotacion,Finca finca) {
-        this.vistaTabla = new JFPlantacion();
-        this.vistaAddPlant = new JFPlantacionAdd();
+    public ControladorPlantacion(JFPlantacion vistaTabla,String idExplotacion,Finca finca) {
+        this.vistaTabla = vistaTabla;
         this.vistaAddVenta = new JFVentaAdd();
         this.modeloPlant = new PlantacionDAO();
         this.modeloVenta = new VentaDAO();
@@ -66,11 +65,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaTabla.botonBuscarPlant.addActionListener(this);
         this.vistaTabla.botonBuscarVenta.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
-
-        //Asociar listener a botones Añadir Plantacion
-        this.vistaAddPlant.botonAceptar.addActionListener(this);
-        this.vistaAddPlant.botonCancelar.addActionListener(this);
-        this.vistaAddPlant.jCheckBoxFFin.addActionListener(this);
 
         //Asociar listener a botones Añadir Venta
         this.vistaAddVenta.botonAceptar.addActionListener(this);
@@ -94,7 +88,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.modTablaVentas.addColumn("Fecha");
 
         //Rellenar tabla Plantaciones
-        this.rellenarTablaPlant(this.modeloPlant.recuperarPorExp(this.idExplotacion));
+        this.actualizarTablaPlant();
         this.vistaTabla.jTablePlantaciones.setModel(modTablaPlant);
         this.vistaTabla.jTableVentas.setModel(modTablaVentas);
         //Añadir listener raton a tabla Plantaciones
@@ -110,10 +104,8 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaAddVenta.jComboTam.setModel(opcsTam);
         
         //Mostar ventana
-        this.vistaAddPlant.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.vistaAddVenta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.vistaTabla.setLocationRelativeTo(null);
-        this.vistaAddPlant.setLocationRelativeTo(null);
         this.vistaAddVenta.setLocationRelativeTo(null);
         this.vistaTabla.jLabelExplotacion.setText(this.idExplotacion);
         this.vistaTabla.setVisible(true);
@@ -125,16 +117,15 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         if (ae.getSource() instanceof JButton) {
             boton = (JButton) ae.getSource();
             if (boton.equals(this.vistaTabla.botonAddPlant)) {                             //AÑADIR                           
-                this.vistaAddPlant.jLabelIdPlant.setText(generarIdPlant());
                 abrirAddPlant();
 
             } else if (boton.equals(this.vistaTabla.botonVolver)){                         //VOLVER
                 volver();
                 
             }else if (boton.equals(this.vistaTabla.botonModPlant)) {                       //ABRIR MOD PLANTACION
-                if (this.vistaTabla.jTablePlantaciones.getSelectedRow() != -1) {
+                if(this.vistaTabla.jTablePlantaciones.getSelectedRow() != -1){
                     abrirModPlant();
-                } else {
+                }else{
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                             + " una plantacion", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
@@ -161,13 +152,13 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             } else if (boton.equals(this.vistaTabla.botonModVenta)) {                       //ABRIR MODIFICAR VENTA
                 if (this.vistaTabla.jTableVentas.getSelectedRow() != -1) {
                     abrirModVenta();
-                    
                 } else {
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                             + " una venta primero", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else if (boton.equals(this.vistaTabla.botonEliminarVent)) {                   //ELIMINAR VENTA
+                
                 if (this.vistaTabla.jTableVentas.getSelectedRow() != -1) {
                     int confirmacion= JOptionPane.showConfirmDialog(vistaAddVenta, "¿Estás seguro de eliminar esta venta?");
                     eliminarVenta(confirmacion);
@@ -176,43 +167,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                         + "una venta", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else if (boton.equals(this.vistaAddPlant.botonAceptar)) {                    //PLANTACION ACEPTAR
-                if(validarDatosPlant()){
-                    Plantacion p = getPlantacion();
-                    
-                    //Comprobar si es mod o add
-                    if(boton.getText().equalsIgnoreCase("Aceptar")){                         //NUEVA PLANTACION
-                        if(modeloPlant.addPlantacion(p)){
-                            JOptionPane.showMessageDialog(vistaTabla, "Plantación"
-                                    + " añadida correctamente.");
-                            this.limpiarCamposAddPlant();
-                            this.vistaAddPlant.dispose();
-                            actualizarTablaPlant();
-                        }else{//error
-                            JOptionPane.showMessageDialog(vistaTabla, "Se ha prodcido"
-                                    + " un error al añadir la plantación.", "Error", 
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                        
-                    }else if(boton.getText().equalsIgnoreCase("Modificar")){                  //MODIFICAR PLANTACION
-                        
-                        String s = actualizarPlant(p);
-                        if(s.charAt(0) == 'E'){ //Ha habido error
-                            JOptionPane.showMessageDialog(vistaTabla, s, "Error", JOptionPane.ERROR_MESSAGE);
-                        }else{//Todo correcto
-                            JOptionPane.showMessageDialog(this.vistaTabla, "Plantacion"
-                                    + " modificada correctamente");
-                            this.limpiarCamposAddPlant();
-                            this.vistaAddPlant.dispose();
-                            actualizarTablaPlant();
-                        }
-                        
-                    }
-                }
-            } else if (boton.equals(this.vistaAddPlant.botonCancelar)) {                    //PLANTACION CANCELAR
-                limpiarCamposAddPlant();
-                this.vistaAddPlant.dispose();
-                
             } else if (boton.equals(this.vistaAddVenta.botonAceptar)) {                    //VENTA ACEPTAR
                 if(validarDatosVenta()){
                     String nomBoton = boton.getText();
@@ -239,10 +193,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                         }
                     }
                 }
-            } else if (boton.equals(this.vistaAddVenta.botonCancelar)) {                    //VENTA CANCELAR
-                limpiarCamposAddVenta();
-                this.vistaAddVenta.dispose();
-                
             }else if (boton.equals(this.vistaTabla.botonBuscarPlant)){                      //BUSCAR PLANTACION
                 buscarPlantacion();
                 
@@ -254,15 +204,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                     JOptionPane.showMessageDialog(vistaAddVenta, "Necesitas seleccionar una plantacion", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        } else if (ae.getSource() instanceof JCheckBox) {
-            checkbox = (JCheckBox) ae.getSource();
-            if (this.isFechaFinSelected()) {                  //Permitir Fecha Fin
-                if (checkbox.isSelected()) {
-                    this.vistaAddPlant.campoFechaFin.setEnabled(true);
-                } else {
-                    this.vistaAddPlant.campoFechaFin.setEnabled(false);
-                }
-            }//else if(checkbox.equals(this.vistaTabla.jCheckBoxTerm){}
         }
 
     }
@@ -294,27 +235,14 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
         this.modTablaVentas.setRowCount(0);
         this.modTablaPlant.setRowCount(0);
-        this.rellenarTablaPlant(modeloPlant.recuperarPorFecha(fInicio,fFin,idExplotacion));
+        this.actualizarTablaPlant();
     }
 
-    private void actualizarTablaVentas(Venta v) {
+    public void actualizarTablaVentas(Venta v) {
         this.limpiarCamposAddVenta();
         this.vistaAddVenta.dispose();
         vaciarTablaVentas();
         rellenarTablaVentas(modeloVenta.recuperarPorPlant(v.getIdPlantacion()));
-    }
-
-    private Plantacion getPlantacion() {
-        
-        String idPlant = this.vistaAddPlant.jLabelIdPlant.getText();
-        String tipo = this.vistaAddPlant.campoTipo.getText();
-        String variedad = this.vistaAddPlant.campoVariedad.getText();
-        String fPlantSt = this.vistaAddPlant.campoFPlant.getText();
-        LocalDate fPlant = Fechas.toLocalDate(fPlantSt);
-        String fFinSt = this.vistaAddPlant.campoFechaFin.getText();
-        LocalDate fFin = Fechas.toLocalDate(fFinSt);
-        Plantacion p = new Plantacion(idPlant, tipo, variedad, fPlant, fFin, idExplotacion);
-        return p;
     }
 
     private void eliminarVenta(int confirmacion) {
@@ -331,23 +259,10 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     }
 
     private void abrirModVenta() {
-        int filaSelVenta = this.vistaTabla.jTableVentas.getSelectedRow();
-        int filaSelPlant = this.vistaTabla.jTablePlantaciones.getSelectedRow();
-        String idVenta = (String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta, 0);
-        String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(filaSelPlant, 0);
-        String kg = (String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta, 1);
-        float precio = Float.parseFloat((String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta, 2));
-        String color = (String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta, 3);
-        String fecha = (String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta, 5);
-        //Cargar valores en campos
-        this.vistaAddVenta.jLabelIdVenta.setText(idVenta);
-        this.vistaAddVenta.jLabelIdPlant.setText(idPlant);
-        this.vistaAddVenta.jSpinnerKg.setValue(Integer.valueOf(kg));
-        this.vistaAddVenta.campoFecha.setText(fecha);
-        this.vistaAddVenta.campoColor.setText(modeloVenta.buscar(idVenta, idPlant, "COLOR"));
-        //Mostrar
-        this.vistaAddVenta.botonAceptar.setText("Modificar");
-        this.vistaAddVenta.setVisible(true);
+        int fila = vistaTabla.jTableVentas.getSelectedRow();
+        String idPlant = (String) vistaTabla.jTableVentas.getValueAt(fila, 0);
+        Plantacion plant = modeloPlant.recuperarPorId(idPlant);
+        //ControladorAddVenta contAddVenta = new ControladorAddPlant(vistaTabla, modeloPlant, idExplotacion, finca, plant);
     }
 
     private void abrirAddVenta() {
@@ -373,68 +288,25 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         }
     }
 
-    private void abrirModPlant() {
-        int filaSel = this.vistaTabla.jTablePlantaciones.getSelectedRow();
-        String idPlant = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 0);
-        String tipo = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 1);
-        String variedad = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 2);
-        String fPlant = (String)this.vistaTabla.jTablePlantaciones.getValueAt(filaSel, 3);
-        
-        this.vistaAddPlant.jLabelIdPlant.setText(idPlant);
-        this.vistaAddPlant.campoTipo.setText(tipo);
-        this.vistaAddPlant.campoVariedad.setText(variedad);
-        this.vistaAddPlant.campoFPlant.setText(fPlant);
-        this.vistaAddPlant.campoFechaFin.setEnabled(false);
-        this.vistaAddPlant.botonAceptar.setText("Modificar");
-        this.vistaAddPlant.setVisible(true);
-    }
-
     private void volver() {
-        //VOLVER
-        ControladorExplotacion contExp = new ControladorExplotacion(new ExplotacionDAO(), this.finca);
+        ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion(), new ExplotacionDAO(), this.finca);
         this.vistaTabla.dispose();
     }
 
     private void abrirAddPlant() {
-        //AÑADIR PLANTACION
-        this.vistaAddPlant.campoFechaFin.setEnabled(false);
-        this.vistaAddPlant.botonAceptar.setText("Aceptar");
-        this.vistaAddPlant.setVisible(true);
+        ControladorAddPlant contAddPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca);
+    }
+    
+    private void abrirModPlant() {
+        int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
+        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        Plantacion plant = modeloPlant.recuperarPorId(idPlant);
+        ControladorAddPlant contAddPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca, plant);
     }
 
-    private void actualizarTablaPlant() {
+    public void actualizarTablaPlant() {
         this.modTablaPlant.setRowCount(0);
-        this.rellenarTablaPlant(modeloPlant.recuperarPorExp(idExplotacion));
-    }
-
-    private String actualizarPlant(Plantacion p) {
-        String s = "Error:";
-        if(!modeloPlant.actualizarCampo(p.getId(), "TIPO", p.getTipo())){
-            s+="\nAl modificar el tipo";
-        }
-        if(!modeloPlant.actualizarCampo(p.getId(), "VARIEDAD", p.getVariedad())){
-            s+="\nAl modificar la variedad";
-        }
-        if(!modeloPlant.actualizarCampo(p.getId(), "F_INICIO", Fechas.toString(p.getfInicio()))){
-            s+="\nAl modificar la fecha de plant.";
-        }
-        if(isFechaFinSelected()){
-            if(!modeloPlant.actualizarCampo(p.getId(), "F_FIN", Fechas.toString(p.getfFin()))){
-                s+="\nAl modificar la fecha de fin";
-            }
-        }
-        
-        if(s.equals("Error:")){
-            s="Plantación actualizada correctamente.";
-        }
-        return s;
-    }
-
-    public boolean isFechaFinSelected() {
-        return this.vistaAddPlant.jCheckBoxFFin.isSelected();
-    }
-
-    private void rellenarTablaPlant(ArrayList<Plantacion> listaPlant) {
+        ArrayList<Plantacion> listaPlant = modeloPlant.recuperarPorExp(idExplotacion);
         String[] s = new String[5];
         for (Plantacion p : listaPlant) {
             s[0] = p.getId();
@@ -482,85 +354,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaAddVenta.errFecha.setText(" ");
         this.vistaAddVenta.errPrecio.setText(" ");
         this.vistaAddVenta.errTam.setText(" ");
-    }
-
-    private void limpiarCamposAddPlant() {
-        this.vistaAddPlant.jLabelIdPlant.setText("");//Está oculta siempre
-        this.vistaAddPlant.campoTipo.setText("");
-        this.vistaAddPlant.campoVariedad.setText("");
-        this.vistaAddPlant.campoFPlant.setText("");
-        this.vistaAddPlant.campoFechaFin.setText("");
-        this.vistaAddPlant.errTipo.setText(" ");
-        this.vistaAddPlant.errVariedad.setText(" ");
-        this.vistaAddPlant.errFPlant.setText(" ");
-        this.vistaAddPlant.errFFin.setText(" ");
-    }
-
-    private boolean validarDatosPlant() {
-        boolean res = true;
-        res = validarFPlant(res);
-        res = validarTipoPlant(res);
-        res = validarVariedadPlant(res);
-        res = validarFFinPlant(res);
-        return res;
-    }
-
-    private boolean validarFFinPlant(boolean res) {
-        if(this.isFechaFinSelected()){
-            if(this.vistaAddPlant.campoFechaFin.getText().equals("")){
-                res=false;
-                vistaAddPlant.errFFin.setText("Debes introducir uan fecha");
-                if(Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText()) == null){
-                    vistaAddPlant.errFFin.setText("Debe tener formato dd/mm/aaaa");
-                }else{
-                    vistaAddPlant.errFFin.setText(" ");
-                }
-            }
-        }
-        return res;
-    }
-
-    private boolean validarVariedadPlant(boolean res) {
-        if(this.vistaAddPlant.campoVariedad.getText().equals("")){
-            res=false;
-            vistaAddPlant.errVariedad.setText("La variedad es obligatoria");
-        }else{
-            vistaAddPlant.errVariedad.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarTipoPlant(boolean res) {
-        if(this.vistaAddPlant.campoTipo.getText().equals("")){
-            res=false;
-            vistaAddPlant.errTipo.setText("El tipo es obligatorio");
-        }else{
-            String tipo = this.vistaAddPlant.campoTipo.getText();
-            for (int i = 0; i < tipo.length(); i++) {
-                if(Character.isDigit(tipo.charAt(i))){
-                    res=false;
-                    vistaAddPlant.errTipo.setText("No puede contener números");
-                }
-            }
-            if(res){
-                vistaAddPlant.errTipo.setText(" ");
-            }
-        }
-        return res;
-    }
-
-    private boolean validarFPlant(boolean res) {
-        if(this.vistaAddPlant.campoFPlant.getText().equals("")){
-            res=false;
-            vistaAddPlant.errFPlant.setText("La fecha es obligatoria");
-        }else{
-            if(Fechas.toLocalDate(this.vistaAddPlant.campoFPlant.getText()) == null){
-                vistaAddPlant.errFPlant.setText("Debe ser formato dd/mm/aaaa");
-            }else{
-                vistaAddPlant.errFPlant.setText(" ");
-            }
-        }
-        return res;
     }
 
     private boolean validarDatosVenta() {
@@ -636,17 +429,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             }
         }
         return res;
-    }
-
-    private String generarIdPlant() {
-        String idPlant = null;
-        int num = modeloPlant.contarPlant(idExplotacion);
-        idPlant = idExplotacion+"-"+num;
-        while(modeloPlant.recuperarPorId(idPlant).size() > 0){
-            num++;
-            idPlant = idExplotacion+"-"+num;
-        }
-        return idPlant;
     }
 
     private String generarIdVenta() {

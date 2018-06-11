@@ -53,8 +53,8 @@ public class PlantacionDAO {
         return listaPlantaciones;
     }
     
-    public ArrayList<Plantacion> recuperarPorId(String idPlant){
-        ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
+    public Plantacion recuperarPorId(String idPlant){
+        Plantacion plant = null;
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
@@ -69,14 +69,14 @@ public class PlantacionDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 
-                listaPlantaciones.add(new Plantacion(rs.getString("ID_PLANT"), rs.getString("TIPO"), 
-                        rs.getString("VARIEDAD"), fInicio, fFin, rs.getString("ID_EXPLOTACION")));
+                plant =new Plantacion(rs.getString("ID_PLANT"), rs.getString("TIPO"), 
+                        rs.getString("VARIEDAD"), fInicio, fFin, rs.getString("ID_EXPLOTACION"));
             }
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta plantaciones por explotacion: "+e.getMessage());
         }
-        return listaPlantaciones;
+        return plant;
     }
     
     public ArrayList<Plantacion> recuperarPorExp(String idExp){
