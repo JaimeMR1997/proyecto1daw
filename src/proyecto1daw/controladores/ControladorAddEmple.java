@@ -19,6 +19,7 @@ import proyecto1daw.modelo.Encargado;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.TrabajadorDAO;
+import proyecto1daw.modelo.Tractor;
 import proyecto1daw.vistas.JFEmpleAdd;
 import proyecto1daw.vistas.JFEmpleados;
 
@@ -163,10 +164,15 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
 
     private boolean validarVhEmpresa(boolean res) {
         if(isEncargadoSelected() && (vistaAdd.campoVHEmpresa.getText() == null || vistaAdd.campoPermisos.getText().equals(""))){
-            res=false;
-            vistaAdd.errVhEmpresa.setText("Si no tiene vehiculo intorduce 'No'");
-        }else{
-            vistaAdd.errVhEmpresa.setText(" ");
+            vistaAdd.errVhEmpresa.setText("Si no tiene vehiculo dejalo en blanco");
+        }else if(isEncargadoSelected()){//Si hay texto
+            String m = vistaAdd.campoVHEmpresa.getText();
+            if(Tractor.validarMatriculaCoche(m)){
+                vistaAdd.errVhEmpresa.setText(" ");
+            }else{
+                vistaAdd.errVhEmpresa.setText("La matrícula debe ser NNNNLLL");
+                res=false;
+            }
         }
         return res;
     }

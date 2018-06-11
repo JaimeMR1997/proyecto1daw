@@ -55,7 +55,7 @@ public class Tractor {
         return calculoProxItv;
     }
 
-    public boolean validarMatricula(String m) {
+    public static boolean validarMatriculaTractor(String m) {
         boolean res = false;
         m=m.toUpperCase();
         m=m.trim();
@@ -106,6 +106,25 @@ public class Tractor {
                 }
             }
         }
+        return res;
+    }
+    
+    public static boolean validarMatriculaCoche(String m) {
+        boolean res = false;
+        m=m.toUpperCase();
+        m=m.trim();
+        if (m.length() == 7) {
+            for (int i = 0; i < 4; i++) {
+                if (!Character.isDigit(m.charAt(i))) {       //Comprobar que 4 primeros sean numeros
+                        res = false;
+                }
+            }
+            for (int i = 4; i < m.length(); i++) {
+                if (!Character.isLetter(m.charAt(i))) {       //Comprobar que 3 ultimos sean letras
+                        res = false;
+                }
+            }
+        } 
         return res;
     }
 

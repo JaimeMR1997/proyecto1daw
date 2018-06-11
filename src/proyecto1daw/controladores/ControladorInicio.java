@@ -8,6 +8,7 @@ package proyecto1daw.controladores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.FincaDAO;
 import proyecto1daw.vistas.JFEmpleados;
 import proyecto1daw.vistas.JFFinca;
@@ -38,10 +39,10 @@ public class ControladorInicio implements ActionListener{
         if(boton.equals(this.vista.jButtonTractores)){
             
         }else if(boton.equals(this.vista.jButtonFincas)){                       //VENTANA FINCAS
-            ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), new JFFincaAdd());
+            ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), new ExplotacionDAO());
             this.vista.dispose();
             
-        }else if(boton.equals(this.vista.jButtonTrabajadores)){
+        }else if(boton.equals(this.vista.jButtonTrabajadores)){                 //VENTANA TRABAJADORES
             ControladorEmpleado contEmp = new ControladorEmpleado(new JFEmpleados());
             this.vista.dispose();
             

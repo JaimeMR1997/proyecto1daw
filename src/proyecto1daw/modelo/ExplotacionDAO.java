@@ -120,4 +120,23 @@ public class ExplotacionDAO {
         return listaExplotaciones;
     }
     
+    public int contarPorFinca(String idFinca){
+        int n = 0;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT COUNT(*) FROM EXPLOTACION WHERE ID_FINCA = ?");
+            st.setString(1, idFinca);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                n=rs.getInt(1);
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Contar explotaciones por IdFinca: "+e.getMessage());
+            n=-1;
+        }
+        return n;
+    }
+    
 }

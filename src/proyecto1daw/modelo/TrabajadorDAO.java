@@ -54,7 +54,8 @@ public class TrabajadorDAO {
         return res;
     }
     
-    public void asignarEncargado(String dni,String idFinca,LocalDate fInicio){
+    public boolean asignarEncargado(String dni,String idFinca,LocalDate fInicio){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "INSERT INTO DIRIGE(DNI,F_INICIO,ID_FINCA) "
@@ -65,15 +66,19 @@ public class TrabajadorDAO {
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, dni);
+            st.setDate(2, Date.valueOf(fInicio));
+            st.setString(3, idFinca);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL.(Finca)Asignar encargado: "+e.getMessage());
+            System.out.println("Excepcion SQL.Asignar encargado: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
-    public void asignarFinca(String dni,String idFinca){
-        this.asignarEncargado(dni, idFinca,null);
+    public boolean asignarFinca(String dni,String idFinca){
+        return this.asignarEncargado(dni, idFinca,null);
     }
     
     public ArrayList<Trabajador> recuperarTodos(){
@@ -128,7 +133,7 @@ public class TrabajadorDAO {
         return listaConductores;
     }
     
-    public ArrayList<Encargado> recuperarEncargados(){         //Encargados
+    public ArrayList<Encargado> recuperarEncargados(){         //Encargados incluidos contrato finalizado
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
         try{
             Conexion c = new Conexion();
@@ -138,13 +143,40 @@ public class TrabajadorDAO {
             while(rs.next()){
                 LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
                 LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
                 listaEncargados.add(new Encargado(rs.getString("VH_EMPRESA"),rs.getString("DNI"), rs.getString("NOMBRE"),
                         rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
             }
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta todas los encargados: "+e.getMessage());
+        }
+        return listaEncargados;
+    }
+    
+    public ArrayList<Encargado> recuperarEncargadosVigentes(){         //Encargados con contrato
+        ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM ENCARGADO WHERE F_FIN >= SYSDATE OR F_FIN IS NULL");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                listaEncargados.add(new Encargado(rs.getString("VH_EMPRESA"),rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta encargados cont vigente: "+e.getMessage());
         }
         return listaEncargados;
     }
@@ -219,7 +251,11 @@ public class TrabajadorDAO {
             st.setString(3, enc.getApellidos());
             st.setDate(4, Date.valueOf(enc.getfNacimiento()));
             st.setDate(5, Date.valueOf(enc.getfContratacion()));
-            st.setDate(6, Date.valueOf(enc.getfFin()));
+            Date fFin = null;
+            if(enc.getfFin() != null){
+                fFin = Date.valueOf(enc.getfFin());
+            }
+            st.setDate(6, fFin);
             st.setString(7, enc.getTlf());
             st.setInt(8, enc.getSalario());
             st.setString(9, enc.getVhEmpresa());
@@ -281,5 +317,87 @@ public class TrabajadorDAO {
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar conductor: "+e.getMessage());
         }
+    }
+
+    public ArrayList<Encargado> recuperarEncargadosLibres() {
+        ArrayList<Encargado> listaEncargados = this.recuperarEncargadosVigentes();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            
+            //Encargados asignados a una cuadrilla sin fecha de fin o posterior a hoy
+            String consulta = "SELECT * FROM ENCARGADO WHERE DNI = "
+                    + "(SELECT DNI FROM LIDERA WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            ResultSet rs = st.executeQuery();
+            
+            ArrayList<Encargado> listaRestar = new ArrayList<Encargado>();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                listaRestar.add(new Encargado(rs.getString("VH_EMPRESA"),rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
+            }
+            
+            //Restamos los que si estan asignados a nuestra lista con todos los
+            //encargados para ir quedandonos solo con los libres
+            listaEncargados.removeAll(listaRestar);
+            listaRestar.clear();
+            
+            consulta = "SELECT * FROM ENCARGADO WHERE DNI = (SELECT DNI FROM DIRIGE WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            st = accesoBD.prepareStatement(consulta);
+            rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                listaRestar.add(new Encargado(rs.getString("VH_EMPRESA"),rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
+            }
+            
+            //Restamos los que si estan asignados a nuestra lista con todos los
+            //encargados para ir quedandonos solo con los libres
+            listaEncargados.removeAll(listaRestar);
+            listaRestar.clear();
+            
+            //Ya solo estarian los libres y con contrato vigente
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta encargados libres: "+e.getMessage());
+        }
+        return listaEncargados;
+    }
+
+    public boolean finAsignacionFinca(String dni, String idFinca,LocalDate fFin) {
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "UPDATE DIRIGE SET F_FIN= ? WHERE DNI=? AND ID_FINCA = ?";
+        if(fFin==null){
+            fFin=LocalDate.now(); //Para cuando se asigna el encargado al crear una nueva finca
+        }
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setDate(1, Date.valueOf(fFin));
+            st.setString(2, dni);
+            st.setString(3, idFinca);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL.(Finca)Fin asignacion encargado: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+    
+    public boolean finAsignacionFinca(String dni, String idFinca) {
+        return this.finAsignacionFinca(dni, idFinca, null);
     }
 }

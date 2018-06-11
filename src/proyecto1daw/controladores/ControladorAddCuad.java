@@ -85,6 +85,11 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         if(cuadrilla.getfFin() != null){
             this.vistaAdd.campoFFin.setText(Fechas.toString(cuadrilla.getfFin()));
         }
+        this.vistaAdd.jRadioEmpleado.setEnabled(false);
+        this.vistaAdd.jRadioTractorista.setEnabled(false);
+        this.vistaAdd.jRadioEncargado.setEnabled(false);
+        this.vistaAdd.jList.setEnabled(false);
+        
     }
     
     

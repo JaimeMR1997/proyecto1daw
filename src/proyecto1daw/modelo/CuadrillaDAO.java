@@ -40,6 +40,29 @@ public class CuadrillaDAO {
         return listaCuadrillas;
     }
     
+    public Cuadrilla recuperarPorId(String idCuad){
+        Cuadrilla cuad = null;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM CUADRILLA WHERE ID_CUADRILLA = ?");
+            st.setString(1, idCuad);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fCreacion = rs.getDate("F_CREACION").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                cuad =new Cuadrilla(rs.getString(1), fCreacion, fFin);
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta todas las cuadrillas: "+e.getMessage());
+        }
+        return cuad;
+    }
+    
     public boolean addCuadrilla(Cuadrilla cuad){
         boolean res = true;
         Conexion c = new Conexion();

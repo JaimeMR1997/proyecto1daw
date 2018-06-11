@@ -37,7 +37,6 @@ public class JFExplotacion extends javax.swing.JFrame {
         botonGestionar = new javax.swing.JButton();
         botonAdd = new javax.swing.JButton();
         botonMod = new javax.swing.JButton();
-        botonInfo = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -170,12 +169,6 @@ public class JFExplotacion extends javax.swing.JFrame {
         botonMod.setBorderPainted(false);
         botonMod.setContentAreaFilled(false);
 
-        botonInfo.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfo.setText("Información");
-        botonInfo.setBorderPainted(false);
-        botonInfo.setContentAreaFilled(false);
-
         botonEliminar.setForeground(new java.awt.Color(255, 255, 255));
         botonEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
         botonEliminar.setText("Eliminar");
@@ -187,17 +180,15 @@ public class JFExplotacion extends javax.swing.JFrame {
         jPanelBotLayout.setHorizontalGroup(
             jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(114, 114, 114)
                 .addComponent(botonGestionar)
-                .addGap(79, 79, 79)
+                .addGap(115, 115, 115)
                 .addComponent(botonAdd)
-                .addGap(80, 80, 80)
+                .addGap(116, 116, 116)
                 .addComponent(botonMod)
-                .addGap(79, 79, 79)
-                .addComponent(botonInfo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                 .addComponent(botonEliminar)
-                .addGap(89, 89, 89))
+                .addGap(113, 113, 113))
         );
         jPanelBotLayout.setVerticalGroup(
             jPanelBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,7 +198,6 @@ public class JFExplotacion extends javax.swing.JFrame {
                     .addComponent(botonGestionar)
                     .addComponent(botonAdd)
                     .addComponent(botonMod)
-                    .addComponent(botonInfo)
                     .addComponent(botonEliminar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -284,7 +274,6 @@ public class JFExplotacion extends javax.swing.JFrame {
     public javax.swing.JButton botonAdd;
     public javax.swing.JButton botonEliminar;
     public javax.swing.JButton botonGestionar;
-    public javax.swing.JButton botonInfo;
     public javax.swing.JButton botonMod;
     public javax.swing.JButton botonVolver;
     public javax.swing.JLabel jLabelFincaId;

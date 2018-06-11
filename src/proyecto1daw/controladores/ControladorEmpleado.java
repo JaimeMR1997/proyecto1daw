@@ -45,12 +45,11 @@ public class ControladorEmpleado implements ActionListener{
         this.vistaTabla.botonGestionarCuad.addActionListener(this);
         this.vistaTabla.botonAddCuad.addActionListener(this);
         this.vistaTabla.botonModCuad.addActionListener(this);
-        this.vistaTabla.botonInfoCuad.addActionListener(this);
         this.vistaTabla.botonEliminarCuad.addActionListener(this);
         this.vistaTabla.botonGestionarEmp.addActionListener(this);
         this.vistaTabla.botonAddEmp.addActionListener(this);
         this.vistaTabla.botonModEmp.addActionListener(this);
-        this.vistaTabla.botonInfoEmp.addActionListener(this);
+        this.vistaTabla.botonBuscarEmp.addActionListener(this);
         this.vistaTabla.botonEliminarEmp.addActionListener(this);
         this.vistaTabla.botonAddTrab.addActionListener(this);
         this.vistaTabla.botonModTrab.addActionListener(this);
@@ -110,8 +109,6 @@ public class ControladorEmpleado implements ActionListener{
                 }else{
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una cuadrilla", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
-            }else if(boton.equals(this.vistaTabla.botonInfoCuad)){                  //INFORMACION CUADRILLA
-                System.out.println("EN DESARROLLO");
             }else if(boton.equals(this.vistaTabla.botonEliminarCuad)){              //ELIMINAR CUADRILLA
                 if(getSelFilaCuad() != -1){
                     int confirmacion= JOptionPane.showConfirmDialog(vistaTabla, 
@@ -127,7 +124,7 @@ public class ControladorEmpleado implements ActionListener{
                 if(getSelFilaTrab()!= -1){
                     abrirModEmple();   
                 }
-            }else if(boton.equals(this.vistaTabla.botonInfoEmp)){                   //INFORMACION EMPLEADO
+            }else if(boton.equals(this.vistaTabla.botonBuscarEmp)){                   //INFORMACION EMPLEADO
                 System.out.println("EN DESARROLLO");
             }else if(boton.equals(this.vistaTabla.botonEliminarEmp)){               //ELIMINAR EMPLEADO
                 if(getSelFilaEmple()!= -1){
@@ -258,7 +255,7 @@ public class ControladorEmpleado implements ActionListener{
     }
     
     private void abrirAddCuadrilla() {
-        ControladorAddCuad contAddCuad = new ControladorAddCuad(false, vistaTabla,modeloCuad);
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(vistaTabla,modeloCuad);
     }
 
     private void abrirAddTrabajo() {
@@ -266,7 +263,9 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirModCuadrilla() {
-        ControladorAddCuad contAddCuad = new ControladorAddCuad(true,vistaTabla, modeloCuad);
+        String idCuad = (String) this.vistaTabla.jTableCuadrilla.getValueAt(getSelFilaCuad(), 0);
+        Cuadrilla cuad = modeloCuad.recuperarPorId(idCuad);
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(cuad, vistaTabla, modeloCuad);
     }
 
     private void eliminarCuadrilla(int confirmacion) {

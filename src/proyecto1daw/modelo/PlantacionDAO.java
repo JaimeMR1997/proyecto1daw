@@ -176,10 +176,12 @@ public class PlantacionDAO {
         String consulta = "UPDATE PLANTACION SET "+campo+"=? WHERE ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
+            
             st.setString(1, nuevoValor);
             st.setString(2, id);
             
             st.executeUpdate();
+            
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar plantacion: "+e.getMessage());

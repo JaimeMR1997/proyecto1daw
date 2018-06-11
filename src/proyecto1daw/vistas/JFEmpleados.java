@@ -39,7 +39,6 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonGestionarCuad = new javax.swing.JButton();
         botonAddCuad = new javax.swing.JButton();
         botonModCuad = new javax.swing.JButton();
-        botonInfoCuad = new javax.swing.JButton();
         botonEliminarCuad = new javax.swing.JButton();
         jPanelEmpleados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -48,7 +47,7 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonGestionarEmp = new javax.swing.JButton();
         botonAddEmp = new javax.swing.JButton();
         botonModEmp = new javax.swing.JButton();
-        botonInfoEmp = new javax.swing.JButton();
+        botonBuscarEmp = new javax.swing.JButton();
         botonEliminarEmp = new javax.swing.JButton();
         jCheckBoxEmple = new javax.swing.JCheckBox();
         jCheckBoxTract = new javax.swing.JCheckBox();
@@ -151,12 +150,6 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonModCuad.setBorderPainted(false);
         botonModCuad.setContentAreaFilled(false);
 
-        botonInfoCuad.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfoCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfoCuad.setText("Información");
-        botonInfoCuad.setBorderPainted(false);
-        botonInfoCuad.setContentAreaFilled(false);
-
         botonEliminarCuad.setForeground(new java.awt.Color(255, 255, 255));
         botonEliminarCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
         botonEliminarCuad.setText("Eliminar");
@@ -168,15 +161,13 @@ public class JFEmpleados extends javax.swing.JFrame {
         jPanelBot2Layout.setHorizontalGroup(
             jPanelBot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBot2Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
+                .addGap(90, 90, 90)
                 .addComponent(botonGestionarCuad)
-                .addGap(70, 70, 70)
+                .addGap(118, 118, 118)
                 .addComponent(botonAddCuad)
-                .addGap(71, 71, 71)
+                .addGap(116, 116, 116)
                 .addComponent(botonModCuad)
-                .addGap(70, 70, 70)
-                .addComponent(botonInfoCuad)
-                .addGap(18, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
                 .addComponent(botonEliminarCuad)
                 .addGap(89, 89, 89))
         );
@@ -188,7 +179,6 @@ public class JFEmpleados extends javax.swing.JFrame {
                     .addComponent(botonGestionarCuad)
                     .addComponent(botonAddCuad)
                     .addComponent(botonModCuad)
-                    .addComponent(botonInfoCuad)
                     .addComponent(botonEliminarCuad))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -198,10 +188,9 @@ public class JFEmpleados extends javax.swing.JFrame {
         jPanelCuadrillaLayout.setHorizontalGroup(
             jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCuadrillaLayout.createSequentialGroup()
-                .addGroup(jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelBot2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 946, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 946, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+            .addComponent(jPanelBot2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelCuadrillaLayout.setVerticalGroup(
             jPanelCuadrillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +221,7 @@ public class JFEmpleados extends javax.swing.JFrame {
         jPanelBot.setToolTipText("");
 
         botonGestionarEmp.setForeground(new java.awt.Color(255, 255, 255));
-        botonGestionarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_gest.png"))); // NOI18N
+        botonGestionarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_ascender.png"))); // NOI18N
         botonGestionarEmp.setText("Ascender");
         botonGestionarEmp.setBorderPainted(false);
         botonGestionarEmp.setContentAreaFilled(false);
@@ -259,11 +248,11 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonModEmp.setBorderPainted(false);
         botonModEmp.setContentAreaFilled(false);
 
-        botonInfoEmp.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfoEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfoEmp.setText("Información");
-        botonInfoEmp.setBorderPainted(false);
-        botonInfoEmp.setContentAreaFilled(false);
+        botonBuscarEmp.setForeground(new java.awt.Color(255, 255, 255));
+        botonBuscarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_buscar.png"))); // NOI18N
+        botonBuscarEmp.setText("Buscar");
+        botonBuscarEmp.setBorderPainted(false);
+        botonBuscarEmp.setContentAreaFilled(false);
 
         botonEliminarEmp.setForeground(new java.awt.Color(255, 255, 255));
         botonEliminarEmp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
@@ -283,7 +272,7 @@ public class JFEmpleados extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addComponent(botonModEmp)
                 .addGap(70, 70, 70)
-                .addComponent(botonInfoEmp)
+                .addComponent(botonBuscarEmp)
                 .addGap(18, 69, Short.MAX_VALUE)
                 .addComponent(botonEliminarEmp)
                 .addGap(89, 89, 89))
@@ -296,7 +285,7 @@ public class JFEmpleados extends javax.swing.JFrame {
                     .addComponent(botonGestionarEmp)
                     .addComponent(botonAddEmp)
                     .addComponent(botonModEmp)
-                    .addComponent(botonInfoEmp)
+                    .addComponent(botonBuscarEmp)
                     .addComponent(botonEliminarEmp))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -528,13 +517,12 @@ public class JFEmpleados extends javax.swing.JFrame {
     public javax.swing.JButton botonAddCuad;
     public javax.swing.JButton botonAddEmp;
     public javax.swing.JButton botonAddTrab;
+    public javax.swing.JButton botonBuscarEmp;
     public javax.swing.JButton botonEliminarCuad;
     public javax.swing.JButton botonEliminarEmp;
     public javax.swing.JButton botonEliminarTrab;
     public javax.swing.JButton botonGestionarCuad;
     public javax.swing.JButton botonGestionarEmp;
-    public javax.swing.JButton botonInfoCuad;
-    public javax.swing.JButton botonInfoEmp;
     public javax.swing.JButton botonModCuad;
     public javax.swing.JButton botonModEmp;
     public javax.swing.JButton botonModTrab;

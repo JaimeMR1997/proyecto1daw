@@ -8,6 +8,8 @@ package proyecto1daw.controladores;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
@@ -37,7 +39,7 @@ import proyecto1daw.vistas.JFPlantacion;
  *
  * @author Jaime
  */
-public class ControladorExplotacion implements ActionListener, MouseListener {
+public class ControladorExplotacion implements ActionListener, MouseListener,FocusListener {
 
     private JFExplotacion vistaTabla;
     private JFExplotacionAdd vistaAdd;
@@ -45,21 +47,18 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
     private DefaultTableModel modTabla;
     private DefaultComboBoxModel modComboTipo;
     private DefaultComboBoxModel modComboSubtipo;
-    private String fincaId;
+    private Finca finca;
 
-    public ControladorExplotacion(JFExplotacion vistaTabla, ExplotacionDAO modeloExp, JFExplotacionAdd vistaAdd, String fincaId) {
-        this.vistaTabla = vistaTabla;
-        this.vistaAdd = vistaAdd;
+    public ControladorExplotacion(ExplotacionDAO modeloExp, Finca finca) {
+        this.vistaTabla = new JFExplotacion();
+        this.vistaAdd = new JFExplotacionAdd();
         this.modeloExp = modeloExp;
-
-        //Buscar finca
-        this.fincaId = fincaId;
+        this.finca = finca;
 
         //Asociar actionListener VentanaTabla
         this.vistaTabla.botonAdd.addActionListener(this);
         this.vistaTabla.botonEliminar.addActionListener(this);
         this.vistaTabla.botonGestionar.addActionListener(this);
-        this.vistaTabla.botonInfo.addActionListener(this);
         this.vistaTabla.botonMod.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
 
@@ -79,7 +78,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         this.modTabla.addColumn("Tipo");
         this.modTabla.addColumn("Superficie");
         this.modTabla.addColumn("Fecha Creación");
-        this.rellenarTabla(this.modeloExp.recuperarPorFinca(fincaId));
+        this.rellenarTabla(this.modeloExp.recuperarPorFinca(this.finca.getId()));
         this.vistaTabla.jTableExplotaciones.setModel(modTabla);
 
         //Cargar opciones tipo Explotacion
@@ -96,7 +95,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         this.vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.vistaTabla.setLocationRelativeTo(null);
         this.vistaAdd.setLocationRelativeTo(null);
-        this.vistaTabla.jLabelFincaId.setText("Finca - " + fincaId);
+        this.vistaTabla.jLabelFincaId.setText("Finca - " + finca.getId());
         this.limpiarCamposAdd();
         this.vistaTabla.setVisible(true);
     }
@@ -105,7 +104,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         if (ae.getSource() instanceof JButton) {
             JButton boton = (JButton) ae.getSource();
 
-            if (boton.equals(this.vistaTabla.botonAdd)) {
+            if (boton.equals(this.vistaTabla.botonAdd)) {                           //ABRIR ADD
                 abrirAdd();
                 
             } else if (boton.equals(this.vistaTabla.botonEliminar)) {                  //ELIMINAR
@@ -124,12 +123,9 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
                             + " una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else if (boton.equals(this.vistaTabla.botonInfo)) {                      //INFORMACION
-                System.out.println("En desarrollo");
-                
             } else if (boton.equals(this.vistaTabla.botonMod)) {                       //MODIFICAR
                 if (this.vistaTabla.jTableExplotaciones.getSelectedRow() != -1) {
-                    modificarExp();
+                    abrirModExp();
                 } else {
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                             + " una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -179,7 +175,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         this.limpiarCamposAdd();
         this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
-        this.rellenarTabla(modeloExp.recuperarPorFinca(fincaId));
+        this.rellenarTabla(modeloExp.recuperarPorFinca(finca.getId()));
     }
 
     private Explotacion getExplotacion() throws NumberFormatException {
@@ -190,17 +186,17 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         String tipo = (String) this.vistaAdd.jComboBoxTipo.getSelectedItem();
         tipo = tipo + " " + (String) this.vistaAdd.jComboBoxSubtipo.getSelectedItem();
         LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
-        Explotacion exp = new Explotacion(id, superficie, tipo, fCreacion, null, fincaId);
+        Explotacion exp = new Explotacion(id, superficie, tipo, fCreacion, null, finca.getId());
         return exp;
     }
 
     private void volver() {
         //VOLVER
-        ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), new JFFincaAdd());
+        ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), modeloExp);
         this.vistaTabla.dispose();
     }
 
-    private void modificarExp() {
+    private void abrirModExp() {
         int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
         String idExp = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
         String superficie = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 3);
@@ -209,7 +205,10 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         this.vistaAdd.campoId.setText(idExp);
         this.vistaAdd.campoSuperficie.setText(superficie);
         this.vistaAdd.campoFechaC.setText(fechaC);
-        this.vistaAdd.campoIdFinca.setText(fincaId);
+        this.vistaAdd.campoIdFinca.setText(finca.getId());
+        
+        this.vistaAdd.jComboBoxTipo.setSelectedItem(getTipo());
+        this.vistaAdd.jComboBoxSubtipo.setSelectedItem(getSubtipo());
         
         this.vistaAdd.botonAceptar.setText("Modificar");
         this.vistaAdd.setVisible(true);
@@ -225,12 +224,10 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         }
     }
 
-    private void abrirAdd() throws SecurityException {
-        //AÑADIR
-        //Llamar a ventanaAñadir
+    private void abrirAdd(){
         vistaAdd.botonAceptar.setText("Aceptar");
         this.vistaAdd.campoId.setText(this.generarIdExplotacion());
-        this.vistaAdd.campoIdFinca.setText(fincaId);
+        this.vistaAdd.campoIdFinca.setText(finca.getId());
 
         vistaAdd.setVisible(true);
         vistaAdd.setAlwaysOnTop(true);
@@ -239,7 +236,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
     private void abrirVentanaPlantaciones() {
         int filaSel = vistaTabla.jTableExplotaciones.getSelectedRow();
         String idExp = (String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
-        ControladorPlantacion contPlant = new ControladorPlantacion(new JFPlantacion(), new PlantacionDAO(), new VentaDAO(), idExp, fincaId);
+        ControladorPlantacion contPlant = new ControladorPlantacion(idExp, finca);
         this.vistaTabla.dispose();
     }
 
@@ -263,22 +260,38 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
 
     private boolean validarDatosAdd() {
         boolean res = true;
+        res = validarSuperficie(res);
+        if (this.vistaAdd.campoFechaC.getText().equals("")) {
+            res = false;
+            this.vistaAdd.errFCreacion.setText("La fecha es obligatoria");
+        }else if(Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText()) != null){
+            LocalDate fecha = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
+        }
+        if (this.vistaAdd.jComboBoxTipo.getSelectedIndex() == -1) {
+            res = false;
+            this.vistaAdd.errTipo.setText("Debes elegir un tipo");
+        }
+        if (this.vistaAdd.jComboBoxSubtipo.getSelectedIndex() == -1) {
+            res = false;
+            this.vistaAdd.errTipo.setText("Debes elegir un tipo y un subtipo");
+        }
+        return res;
+    }
+
+    private boolean validarSuperficie(boolean res) {
         if (this.vistaAdd.campoSuperficie.getText().equals("")) {
             res = false;
-            this.vistaAdd.jLabelErrSup.setVisible(true);
-        } else if (this.vistaAdd.campoFechaC.getText().equals("")) {
-            res = false;
-            this.vistaAdd.jLabelErrFCreacion.setVisible(true);
-        } else if (this.vistaAdd.jComboBoxTipo.getSelectedIndex() == -1) {
-            res = false;
-            this.vistaAdd.jLabelErrTipo.setVisible(true);
-        } else if (this.vistaAdd.jComboBoxSubtipo.getSelectedIndex() == -1) {
-            res = false;
-            this.vistaAdd.jLabelErrTipo.setVisible(true);
-        } else {
-            this.vistaAdd.jLabelErrSup.setVisible(false);
-            this.vistaAdd.jLabelErrFCreacion.setVisible(false);
-            this.vistaAdd.jLabelErrTipo.setVisible(false);
+            this.vistaAdd.errSuperficie.setText("La superficie es obligatoria");
+        }else{
+            try{
+                Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
+            }catch(NumberFormatException e){
+                res=false;
+                this.vistaAdd.errSuperficie.setText("Debe ser un entero");
+            }
+            if(res){
+                this.vistaAdd.errSuperficie.setText(" ");
+            }
         }
         return res;
     }
@@ -290,14 +303,11 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
         this.vistaAdd.campoId.setText("");
         this.vistaAdd.jComboBoxTipo.setSelectedIndex(-1);
         this.vistaAdd.jComboBoxSubtipo.setSelectedIndex(-1);
-        this.vistaAdd.jLabelErrSup.setVisible(false);
-        this.vistaAdd.jLabelErrFCreacion.setVisible(false);
-        this.vistaAdd.jLabelErrTipo.setVisible(false);
     }
 
     private String generarIdExplotacion() {
-        String id = this.fincaId + "-";
-        int num = modeloExp.recuperarPorFinca(fincaId).size() + 1; //Obtiene numero de explotacion
+        String id = this.finca.getId() + "-";
+        int num = modeloExp.recuperarPorFinca(finca.getId()).size() + 1; //Obtiene numero de explotacion
         id += Integer.toString(num);
         return id;
     }
@@ -365,5 +375,31 @@ public class ControladorExplotacion implements ActionListener, MouseListener {
 
     public void mouseExited(MouseEvent me) {
 
+    }
+
+    public void focusGained(FocusEvent fe) {
+        
+    }
+
+    public void focusLost(FocusEvent fe) {
+        if(fe.getSource().equals(vistaAdd.campoSuperficie)){
+            validarSuperficie(true);
+        }else if(fe.getSource().equals(vistaAdd.campoFechaC)){
+            
+        }
+    }
+
+    private Object getTipo() {
+        int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
+        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 2);
+        s=s.substring(0, s.indexOf(" "));
+        return s;
+    }
+
+    private Object getSubtipo() {
+        int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
+        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 2);
+        s=s.substring(s.indexOf(" ")+1);
+        return s;
     }
 }

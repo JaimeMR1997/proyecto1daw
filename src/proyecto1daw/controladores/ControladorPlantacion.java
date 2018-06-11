@@ -19,15 +19,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
+import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.Plantacion;
 import proyecto1daw.modelo.PlantacionDAO;
 import proyecto1daw.modelo.Venta;
 import proyecto1daw.modelo.VentaDAO;
-import proyecto1daw.vistas.JFExplotacion;
-import proyecto1daw.vistas.JFExplotacionAdd;
 import proyecto1daw.vistas.JFPlantacion;
 import proyecto1daw.vistas.JFPlantacionAdd;
 import proyecto1daw.vistas.JFVentaAdd;
@@ -47,17 +45,17 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private DefaultTableModel modTablaVentas;
     private DefaultComboBoxModel opcsTam;
     private String idExplotacion;
-    private String idFinca;
+    private Finca finca;
 
-    public ControladorPlantacion(JFPlantacion vistaTabla, PlantacionDAO modeloPlant, VentaDAO modeloVenta, String idExplotacion,String idFinca) {
-        this.vistaTabla = vistaTabla;
+    public ControladorPlantacion(String idExplotacion,Finca finca) {
+        this.vistaTabla = new JFPlantacion();
         this.vistaAddPlant = new JFPlantacionAdd();
         this.vistaAddVenta = new JFVentaAdd();
-        this.modeloPlant = modeloPlant;
-        this.modeloVenta = modeloVenta;
+        this.modeloPlant = new PlantacionDAO();
+        this.modeloVenta = new VentaDAO();
         this.idExplotacion = idExplotacion;
-        this.idFinca = idFinca;
-
+        this.finca = finca;
+        
         //Asociar listener a botones vistaTabla
         this.vistaTabla.botonAddPlant.addActionListener(this);
         this.vistaTabla.botonAddVenta.addActionListener(this);
@@ -131,12 +129,13 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         if (ae.getSource() instanceof JButton) {
             boton = (JButton) ae.getSource();
             if (boton.equals(this.vistaTabla.botonAddPlant)) {                             //AÑADIR                           
+                this.vistaAddPlant.jLabelIdPlant.setText(generarIdPlant());
                 abrirAddPlant();
 
             } else if (boton.equals(this.vistaTabla.botonVolver)){                         //VOLVER
                 volver();
                 
-            }else if (boton.equals(this.vistaTabla.botonModPlant)) {                       //MODIFICAR PLANTACION
+            }else if (boton.equals(this.vistaTabla.botonModPlant)) {                       //ABRIR MOD PLANTACION
                 if (this.vistaTabla.jTablePlantaciones.getSelectedRow() != -1) {
                     abrirModPlant();
                 } else {
@@ -155,7 +154,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                             + " una plantacion", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else if (boton.equals(this.vistaTabla.botonAddVenta)) {                       //AÑADIR VENTA
+            } else if (boton.equals(this.vistaTabla.botonAddVenta)) {                       //ABRIR AÑADIR VENTA
                 if (this.vistaTabla.jTablePlantaciones.getSelectedRow() != -1) {
                     abrirAddVenta();
                 } else {
@@ -163,7 +162,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                             + " una plantación primero", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else if (boton.equals(this.vistaTabla.botonModVenta)) {                       //MODIFICAR VENTA
+            } else if (boton.equals(this.vistaTabla.botonModVenta)) {                       //ABRIR MODIFICAR VENTA
                 if (this.vistaTabla.jTableVentas.getSelectedRow() != -1) {
                     abrirModVenta();
                     
@@ -200,6 +199,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                         }
                         
                     }else if(boton.getText().equalsIgnoreCase("Modificar")){                  //MODIFICAR PLANTACION
+                        
                         String s = actualizarPlant(p);
                         if(s.charAt(0) == 'E'){ //Ha habido error
                             JOptionPane.showMessageDialog(vistaTabla, s, "Error", JOptionPane.ERROR_MESSAGE);
@@ -300,13 +300,15 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     }
 
     private Plantacion getPlantacion() {
+        
+        String idPlant = this.vistaAddPlant.jLabelIdPlant.getText();
         String tipo = this.vistaAddPlant.campoTipo.getText();
         String variedad = this.vistaAddPlant.campoVariedad.getText();
         String fPlantSt = this.vistaAddPlant.campoFPlant.getText();
         LocalDate fPlant = Fechas.toLocalDate(fPlantSt);
         String fFinSt = this.vistaAddPlant.campoFechaFin.getText();
         LocalDate fFin = Fechas.toLocalDate(fFinSt);
-        Plantacion p = new Plantacion(generarIdPlant(), tipo, variedad, fPlant, fFin, idExplotacion);
+        Plantacion p = new Plantacion(idPlant, tipo, variedad, fPlant, fFin, idExplotacion);
         return p;
     }
 
@@ -384,8 +386,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private void volver() {
         //VOLVER
-        ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion()
-                ,new ExplotacionDAO(), new JFExplotacionAdd(), idFinca);
+        ControladorExplotacion contExp = new ControladorExplotacion(new ExplotacionDAO(), this.finca);
         this.vistaTabla.dispose();
     }
 
@@ -413,7 +414,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             s+="\nAl modificar la fecha de plant.";
         }
         if(isFechaFinSelected()){
-            if(modeloPlant.actualizarCampo(p.getId(), "F_FIN", Fechas.toString(p.getfFin()))){
+            if(!modeloPlant.actualizarCampo(p.getId(), "F_FIN", Fechas.toString(p.getfFin()))){
                 s+="\nAl modificar la fecha de fin";
             }
         }
@@ -435,8 +436,11 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             s[1] = p.getTipo();
             s[2] = p.getVariedad();
             s[3] = Fechas.toString(p.getfInicio());
-            if(p.getfFin() != null)
-            s[4] = Fechas.toString(p.getfFin());
+            if(p.getfFin() != null){
+                s[4] = Fechas.toString(p.getfFin());
+            }else{
+                s[4]="";
+            }
             modTablaPlant.addRow(s);
         }
     }

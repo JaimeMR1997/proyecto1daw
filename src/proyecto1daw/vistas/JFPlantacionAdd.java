@@ -41,6 +41,10 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
         campoFPlant = new javax.swing.JTextField();
         botonAceptar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
+        errTipo = new javax.swing.JLabel();
+        errVariedad = new javax.swing.JLabel();
+        errFPlant = new javax.swing.JLabel();
+        errFFin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Añadir plantación");
@@ -78,9 +82,10 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
                             .addComponent(jLabelFPlant)))
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelIdPlant)
-                            .addComponent(jCheckBoxFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jCheckBoxFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelIzqLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelIdPlant)))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
@@ -88,15 +93,15 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabelTipo)
-                .addGap(21, 21, 21)
-                .addComponent(jLabelVariedad)
                 .addGap(24, 24, 24)
+                .addComponent(jLabelVariedad)
+                .addGap(27, 27, 27)
                 .addComponent(jLabelFPlant)
-                .addGap(21, 21, 21)
+                .addGap(24, 24, 24)
                 .addComponent(jCheckBoxFFin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelIdPlant)
-                .addGap(28, 28, 28))
+                .addContainerGap())
         );
 
         campoVariedad.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +125,22 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
 
         botonCancelar.setText("Cancelar");
 
+        errTipo.setForeground(java.awt.Color.red);
+        errTipo.setText(" ");
+        errTipo.setToolTipText("");
+
+        errVariedad.setForeground(java.awt.Color.red);
+        errVariedad.setText(" ");
+        errVariedad.setToolTipText("");
+
+        errFPlant.setForeground(java.awt.Color.red);
+        errFPlant.setText(" ");
+        errFPlant.setToolTipText("");
+
+        errFFin.setForeground(java.awt.Color.red);
+        errFFin.setText(" ");
+        errFFin.setToolTipText("");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,19 +148,24 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(campoFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addComponent(campoFPlant, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoVariedad, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(campoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(botonAceptar)
                         .addGap(18, 18, 18)
-                        .addComponent(botonCancelar)))
+                        .addComponent(botonCancelar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(errTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(campoTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(errFFin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(errFPlant, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(errVariedad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(campoFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(campoFPlant, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoVariedad, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,13 +173,21 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(campoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(errTipo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(campoVariedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errVariedad)
+                .addGap(1, 1, 1)
                 .addComponent(campoFPlant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errFPlant)
+                .addGap(1, 1, 1)
                 .addComponent(campoFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errFFin)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
@@ -239,6 +273,10 @@ public class JFPlantacionAdd extends javax.swing.JFrame {
     public javax.swing.JTextField campoFechaFin;
     public javax.swing.JTextField campoTipo;
     public javax.swing.JTextField campoVariedad;
+    public javax.swing.JLabel errFFin;
+    public javax.swing.JLabel errFPlant;
+    public javax.swing.JLabel errTipo;
+    public javax.swing.JLabel errVariedad;
     public javax.swing.JCheckBox jCheckBoxFFin;
     private javax.swing.JLabel jLabelFPlant;
     public javax.swing.JLabel jLabelIdPlant;

@@ -6,6 +6,7 @@
 package proyecto1daw.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 public class Finca {
     private String id;
     private String localidad;
-    private String encargado;
+    private ArrayList<Encargado> listaEncargados;
     private int superficie;
     private LocalDate fCompra;
     private LocalDate fFin;
@@ -25,13 +26,12 @@ public class Finca {
         this.superficie = superficie;
         this.fCompra = fCompra;
         this.fFin = fFin;
+        
+        //Cargar lista encargados
+        FincaDAO modeloFinca = new FincaDAO();
+        this.listaEncargados = modeloFinca.recuperarEncargadosFinca(this.id);
     }
     
-    public Finca(String id, String localidad, String encargado, int superficie, LocalDate fCompra, LocalDate fFin) {
-        this(id, localidad, superficie, fCompra, fFin);
-        this.encargado=encargado;
-    }
-
     public String getId() {
         return id;
     }
@@ -48,14 +48,14 @@ public class Finca {
         this.localidad = localidad;
     }
 
-    public String getEncargado() {
-        return encargado;
+    public ArrayList<Encargado> getListaEncargados() {
+        return listaEncargados;
     }
 
-    public void setEncargado(String encargado) {
-        this.encargado = encargado;
+    public void setListaEncargados(ArrayList<Encargado> listaEncargados) {
+        this.listaEncargados = listaEncargados;
     }
-
+    
     public int getSuperficie() {
         return superficie;
     }

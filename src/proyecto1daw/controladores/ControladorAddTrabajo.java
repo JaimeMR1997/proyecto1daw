@@ -155,14 +155,16 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
             String tarea = vistaAdd.campoTarea.getText();
             for (int i = 0; i < tarea.length(); i++) {
                 if(!Character.isAlphabetic(tarea.charAt(i))){
-                    res=false;
-                }
-                if(!res){
-                    vistaAdd.errTarea.setText("No se admiten caracteres no alfabéticos");
-                }else{
-                    vistaAdd.errTarea.setText(" ");
+                    if(tarea.charAt(i) != '-' || tarea.charAt(i) != ' '){
+                        res=false;
+                        vistaAdd.errTarea.setText("Tarea contiene caracteres no permitidos");
+                        break;
+                    }
                 }
             }
+        }
+        if(res){
+            vistaAdd.errTarea.setText(" ");
         }
         return res;
     }

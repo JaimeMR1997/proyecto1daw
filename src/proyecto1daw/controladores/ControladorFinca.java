@@ -7,11 +7,12 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,10 +22,6 @@ import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.FincaDAO;
 import proyecto1daw.modelo.Finca;
-import proyecto1daw.modelo.Trabajador;
-import proyecto1daw.modelo.TrabajadorDAO;
-import proyecto1daw.vistas.JFExplotacion;
-import proyecto1daw.vistas.JFExplotacionAdd;
 import proyecto1daw.vistas.JFFinca;
 import proyecto1daw.vistas.JFFincaAdd;
 import proyecto1daw.vistas.JFInicio;
@@ -33,16 +30,18 @@ import proyecto1daw.vistas.JFInicio;
  *
  * @author alumno
  */
-public class ControladorFinca implements ActionListener,MouseListener{
+public class ControladorFinca implements ActionListener,MouseListener,FocusListener{
     private JFFinca vistaTabla;
     private JFFincaAdd vistaAdd;
-    private FincaDAO modelo;
+    private FincaDAO modeloFinca;
+    private ExplotacionDAO modeloExp;
     private DefaultTableModel modTabla;
 
-    public ControladorFinca(JFFinca vistaTabla, FincaDAO modelo,JFFincaAdd vistaAddFinca) {
+    public ControladorFinca(JFFinca vistaTabla, FincaDAO modeloFinca,ExplotacionDAO modeloExp) {
         this.vistaTabla = vistaTabla;
-        this.modelo = modelo;
-        this.vistaAdd=vistaAddFinca;
+        this.modeloFinca = modeloFinca;
+        this.modeloExp = modeloExp;
+        this.vistaAdd= new JFFincaAdd();
         this.vistaTabla.setLocationRelativeTo(null);
         this.vistaAdd.setLocationRelativeTo(null);
         
@@ -50,13 +49,19 @@ public class ControladorFinca implements ActionListener,MouseListener{
         this.vistaTabla.botonAdd.addActionListener(this);
         this.vistaTabla.botonEliminar.addActionListener(this);
         this.vistaTabla.botonGestionar.addActionListener(this);
-        this.vistaTabla.botonInfo.addActionListener(this);
+        this.vistaTabla.botonEncargados.addActionListener(this);
         this.vistaTabla.botonMod.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
         //Los de AddFinca tambien
         this.vistaAdd.botonAceptar.addActionListener(this);
         this.vistaAdd.botonCancelar.addActionListener(this);
         this.vistaAdd.jCheckBoxFFin.addActionListener(this);
+        //Añadir focus listener a campos
+        this.vistaAdd.campoId.addFocusListener(this);
+        this.vistaAdd.campoFechaC.addFocusListener(this);
+        this.vistaAdd.campoFechaFin.addFocusListener(this);
+        this.vistaAdd.campoLocalidad.addFocusListener(this);
+        this.vistaAdd.campoSuperficie.addFocusListener(this);
         //Añadir mouse listener a tabla
         this.vistaTabla.jTableFincas.addMouseListener(this);
         
@@ -66,16 +71,16 @@ public class ControladorFinca implements ActionListener,MouseListener{
         modTabla.addColumn("Localización");
         modTabla.addColumn("Superficie");
         modTabla.addColumn("Fecha de Compra");
-        modTabla.addColumn("Encargado");
-        modTabla.addColumn("NºTractores");
+        modTabla.addColumn("NºEncargados");
+        //modTabla.addColumn("NºTractores");
         modTabla.addColumn("NºExplotaciones");
-        rellenarTabla(modelo.recuperarTodas());
+        rellenarTabla(modeloFinca.recuperarTodas());
         this.vistaTabla.jTableFincas.setModel(modTabla);
         
         this.vistaAdd.campoFechaFin.setEnabled(false);
         
         this.vistaTabla.setVisible(true);
-        vistaAddFinca.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     public void actionPerformed(ActionEvent ae) {
@@ -100,9 +105,12 @@ public class ControladorFinca implements ActionListener,MouseListener{
                         + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
             
-        }else if(ae.getSource().equals(vistaTabla.botonInfo)){              //INFORMACION
+        }else if(ae.getSource().equals(vistaTabla.botonEncargados)){              //ABRIR ENCARGADOS
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
-                System.out.println("En desarrollo");
+                int fila = this.vistaTabla.jTableFincas.getSelectedRow();
+                String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
+                Finca finca = modeloFinca.recuperarPorId(idFinca);
+                ControladorEncFinca contEnc = new ControladorEncFinca(vistaTabla, vistaAdd, modeloFinca, modeloExp, finca);
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                         + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -123,7 +131,7 @@ public class ControladorFinca implements ActionListener,MouseListener{
             if(this.validarDatosAdd()){
                 Finca f = getFinca();
                 if(nombreBoton.equalsIgnoreCase("Aceptar")){        //NUEVA FINCA
-                    if(modelo.addFinca(f)){
+                    if(modeloFinca.addFinca(f)){
                         JOptionPane.showMessageDialog(vistaAdd, "Finca añadida correctamente");
                         actualizarTabla();
                     }else{
@@ -165,7 +173,7 @@ public class ControladorFinca implements ActionListener,MouseListener{
         vistaAdd.setAlwaysOnTop(true);
     }
 
-    private Finca getFinca() throws NumberFormatException {
+    private Finca getFinca(){
         //Recupera campos
         String id = this.vistaAdd.campoId.getText();
         String localidad = this.vistaAdd.campoLocalidad.getText();
@@ -179,13 +187,13 @@ public class ControladorFinca implements ActionListener,MouseListener{
     private void actualizarTabla() {
         this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
-        this.rellenarTabla(modelo.recuperarTodas());
+        this.rellenarTabla(modeloFinca.recuperarTodas());
     }
 
     private void eliminarFinca(int confirmacion) {
         if(confirmacion==JOptionPane.YES_OPTION){
             String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),0);
-            modelo.borrarFinca(idFinca);
+            modeloFinca.borrarFinca(idFinca);
             this.limpiarCamposAdd();
             actualizarTabla();
         }
@@ -219,8 +227,9 @@ public class ControladorFinca implements ActionListener,MouseListener{
     private void abrirVentanaExplotaciones() {
         //Abre explotaciones de esa Finca
         int fila = this.vistaTabla.jTableFincas.getSelectedRow();
-        String finca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
-        ControladorExplotacion conExplotacion = new ControladorExplotacion(new JFExplotacion(), new ExplotacionDAO(), new JFExplotacionAdd(),finca);
+        String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
+        Finca finca = modeloFinca.recuperarPorId(idFinca);
+        ControladorExplotacion conExplotacion = new ControladorExplotacion(modeloExp, finca);
         this.vistaTabla.dispose();
     }
 
@@ -229,20 +238,20 @@ public class ControladorFinca implements ActionListener,MouseListener{
         String res="Error:";
         String idAnt = this.vistaAdd.etiquetaId.getText();
         
-        if(!modelo.actualizarCampo(idAnt, "LOCALIDAD", f.getLocalidad())){
+        if(!modeloFinca.actualizarCampo(idAnt, "LOCALIDAD", f.getLocalidad())){
             res+="\nAl actualizar la localidad";
         }
-        if(!modelo.actualizarCampo(idAnt, "SUPERFICIE", f.getSuperficie()+"")){
+        if(!modeloFinca.actualizarCampo(idAnt, "SUPERFICIE", f.getSuperficie()+"")){
             res+="\nAl actualizar la superficie";
         }
-        if(!modelo.actualizarCampo(idAnt, "F_COMPRA", Fechas.toString(f.getfCompra()))){
+        if(!modeloFinca.actualizarCampo(idAnt, "F_COMPRA", Fechas.toString(f.getfCompra()))){
             res+="\nAl actualizar la fecha de compra";
         }
-        if(isFFinSelected() && !modelo.actualizarCampo(idAnt, "F_FIN", Fechas.toString(f.getfFin()))){
+        if(isFFinSelected() && !modeloFinca.actualizarCampo(idAnt, "F_FIN", Fechas.toString(f.getfFin()))){
             //Si no esta FFin seleccionado no se ejecuta el metodo actualizarCampo
             res+="\nAl actualizar la fecha de fin";
         }
-        if(!modelo.actualizarCampo(idAnt, "ID_FINCA", f.getId())){
+        if(!modeloFinca.actualizarCampo(idAnt, "ID_FINCA", f.getId())){
             res+="\nAl actualizar el ID de la finca";
         }
         
@@ -261,6 +270,12 @@ public class ControladorFinca implements ActionListener,MouseListener{
         this.vistaAdd.campoFechaFin.setText("");
         this.vistaAdd.etiquetaId.setText("");
         this.vistaAdd.jCheckBoxFFin.setSelected(false);
+        
+        this.vistaAdd.errFFin.setText(" ");
+        this.vistaAdd.errFInicio.setText(" ");
+        this.vistaAdd.errId.setText(" ");
+        this.vistaAdd.errLocalidad.setText(" ");
+        this.vistaAdd.errSuperficie.setText(" ");
     }
     
     public boolean isFFinSelected(){
@@ -273,14 +288,14 @@ public class ControladorFinca implements ActionListener,MouseListener{
     
     public void rellenarTabla(ArrayList<Finca> listaFincas){
         String[] fila = new String[7];
-        for (Finca s : listaFincas) {
-            fila[0]=s.getId();
-            fila[1]=s.getLocalidad();
-            fila[2]=s.getSuperficie()+"";
-            fila[3]=Fechas.toString(s.getfCompra());
-            fila[4]=s.getEncargado();
-            fila[5]="";//NUM TRACTORES
-            fila[6]="";//NUM EXPLOTACIONES
+        for (Finca f : listaFincas) {
+            fila[0]=f.getId();
+            fila[1]=f.getLocalidad();
+            fila[2]=f.getSuperficie()+"";
+            fila[3]=Fechas.toString(f.getfCompra());
+            fila[4]=f.getListaEncargados().size()+"";//Num encargados
+            //fila[5]="";//NUM TRACTORES
+            fila[5]=modeloExp.contarPorFinca(f.getId())+"";//NUM EXPLOTACIONES
             modTabla.addRow(fila);
         }
         
@@ -288,35 +303,96 @@ public class ControladorFinca implements ActionListener,MouseListener{
     
     public boolean validarDatosAdd(){
         boolean res=true;
-        if(vistaAdd.campoId.getText().equals("") || vistaAdd.campoId == null){
-            res=false;
+        res = validarId(res);
+        res = validarLocalidad(res);
+        res = validarSuperficie(res);
+        res = validarFInicio(res);
+        res = validarFFin(res);
+        return res;
+    }
+
+    private boolean validarFFin(boolean res) {
+        if(this.isFFinSelected()){
+            if(this.vistaAdd.campoFechaFin.equals("") || vistaAdd.campoFechaFin == null){
+                res=false;
+                vistaAdd.errFFin.setText("Escribe una fecha o desmarca la opción");
+            }else if(Fechas.toLocalDate(vistaAdd.campoFechaFin.getText()) == null){
+                res=false;
+                vistaAdd.errFFin.setText("La fecha debe ser formato dd/mm/aaaa");
+            }else{
+                vistaAdd.errFFin.setText(" ");
+            }
         }
-        if(vistaAdd.campoLocalidad.getText().equals("") || vistaAdd.campoLocalidad == null){
+        return res;
+    }
+
+    private boolean validarFInicio(boolean res) {
+        if(vistaAdd.campoFechaC.getText().equals("") || vistaAdd.campoFechaC == null){
             res=false;
+            vistaAdd.errFInicio.setText("La fecha es obligatoria");
+        }else if(Fechas.toLocalDate(vistaAdd.campoFechaC.getText()) == null){
+            res=false;
+            vistaAdd.errFInicio.setText("La fecha debe ser formato dd/mm/aaaa");
+        }else{
+            vistaAdd.errFInicio.setText(" ");
         }
+        return res;
+    }
+
+    private boolean validarSuperficie(boolean res) {
         if(vistaAdd.campoSuperficie.getText().equals("") || vistaAdd.campoSuperficie == null){
             res=false;
+            vistaAdd.errSuperficie.setText("La superficie es obligatoria");
         }else{
             try{
                 int num=Integer.parseInt(vistaAdd.campoSuperficie.getText());
-                if(num<0){
+                if(num<1){
                     res=false;
                 }
             }catch(NumberFormatException e){
                 res=false;
+                vistaAdd.errSuperficie.setText("La superficie debe ser un entero");
             }
         }
-        if(vistaAdd.campoFechaC.getText().equals("") || vistaAdd.campoFechaC == null){
-            res=false;
-        }else if(Fechas.toLocalDate(vistaAdd.campoFechaC.getText()) == null){
-            res=false;
+        if(res){
+            vistaAdd.errSuperficie.setText(" ");
         }
-        if(this.isFFinSelected()){
-            if(this.vistaAdd.campoFechaFin.equals("") || vistaAdd.campoFechaFin == null){
-                res=false;
-            }else if(Fechas.toLocalDate(vistaAdd.campoFechaFin.getText()) == null){
-                res=false;
+        return res;
+    }
+
+    private boolean validarLocalidad(boolean res) {
+        if(vistaAdd.campoLocalidad.getText().equals("") || vistaAdd.campoLocalidad == null){
+            res=false;
+            vistaAdd.errLocalidad.setText("Localidad es obligatoria");
+        }else if(vistaAdd.campoLocalidad.getText().length() >20){
+            vistaAdd.errLocalidad.setText("Localidad debe tener menos de 20 caracteres");
+        }else{
+            String s = vistaAdd.campoLocalidad.getText();
+            for (int i = 0; i < s.length(); i++) {
+                if(!Character.isAlphabetic(s.charAt(i))){
+                    if(s.charAt(i) != '-' || s.charAt(i) != ' '){
+                        res=false;
+                        vistaAdd.errLocalidad.setText("Localidad contiene caracteres no permitidos");
+                        break;
+                    }
+                }
             }
+        }
+        if(res){
+            vistaAdd.errLocalidad.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarId(boolean res) {
+        if(vistaAdd.campoId.getText().equals("") || vistaAdd.campoId == null){
+            res=false;
+            vistaAdd.errId.setText("El ID es obligatorio");
+        }else if(vistaAdd.campoId.getText().length()>20){
+            vistaAdd.errId.setText("ID debe tener menos de 20 caracteres");
+            res=false;
+        }else{
+            vistaAdd.errId.setText(" ");
         }
         return res;
     }
@@ -350,5 +426,23 @@ public class ControladorFinca implements ActionListener,MouseListener{
     
     public void mouseExited(MouseEvent me) {
         
+    }
+
+    public void focusGained(FocusEvent fe) {
+        
+    }
+
+    public void focusLost(FocusEvent fe) {
+        if(fe.getSource().equals(vistaAdd.campoId)){
+            validarId(true);
+        }else if(fe.getSource().equals(vistaAdd.campoFechaC)){
+            validarFInicio(true);
+        }else if(fe.getSource().equals(vistaAdd.campoFechaFin)){
+            validarFFin(true);
+        }else if(fe.getSource().equals(vistaAdd.campoLocalidad)){
+            validarLocalidad(true);
+        }else if(fe.getSource().equals(vistaAdd.campoSuperficie)){
+            validarSuperficie(true);
+        }
     }
 }

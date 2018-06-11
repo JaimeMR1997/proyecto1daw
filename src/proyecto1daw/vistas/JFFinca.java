@@ -37,7 +37,7 @@ public class JFFinca extends javax.swing.JFrame {
         botonGestionar = new javax.swing.JButton();
         botonAdd = new javax.swing.JButton();
         botonMod = new javax.swing.JButton();
-        botonInfo = new javax.swing.JButton();
+        botonEncargados = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -173,11 +173,11 @@ public class JFFinca extends javax.swing.JFrame {
         botonMod.setBorderPainted(false);
         botonMod.setContentAreaFilled(false);
 
-        botonInfo.setForeground(new java.awt.Color(255, 255, 255));
-        botonInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_info.png"))); // NOI18N
-        botonInfo.setText("Información");
-        botonInfo.setBorderPainted(false);
-        botonInfo.setContentAreaFilled(false);
+        botonEncargados.setForeground(new java.awt.Color(255, 255, 255));
+        botonEncargados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_encargado.png"))); // NOI18N
+        botonEncargados.setText("Encargados");
+        botonEncargados.setBorderPainted(false);
+        botonEncargados.setContentAreaFilled(false);
 
         botonEliminar.setForeground(new java.awt.Color(255, 255, 255));
         botonEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_borrar.png"))); // NOI18N
@@ -197,8 +197,8 @@ public class JFFinca extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addComponent(botonMod)
                 .addGap(79, 79, 79)
-                .addComponent(botonInfo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(botonEncargados)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(botonEliminar)
                 .addGap(89, 89, 89))
         );
@@ -210,7 +210,7 @@ public class JFFinca extends javax.swing.JFrame {
                     .addComponent(botonGestionar)
                     .addComponent(botonAdd)
                     .addComponent(botonMod)
-                    .addComponent(botonInfo)
+                    .addComponent(botonEncargados)
                     .addComponent(botonEliminar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -286,8 +286,8 @@ public class JFFinca extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton botonAdd;
     public javax.swing.JButton botonEliminar;
+    public javax.swing.JButton botonEncargados;
     public javax.swing.JButton botonGestionar;
-    public javax.swing.JButton botonInfo;
     public javax.swing.JButton botonMod;
     public javax.swing.JButton botonVolver;
     private javax.swing.JPanel jPanel2;
