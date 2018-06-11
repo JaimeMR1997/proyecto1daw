@@ -32,6 +32,7 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
     private JFEmpleAdd vistaAdd;
     private CuadrillaDAO modeloCuad;
     private TrabajadorDAO modeloTrab;
+    private Trabajador emple;
 
     public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab) {
         this.vistaTabla = vistaTabla;
@@ -65,11 +66,37 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
         this.vistaAdd.setVisible(true);
     }
 
-    public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab,boolean mod) {
+    public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab,Trabajador emple) {
         this(vistaTabla, modeloCuad, modTrab);
-        if(mod){
+        if(emple != null){
+            this.emple=emple;
             this.vistaAdd.botonAceptar.setText("Modificar");
             this.vistaAdd.campoDni.setEnabled(false);
+            
+            //Cargar datos
+            this.vistaAdd.campoNombre.setText(emple.getNombre());
+            this.vistaAdd.campoApellidos.setText(emple.getApellidos());
+            this.vistaAdd.campoDni.setText(emple.getDni());
+            this.vistaAdd.campoFNac.setText(Fechas.toString(emple.getfNacimiento()));
+            this.vistaAdd.campoTlf.setText(emple.getTlf());
+            this.vistaAdd.campoSalario.setText(emple.getSalario()+"");
+            this.vistaAdd.campoFCont.setText(Fechas.toString(emple.getfContratacion()));
+            this.vistaAdd.campoFFinCont.setText(Fechas.toString(emple.getfFin()));
+            if(emple instanceof Conductor){
+                this.vistaAdd.jRadioTractorista.setSelected(true);
+                this.vistaAdd.campoPermisos.setText(((Conductor) emple).getPermisos());
+                this.vistaAdd.campoPermisos.setEnabled(true);
+                this.vistaAdd.jLabelPermisos.setEnabled(true);
+                
+            }else if(emple instanceof Encargado){
+                this.vistaAdd.jRadioEncargado.setSelected(true);
+                this.vistaAdd.campoVHEmpresa.setText(((Encargado) emple).getVhEmpresa());
+                this.vistaAdd.campoVHEmpresa.setEnabled(true);
+                this.vistaAdd.jLabelVHEmpresa.setEnabled(true);
+                
+            }else{
+                this.vistaAdd.jRadioEmpleado.setSelected(true);
+            }
         }
     }
     
@@ -87,10 +114,12 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
                    }   
                 }else{                                                          //MODIFICAR
                     if(modEmple()){
-                    JOptionPane.showMessageDialog(boton, "El empleado ha sido modificado correctamente");
-                }else{
-                    JOptionPane.showMessageDialog(vistaAdd, "Error al modificar el empleado", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
+                        JOptionPane.showMessageDialog(boton, "El empleado ha sido modificado correctamente");
+                        this.vistaAdd.dispose();
+                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
+                    }else{
+                        JOptionPane.showMessageDialog(vistaAdd, "Error al modificar el empleado", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }else if(ae.getSource().equals(vistaAdd.botonCancelar)){                //CANCELAR
@@ -355,7 +384,161 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
 
     private boolean modEmple() {
         boolean res = true;
-        //modeloTrab.
+        
+        boolean cambioPuesto = false;
+        if(isEmpleadoSelected() && !(emple instanceof Trabajador)){
+            cambioPuesto = true;
+        }else if(isTractoristaSelected() && !(emple instanceof Conductor)){
+            cambioPuesto = true;
+        }else if(isEncargadoSelected() && !(emple instanceof Encargado)){
+            cambioPuesto = true;
+        }
+        
+        if(cambioPuesto){
+            //Hay que realizar un cambio en las tablas
+            //Preguntar por fFin
+            LocalDate fFinContrato = null;
+            if(vistaAdd.campoFFinCont.getText() == null){
+                JOptionPane.showMessageDialog(vistaAdd, "No has puesto fecha de fin de contrato"
+                        + "\nSe usará la de hoy. Puedes modificarlo más tarde");
+                fFinContrato = LocalDate.now();
+                this.vistaAdd.campoFFinCont.setText(Fechas.toString(fFinContrato));//Porque los metodos de actualizar toman el valor del campo
+            }else{
+                fFinContrato = Fechas.toLocalDate(vistaAdd.campoFFinCont.getText());
+            }
+            
+            //Carga el objeto trabajador,conductor o encargado
+            //El metodo de la clase DAO se encarga de diferenciar que clase de objeto es
+            //ejecutando un codigo u otro
+            
+            //Se ejecutan los métodos de actualizar antes de cambiar de clase por
+            //si se ha modificado algo mas
+            if(isEmpleadoSelected()){
+                actualizarEmpleado();
+                if(emple instanceof Conductor){
+                    emple=getConductor();
+                }else{//Encargado
+                    emple=getEncargado();
+                }
+                res=modeloTrab.ascensoTrabajador(emple, fFinContrato);
+                
+            }else if(isTractoristaSelected()){
+                actualizarConductor();
+                if(emple instanceof Encargado){
+                    emple=getEncargado();
+                }else{//Empleado
+                    emple=getEncargado();
+                }
+                res=modeloTrab.ascensoConductor(emple, fFinContrato);
+                
+            }else if(isEncargadoSelected()){
+                actualizarEncargado();
+                if(emple instanceof Conductor){
+                    emple=getConductor();
+                }else{//Empleado
+                    emple = getEmpleado();
+                }
+                res=modeloTrab.ascensoEncargado(emple, fFinContrato);
+            }
+            
+        //SOLO ES MODIFICAR DATOS
+        }else{
+            if(isEmpleadoSelected()){
+                res=actualizarEmpleado();
+            }else if(isTractoristaSelected()){
+                res=actualizarConductor();
+            }else if(isEncargadoSelected()){
+                res=actualizarEncargado();
+            }
+        }
+        
+        return res;
+    }
+
+    private boolean actualizarEncargado() {
+        boolean res = true;
+        emple = getEncargado();
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "NOMBRE", emple.getNombre())){
+        	res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "APELLIDOS", emple.getApellidos())){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_NAC", Fechas.toString(emple.getfNacimiento()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_CONT", Fechas.toString(emple.getfContratacion()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_FIN", Fechas.toString(emple.getfFin()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "TLF", emple.getTlf()+"")){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "SALARIO", emple.getSalario()+"")){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "VH_EMPRESA", ((Encargado)emple).getVhEmpresa())){
+            res=false;
+        }
+        return res;
+    }
+
+    private boolean actualizarConductor() {
+        boolean res = true;
+        emple = getConductor();
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "NOMBRE", emple.getNombre())){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "APELLIDOS", emple.getApellidos())){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_NAC", Fechas.toString(emple.getfNacimiento()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_CONT", Fechas.toString(emple.getfContratacion()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_FIN", Fechas.toString(emple.getfFin()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "TLF", emple.getTlf()+"")){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "SALARIO", emple.getSalario()+"")){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "PERMISOS", ((Conductor)emple).getPermisos())){
+            res=false;
+        }
+        return res;
+    }
+
+    private boolean actualizarEmpleado() {
+        boolean res = true;
+        emple = getEmpleado();
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "NOMBRE", emple.getNombre())){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "APELLIDOS", emple.getApellidos())){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "F_NAC", Fechas.toString(emple.getfNacimiento()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "F_CONT", Fechas.toString(emple.getfContratacion()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "F_FIN", Fechas.toString(emple.getfFin()))){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "TLF", emple.getTlf()+"")){
+            res=false;
+        }
+        if(!modeloTrab.actualizarCampoTrab(emple.getDni(), "SALARIO", emple.getSalario()+"")){
+            res=false;
+        }
         return res;
     }
 

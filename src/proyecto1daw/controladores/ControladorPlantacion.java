@@ -247,34 +247,13 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                 limpiarCamposAddVenta();
                 this.vistaAddVenta.dispose();
                 
-            }else if (boton.equals(this.vistaTabla.botonBuscarPlant)){                       //BUSCAR
-                LocalDate fInicio = null;
-                LocalDate fFin = null;
-                if(validarFInicio() && validarFFin()){
-                    fInicio = Fechas.toLocalDate(this.vistaTabla.campoFIn.getText());
-                    fFin = Fechas.toLocalDate(this.vistaTabla.campoFFin.getText());
-                }else if(validarFInicio()){
-                    fInicio = Fechas.toLocalDate(this.vistaTabla.campoFIn.getText());
-                    fFin = LocalDate.of(2100, Month.MARCH, 1);
-                }else if(validarFFin()){
-                    fInicio = LocalDate.of(1900, Month.MARCH, 1);
-                    fFin = Fechas.toLocalDate(this.vistaTabla.campoFFin.getText());
-                }else
+            }else if (boton.equals(this.vistaTabla.botonBuscarPlant)){                      //BUSCAR PLANTACION
+                buscarPlantacion();
                 
-                if(fInicio != null && fFin != null){
-                    this.modTablaVentas.setRowCount(0);
-                    this.modTablaPlant.setRowCount(0);
-                    this.rellenarTablaPlant(modeloPlant.recuperarPorFecha(fInicio,fFin,idExplotacion));
-                }
-                
-            }else if(boton.equals(this.vistaTabla.botonBuscarVenta)){
+            }else if(boton.equals(this.vistaTabla.botonBuscarVenta)){                       //BUSCAR VENTA
                 int fila=this.vistaTabla.jTablePlantaciones.getSelectedRow();
                 if(fila != -1){
-                    LocalDate fVenta = null;
-                    fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVenta.getText());
-                    String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
-                    this.modTablaVentas.setRowCount(0);
-                    this.rellenarTablaVentas(modeloVenta.recuperarPorFecha(fVenta,idPlant));
+                    buscarVenta(fila);
                 }else{
                     JOptionPane.showMessageDialog(vistaAddVenta, "Necesitas seleccionar una plantacion", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -290,6 +269,36 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             }//else if(checkbox.equals(this.vistaTabla.jCheckBoxTerm){}
         }
 
+    }
+
+    private void buscarVenta(int fila) {
+        LocalDate fVenta = null;
+        fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVenta.getText());
+        String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        this.modTablaVentas.setRowCount(0);
+        this.rellenarTablaVentas(modeloVenta.recuperarPorFecha(fVenta,idPlant));
+    }
+
+    private void buscarPlantacion() {
+        LocalDate fInicio = null;
+        LocalDate fFin = null;
+        if(validarFInicio() && validarFFin()){
+            fInicio = Fechas.toLocalDate(this.vistaTabla.campoFIn.getText());
+            fFin = Fechas.toLocalDate(this.vistaTabla.campoFFin.getText());
+        }else if(validarFInicio()){
+            fInicio = Fechas.toLocalDate(this.vistaTabla.campoFIn.getText());
+            fFin = LocalDate.of(2100, Month.MARCH, 1);
+        }else if(validarFFin()){
+            fInicio = LocalDate.of(1900, Month.MARCH, 1);
+            fFin = Fechas.toLocalDate(this.vistaTabla.campoFFin.getText());
+        }else{
+            fInicio = LocalDate.of(1900, Month.MARCH, 1);
+            fFin = LocalDate.of(2100, Month.MARCH, 1);
+        }
+
+        this.modTablaVentas.setRowCount(0);
+        this.modTablaPlant.setRowCount(0);
+        this.rellenarTablaPlant(modeloPlant.recuperarPorFecha(fInicio,fFin,idExplotacion));
     }
 
     private void actualizarTablaVentas(Venta v) {
@@ -580,7 +589,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private boolean validarFInicio() {
         boolean res=true;
         String s = this.vistaTabla.campoFIn.getText();
-        if(s.equals("")){
+        if(s.equals("") || s == null){
            res=false; 
         }else if(Fechas.toLocalDate(s) == null){
             res=false;
@@ -591,7 +600,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private boolean validarFFin() {
         boolean res=true;
         String s = this.vistaTabla.campoFFin.getText();
-        if(s.equals("")){
+        if(s.equals("") || s == null){
            res=false; 
         }else if(Fechas.toLocalDate(s) == null){
             res=false;

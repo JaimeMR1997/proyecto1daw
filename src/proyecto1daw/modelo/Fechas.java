@@ -14,7 +14,10 @@ import java.time.LocalDate;
 public class Fechas {
 
     public static String toString(LocalDate fecha) {
-        String s = fecha.getDayOfMonth() + "/" + fecha.getMonthValue() + "/" + fecha.getYear();
+        String s = null;
+        if(fecha != null){
+            s = fecha.getDayOfMonth() + "/" + fecha.getMonthValue() + "/" + fecha.getYear();
+        }
         return s;
     }
 

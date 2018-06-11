@@ -206,13 +206,13 @@ public class JFEmpleados extends javax.swing.JFrame {
 
         jTableEmple.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "DNI", "Nombre ", "Apellidos", "Tlf", "F Inicio", "F Fin"
+                "Tipo", "DNI", "Nombre ", "Apellidos", "Tlf", "F Inicio", "F Fin"
             }
         ));
         jScrollPane1.setViewportView(jTableEmple);

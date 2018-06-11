@@ -25,7 +25,7 @@ public class PlantacionDAO {
             Connection accesoBD = c.getConexion();
             PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM PLANTACION "
                     + "WHERE ID_EXPLOTACION = ? AND F_INICIO > ? "
-                    + "AND (F_FIN < ? OR F_FIN IS NULL)");
+                    + "AND (F_FIN <= ? OR F_FIN IS NULL)");
             st.setString(1, idExp);
             st.setDate(2, Date.valueOf(fInicio));
             if(fFin != null){

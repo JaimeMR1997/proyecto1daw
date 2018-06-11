@@ -19,6 +19,76 @@ import java.util.ArrayList;
  */
 public class TrabajadorDAO {
     
+    public boolean ascensoTrabajador(Trabajador t, LocalDate fFin) {
+        boolean res = true;
+        if(fFin==null){
+            fFin=LocalDate.now();
+        }
+        
+        String insertarCons = "INSERT INTO CONDUCTOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
+                + " SELECT * FROM ";//trabajador o encargado WHERE DNI=?";
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        try{
+            if((t instanceof Encargado)){                               //Encargados
+                insertarCons+="ENCARGADO WHERE DNI = ?";
+                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));
+                
+            }else if(!(t instanceof Conductor)){                        //Conductor
+                insertarCons+="CONDUCTOR WHERE DNI = ?";
+                this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.toString(fFin));   
+            }
+            
+            PreparedStatement st = accesoBD.prepareStatement(insertarCons);
+            st.setString(1, t.getDni());
+            st.executeUpdate();
+            PreparedStatement consultaActContrato = accesoBD.prepareStatement("UPDATE ENCARGADO SET F_CONT=?");
+            consultaActContrato.setDate(1, Date.valueOf(LocalDate.now())); 
+            consultaActContrato.executeUpdate();    //Actualiza la fecha a la de contratacion a la de hoy
+            //Para cambiar la fecha por otra habrá que modificar al encargado desde otra parte
+            
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Ascender a trabajador: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+
+    public boolean ascensoConductor(Trabajador t, LocalDate fFin) {
+        boolean res = true;
+        if(fFin==null){
+            fFin=LocalDate.now();
+        }
+        
+        String insertarCons = "INSERT INTO CONDUCTOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
+                + " SELECT * FROM ";//trabajador o encargado WHERE DNI=?";
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        try{
+            if(!(t instanceof Conductor) && !(t instanceof Encargado)){ //Trabajadores normales
+                insertarCons+="TRABAJADOR WHERE DNI = ?";
+                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));
+                
+            }else if(!(t instanceof Conductor)){                        //Encargados
+                insertarCons+="ENCARGADO WHERE DNI = ?";
+                this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.toString(fFin));   
+            }
+            
+            PreparedStatement st = accesoBD.prepareStatement(insertarCons);
+            st.setString(1, t.getDni());
+            st.executeUpdate();
+            PreparedStatement consultaActContrato = accesoBD.prepareStatement("UPDATE ENCARGADO SET F_CONT=?");
+            consultaActContrato.setDate(1, Date.valueOf(LocalDate.now())); 
+            consultaActContrato.executeUpdate();    //Actualiza la fecha a la de contratacion a la de hoy
+            //Para cambiar la fecha por otra habrá que modificar al encargado desde otra parte
+            
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Ascender a conductor: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+    
     public boolean ascensoEncargado(Trabajador t,LocalDate fFin){
         boolean res = true;
         if(fFin==null){
@@ -87,6 +157,31 @@ public class TrabajadorDAO {
         listaTodos.addAll(this.recuperarEncargados());
         return listaTodos;
     }
+
+    public Trabajador recuperarTrabajador(String dni) {
+        Trabajador trab = null;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM TRABAJADOR WHERE DNI = ?");
+            st.setString(1, dni);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();    
+                }
+                trab = new Trabajador(rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO"));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta trabajador por DNI: "+e.getMessage());
+        }
+        return trab;
+    }
     
     public ArrayList<Trabajador> recuperarTrabajadores(){
         ArrayList<Trabajador> listaTrabajadores = new ArrayList<Trabajador>();
@@ -112,6 +207,27 @@ public class TrabajadorDAO {
         return listaTrabajadores;
     }
     
+    public Conductor recuperarConductor(String dni) {
+        Conductor cond = null;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM CONDUCTOR WHERE DNI = ?");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                cond = new Conductor(rs.getString("PERMISOS"),rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO"));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta conductor por DNI: "+e.getMessage());
+        }
+        return cond;
+    }
+    
     public ArrayList<Conductor> recuperarConductores(){         //Tractoristas-Conductores
         ArrayList<Conductor> listaConductores = new ArrayList<Conductor>();
         try{
@@ -131,6 +247,31 @@ public class TrabajadorDAO {
             System.out.println("Excepcion SQL. Consulta todas los conductores: "+e.getMessage());
         }
         return listaConductores;
+    }
+    
+    public Encargado recuperarEncargado(String dni) {
+        Encargado enc = null;
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM ENCARGADO WHERE DNI = ?");
+            st.setString(1, dni);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                enc =new Encargado(rs.getString("VH_EMPRESA"),rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO"));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta encargado por DNI: "+e.getMessage());
+        }
+        return enc;
     }
     
     public ArrayList<Encargado> recuperarEncargados(){         //Encargados incluidos contrato finalizado
@@ -295,28 +436,37 @@ public class TrabajadorDAO {
         accesoBD.close();
     }
     
-    public void actualizarCampoTrab(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoTrab(String id, String campo, String nuevoValor){
+        boolean res = true;
         try{
             this.actualizarCampo("TRABAJADOR", id, campo, nuevoValor);
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar trabajador: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
-    public void actualizarCampoEnc(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoEnc(String id, String campo, String nuevoValor){
+        boolean res = true;
         try{
             this.actualizarCampo("ENCARGADO", id, campo, nuevoValor);
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar encargado: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
     
-    public void actualizarCampoCond(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoCond(String id, String campo, String nuevoValor){
+        boolean res = true;
         try{
             this.actualizarCampo("CONDUCTOR", id, campo, nuevoValor);
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar conductor: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
 
     public ArrayList<Encargado> recuperarEncargadosLibres() {

@@ -68,6 +68,12 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.vistaAdd.jComboBoxTipo.addActionListener(this);
         this.vistaAdd.jComboBoxSubtipo.addActionListener(this);
 
+        //Asociar focus listener
+        this.vistaAdd.campoSuperficie.addFocusListener(this);
+        this.vistaAdd.campoFechaC.addFocusListener(this);
+        this.vistaAdd.jComboBoxTipo.addFocusListener(this);
+        this.vistaAdd.jComboBoxSubtipo.addFocusListener(this);
+        
         //Asociar mouse Listener a Tabla
         this.vistaTabla.jTableExplotaciones.addMouseListener(this);
 
@@ -78,7 +84,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.modTabla.addColumn("Tipo");
         this.modTabla.addColumn("Superficie");
         this.modTabla.addColumn("Fecha Creación");
-        this.rellenarTabla(this.modeloExp.recuperarPorFinca(this.finca.getId()));
+        this.cargarTabla();
         this.vistaTabla.jTableExplotaciones.setModel(modTabla);
 
         //Cargar opciones tipo Explotacion
@@ -141,7 +147,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
                     if (boton.getText().equalsIgnoreCase("Aceptar")) {//AÑADIR EXPLOTACION
                         if (modeloExp.addExplotacion(exp)) {
                             JOptionPane.showMessageDialog(vistaAdd, "Explotación añadida correctamente");
-                            actualizarTabla();
+                            cargarTabla();
                         } else {
                             JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                         }
@@ -152,7 +158,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
                             JOptionPane.showMessageDialog(vistaAdd, s, "Error", JOptionPane.ERROR_MESSAGE);
                         } else {//Todo correcto
                             JOptionPane.showMessageDialog(vistaAdd, s);
-                            actualizarTabla();
+                            cargarTabla();
                         }
                     }
                 }
@@ -171,11 +177,22 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
 
     }
 
-    private void actualizarTabla() {
+    private void cargarTabla() {
         this.limpiarCamposAdd();
         this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
-        this.rellenarTabla(modeloExp.recuperarPorFinca(finca.getId()));
+        
+        ArrayList<Explotacion> listaExp = modeloExp.recuperarPorFinca(finca.getId());
+        
+        String[] s = new String[5];
+        for (Explotacion exp : listaExp) {
+            s[0] = exp.getId();
+            s[1] = exp.calcularEstado();//Iconos
+            s[2] = exp.getTipo();
+            s[3] = exp.getSuperficie() + "";
+            s[4] = Fechas.toString(exp.getfCreacion());
+            this.modTabla.addRow(s);
+        }
     }
 
     private Explotacion getExplotacion() throws NumberFormatException {
@@ -220,7 +237,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
             String idExp = (String) this.vistaTabla.jTableExplotaciones.getValueAt(this.vistaTabla.jTableExplotaciones.getSelectedRow(), 0);
             modeloExp.borrarExplotacion(idExp);
             
-            actualizarTabla();
+            cargarTabla();
         }
     }
 
@@ -261,19 +278,41 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
     private boolean validarDatosAdd() {
         boolean res = true;
         res = validarSuperficie(res);
+        res = validarFechaInicio(res);
+        res = validarTipo(res);
+        res = validarSubtipo(res);
+        return res;
+    }
+
+    private boolean validarSubtipo(boolean res) {
+        if (this.vistaAdd.jComboBoxSubtipo.getSelectedIndex() == -1) {
+            res = false;
+            this.vistaAdd.errTipo.setText("Debes elegir un tipo y un subtipo");
+        }else{
+            this.vistaAdd.errTipo.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarTipo(boolean res) {
+        if (this.vistaAdd.jComboBoxTipo.getSelectedIndex() == -1) {
+            res = false;
+            this.vistaAdd.errTipo.setText("Debes elegir un tipo");
+        }else{
+            
+        }
+        return res;
+    }
+
+    private boolean validarFechaInicio(boolean res) {
         if (this.vistaAdd.campoFechaC.getText().equals("")) {
             res = false;
             this.vistaAdd.errFCreacion.setText("La fecha es obligatoria");
         }else if(Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText()) != null){
             LocalDate fecha = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
-        }
-        if (this.vistaAdd.jComboBoxTipo.getSelectedIndex() == -1) {
-            res = false;
-            this.vistaAdd.errTipo.setText("Debes elegir un tipo");
-        }
-        if (this.vistaAdd.jComboBoxSubtipo.getSelectedIndex() == -1) {
-            res = false;
-            this.vistaAdd.errTipo.setText("Debes elegir un tipo y un subtipo");
+            this.vistaAdd.errFCreacion.setText(" ");
+        }else{
+            this.vistaAdd.errFCreacion.setText("La fecha debe ser dd/mm/aaaa");
         }
         return res;
     }
@@ -284,7 +323,31 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
             this.vistaAdd.errSuperficie.setText("La superficie es obligatoria");
         }else{
             try{
-                Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
+                int supExp = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
+                if(supExp>finca.getSuperficie()){
+                    res = false;
+                    this.vistaAdd.errSuperficie.setText("La superficie es más grande que la finca");
+                }else{
+                    ArrayList<Explotacion> listaExp = modeloExp.recuperarPorFinca(finca.getId());
+                    int sumaSupExp = 0;
+                    Explotacion estaExp = getExplotacion();
+                    for (Explotacion exp : listaExp) {
+                        if(exp.getfFin() != null && exp.getfFin().isBefore(LocalDate.now())){
+                            //Las explotaciones que ya no existen se ignoran
+                            //Por si se ha tirado un invernadero o un campo se ha hecho un invernadero
+                            continue;
+                        }else if(modeloExp.recuperarPorId(estaExp.getId()) != null){
+                            //Si esta explotacion ya estaba es porque se está modificando
+                            continue;
+                        }
+                        sumaSupExp += exp.getSuperficie();
+                    }
+                    
+                    if((sumaSupExp+supExp)>=finca.getSuperficie()){
+                        res=false;
+                        this.vistaAdd.errSuperficie.setText("Superficie demasiado grande");
+                    }
+                }
             }catch(NumberFormatException e){
                 res=false;
                 this.vistaAdd.errSuperficie.setText("Debe ser un entero");
@@ -303,6 +366,10 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.vistaAdd.campoId.setText("");
         this.vistaAdd.jComboBoxTipo.setSelectedIndex(-1);
         this.vistaAdd.jComboBoxSubtipo.setSelectedIndex(-1);
+
+        this.vistaAdd.errTipo.setText(" ");
+        this.vistaAdd.errSuperficie.setText(" ");
+        this.vistaAdd.errFCreacion.setText(" ");
     }
 
     private String generarIdExplotacion() {
@@ -310,18 +377,6 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         int num = modeloExp.recuperarPorFinca(finca.getId()).size() + 1; //Obtiene numero de explotacion
         id += Integer.toString(num);
         return id;
-    }
-
-    public void rellenarTabla(ArrayList<Explotacion> listaExp) {
-        String[] s = new String[5];
-        for (Explotacion exp : listaExp) {
-            s[0] = exp.getId();
-            s[1] = exp.calcularEstado();//Iconos
-            s[2] = exp.getTipo();
-            s[3] = exp.getSuperficie() + "";
-            s[4] = Fechas.toString(exp.getfCreacion());
-        }
-        this.modTabla.addRow(s);
     }
 
     public void cargarComboTipos() {
@@ -385,7 +440,11 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         if(fe.getSource().equals(vistaAdd.campoSuperficie)){
             validarSuperficie(true);
         }else if(fe.getSource().equals(vistaAdd.campoFechaC)){
-            
+            validarFechaInicio(true);
+        }else if(fe.getSource().equals(vistaAdd.jComboBoxTipo)){
+            validarTipo(true);
+        }else if(fe.getSource().equals(vistaAdd.jComboBoxSubtipo)){
+            validarSubtipo(true);
         }
     }
 

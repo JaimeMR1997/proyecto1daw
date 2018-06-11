@@ -44,10 +44,20 @@ public class VentaDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA WHERE ID_PLANT = ? AND FECHA=?");
-            st.setString(1, idPlant);
-            st.setDate(2, Date.valueOf(fecha));
+            boolean hayFecha = true;
+            String consulta = "";
+            if(fecha == null){
+                consulta = "SELECT * FROM VENTA WHERE ID_PLANT = ?";
+                hayFecha = false;
+            }else{
+                consulta = "SELECT * FROM VENTA WHERE ID_PLANT = ? AND FECHA = ?";
+            }
             
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idPlant);
+            if(hayFecha){
+                st.setDate(2, Date.valueOf(fecha));
+            }
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 listaVentas.add(new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
@@ -55,7 +65,7 @@ public class VentaDAO {
             }
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Consulta todas las ventas: "+e.getMessage());
+            System.out.println("Excepcion SQL. Consulta ventas por fecha: "+e.getMessage());
         }
         return listaVentas;
     }

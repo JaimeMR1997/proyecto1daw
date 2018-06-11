@@ -121,8 +121,10 @@ public class ControladorEmpleado implements ActionListener{
             }else if(boton.equals(this.vistaTabla.botonAddEmp)){                    //AÑADIR EMPLEADO
                 abrirAddEmple();
             }else if(boton.equals(this.vistaTabla.botonModEmp)){                    //MODIFICAR EMPLEADO
-                if(getSelFilaTrab()!= -1){
+                if(getSelFilaEmple()!= -1){
                     abrirModEmple();   
+                }else{
+                    JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar un empleado", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
             }else if(boton.equals(this.vistaTabla.botonBuscarEmp)){                   //INFORMACION EMPLEADO
                 System.out.println("EN DESARROLLO");
@@ -196,7 +198,7 @@ public class ControladorEmpleado implements ActionListener{
             listaEmple.addAll(modeloEmple.recuperarEncargados());
         }
         
-        String fila[] = new String[6];
+        String fila[] = new String[7];
         for (Trabajador t : listaEmple) {
             
             String tipo = "";
@@ -220,9 +222,9 @@ public class ControladorEmpleado implements ActionListener{
             fila[4]=t.getTlf();//tlf
             fila[5]=Fechas.toString(t.getfContratacion());//f inicio
             if(t.getfFin() != null){                              //f fin
-                fila[5]=Fechas.toString(t.getfFin());
+                fila[6]=Fechas.toString(t.getfFin());
             }else{
-                fila[5]=null;
+                fila[6]=null;
             }
             this.modTablaEmple.addRow(fila);
         }
@@ -299,7 +301,17 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirModEmple() {
-        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple, true);
+        String tipo = (String) vistaTabla.jTableEmple.getValueAt(getSelFilaEmple(), 0);
+        String dni = (String) vistaTabla.jTableEmple.getValueAt(getSelFilaEmple(), 1);
+        Trabajador emple = null;
+        if(tipo.equalsIgnoreCase("Encargado")){
+            emple = modeloEmple.recuperarEncargado(dni);
+        }else if(tipo.equalsIgnoreCase("Empleado")){
+            emple = modeloEmple.recuperarTrabajador(dni);
+        }else{//Conductor , tractorista
+            emple = modeloEmple.recuperarConductor(dni);
+        }
+        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple, emple);
     }
 
     private boolean isEmpleadoSelected() {
