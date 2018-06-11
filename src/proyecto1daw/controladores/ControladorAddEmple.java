@@ -66,6 +66,7 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
         this.vistaAdd.setVisible(true);
     }
 
+    //CONSTRUCTOR MODIFICAR
     public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab,Trabajador emple) {
         this(vistaTabla, modeloCuad, modTrab);
         if(emple != null){
@@ -222,7 +223,7 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
             vistaAdd.errSalario.setText("El salario es obligatorio");
         }else{
             try{
-                Integer.parseInt(vistaAdd.campoTlf.getText());
+                Integer.parseInt(vistaAdd.campoSalario.getText());
             }catch(NumberFormatException e){
                 res=false;
                 vistaAdd.errSalario.setText("Solo números y sin decimales");
@@ -401,8 +402,6 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
             if(vistaAdd.campoFFinCont.getText() == null){
                 JOptionPane.showMessageDialog(vistaAdd, "No has puesto fecha de fin de contrato"
                         + "\nSe usará la de hoy. Puedes modificarlo más tarde");
-                fFinContrato = LocalDate.now();
-                this.vistaAdd.campoFFinCont.setText(Fechas.toString(fFinContrato));//Porque los metodos de actualizar toman el valor del campo
             }else{
                 fFinContrato = Fechas.toLocalDate(vistaAdd.campoFFinCont.getText());
             }
@@ -413,6 +412,8 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
             
             //Se ejecutan los métodos de actualizar antes de cambiar de clase por
             //si se ha modificado algo mas
+            
+            //Y se borra antes de realizar el cambio por si ya ejerció en ese puesto
             if(isEmpleadoSelected()){
                 actualizarEmpleado();
                 if(emple instanceof Conductor){
@@ -420,7 +421,12 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
                 }else{//Encargado
                     emple=getEncargado();
                 }
-                res=modeloTrab.ascensoTrabajador(emple, fFinContrato);
+                if(!modeloTrab.borrarTrabajador(emple.getDni())){
+                    res = false;
+                }
+                if(!modeloTrab.ascensoTrabajador(emple, fFinContrato)){
+                    res=false;
+                }
                 
             }else if(isTractoristaSelected()){
                 actualizarConductor();
@@ -429,7 +435,12 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
                 }else{//Empleado
                     emple=getEncargado();
                 }
-                res=modeloTrab.ascensoConductor(emple, fFinContrato);
+                if(!modeloTrab.borrarConductor(emple.getDni())){
+                    res = false;
+                }
+                if(!modeloTrab.ascensoConductor(emple, fFinContrato)){
+                    res=false;
+                }
                 
             }else if(isEncargadoSelected()){
                 actualizarEncargado();
@@ -438,7 +449,12 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
                 }else{//Empleado
                     emple = getEmpleado();
                 }
-                res=modeloTrab.ascensoEncargado(emple, fFinContrato);
+                if(!modeloTrab.borrarEncargado(emple.getDni())){
+                    res = false;
+                }
+                if(!modeloTrab.ascensoEncargado(emple, fFinContrato)){
+                    res=false;
+                }
             }
             
         //SOLO ES MODIFICAR DATOS
@@ -458,28 +474,28 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
     private boolean actualizarEncargado() {
         boolean res = true;
         emple = getEncargado();
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "NOMBRE", emple.getNombre())){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "NOMBRE", emple.getNombre())){
         	res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "APELLIDOS", emple.getApellidos())){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "APELLIDOS", emple.getApellidos())){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_NAC", Fechas.toString(emple.getfNacimiento()))){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "F_NAC", Fechas.toString(emple.getfNacimiento()))){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_CONT", Fechas.toString(emple.getfContratacion()))){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "F_CONT", Fechas.toString(emple.getfContratacion()))){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "F_FIN", Fechas.toString(emple.getfFin()))){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "F_FIN", Fechas.toString(emple.getfFin()))){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "TLF", emple.getTlf()+"")){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "TLF", emple.getTlf()+"")){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "SALARIO", emple.getSalario()+"")){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "SALARIO", emple.getSalario()+"")){
             res=false;
         }
-        if(!modeloTrab.actualizarCampoCond(emple.getDni(), "VH_EMPRESA", ((Encargado)emple).getVhEmpresa())){
+        if(!modeloTrab.actualizarCampoEnc(emple.getDni(), "VH_EMPRESA", ((Encargado)emple).getVhEmpresa())){
             res=false;
         }
         return res;

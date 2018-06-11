@@ -258,10 +258,12 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
 
     private void cargarDespExp() {
         modComboExp.removeAllElements();
-        Finca fSel = (Finca) vistaAdd.jComboFinca.getSelectedItem();
-        ArrayList<Explotacion> listaExp = modeloExp.recuperarPorFinca(fSel.getId());
-        for (Explotacion exp : listaExp) {
-            modComboExp.addElement(exp);
+        if(vistaAdd.jComboFinca.getSelectedIndex() != -1){
+            Finca fSel = (Finca) vistaAdd.jComboFinca.getSelectedItem();
+            ArrayList<Explotacion> listaExp = modeloExp.recuperarPorFinca(fSel.getId());
+            for (Explotacion exp : listaExp) {
+                modComboExp.addElement(exp);
+            }
         }
     }
     

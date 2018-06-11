@@ -61,24 +61,24 @@ public class TrabajadorDAO {
         }
         
         String insertarCons = "INSERT INTO CONDUCTOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
-                + " SELECT * FROM ";//trabajador o encargado WHERE DNI=?";
+                + " SELECT DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO FROM ";//trabajador o encargado WHERE DNI=?";
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         try{
-            if(!(t instanceof Conductor) && !(t instanceof Encargado)){ //Trabajadores normales
-                insertarCons+="TRABAJADOR WHERE DNI = ?";
-                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));
-                
-            }else if(!(t instanceof Conductor)){                        //Encargados
+            if((t instanceof Encargado)){                                //Encargados
                 insertarCons+="ENCARGADO WHERE DNI = ?";
-                this.actualizarCampoCond(t.getDni(), "F_FIN", Fechas.toString(fFin));   
+                this.actualizarCampoEnc(t.getDni(), "F_FIN", Fechas.toString(fFin));
+                
+            }else if(!(t instanceof Conductor)){                        //Trabajadores
+                insertarCons+="TRABAJADOR WHERE DNI = ?";
+                this.actualizarCampoTrab(t.getDni(), "F_FIN", Fechas.toString(fFin));   
             }
             
             PreparedStatement st = accesoBD.prepareStatement(insertarCons);
             st.setString(1, t.getDni());
             st.executeUpdate();
             PreparedStatement consultaActContrato = accesoBD.prepareStatement("UPDATE ENCARGADO SET F_CONT=?");
-            consultaActContrato.setDate(1, Date.valueOf(LocalDate.now())); 
+            consultaActContrato.setDate(1, Date.valueOf(fFin)); 
             consultaActContrato.executeUpdate();    //Actualiza la fecha a la de contratacion a la de hoy
             //Para cambiar la fecha por otra habrá que modificar al encargado desde otra parte
             
@@ -410,18 +410,55 @@ public class TrabajadorDAO {
         return res;
     }
     
-    public void borrarTrabajador(String id){
+    public boolean borrarTrabajador(String id){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "DELETE * FROM TRABAJADOR WHERE DNI = ?";
+        String consulta = "DELETE FROM TRABAJADOR WHERE DNI = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, id);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
-            System.out.println("Excepcion SQL. Borrar trabajadores: "+e.getMessage());
+            System.out.println("Excepcion SQL. Borrar trabajador: "+e.getMessage());
+            res=false;
         }
+        return res;
+    }
+    
+    public boolean borrarEncargado(String id){
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "DELETE FROM ENCARGADO WHERE DNI = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, id);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Borrar encargado: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+    
+    public boolean borrarConductor (String id){
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "DELETE FROM CONDUCTOR WHERE DNI = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, id);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Borrar conductor: "+e.getMessage());
+            res=false;
+        }
+        return res;
     }
     
     private void actualizarCampo(String tabla,String id, String campo, String nuevoValor) throws SQLException{

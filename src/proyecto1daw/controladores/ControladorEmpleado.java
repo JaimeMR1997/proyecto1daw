@@ -100,7 +100,11 @@ public class ControladorEmpleado implements ActionListener{
         if(ae.getSource() instanceof JButton){
             JButton boton = (JButton) ae.getSource();
             if(boton.equals(this.vistaTabla.botonGestionarCuad)){                   //GESTIONAR CUADRILLA
-                abrirAddTrabajo();
+                if(getSelFilaCuad() != -1){
+                    abrirAddTrabajo();
+                }else{
+                    JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una cuadrilla", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                }
             }else if(boton.equals(this.vistaTabla.botonAddCuad)){                   //AÑADIR CUADRILLA
                 abrirAddCuadrilla();
             }else if(boton.equals(this.vistaTabla.botonModCuad)){                   //MODIFICAR CUACRILLA
@@ -132,7 +136,12 @@ public class ControladorEmpleado implements ActionListener{
                 if(getSelFilaEmple()!= -1){
                     int confirmacion= JOptionPane.showConfirmDialog(vistaTabla, 
                             "¿Estás seguro de eliminar este trabajador?");
-                    eliminarTrabajador(confirmacion);
+                    if(eliminarTrabajador(confirmacion)){
+                        JOptionPane.showMessageDialog(vistaTabla, "Se ha eliminado el trabajador correctamente");
+                    }else{
+                        JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al eliminar al trabajador","Error",JOptionPane.ERROR_MESSAGE);
+                    }
+                    this.cargarTablaEmple();
                 }
             }else if(boton.equals(this.vistaTabla.botonAddTrab)){                   //AÑADIR TRABAJO
                 abrirAddTrabajo();
@@ -203,7 +212,7 @@ public class ControladorEmpleado implements ActionListener{
             
             String tipo = "";
             if(t instanceof Conductor){
-                tipo= "Conductos";
+                tipo= "Conductor";
             }else if(t instanceof Encargado){
                 tipo = "Encargado";
             }else{
@@ -288,8 +297,26 @@ public class ControladorEmpleado implements ActionListener{
         ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple);
     }
 
-    private void eliminarTrabajador(int confirmacion) {
+    private boolean eliminarTrabajador(int confirmacion) {
+        boolean res = true;
         
+        String tipo = (String) vistaTabla.jTableEmple.getValueAt(getSelFilaEmple(), 0);
+        String dni = (String) vistaTabla.jTableEmple.getValueAt(getSelFilaEmple(), 1);
+        if(tipo.equalsIgnoreCase("Encargado")){
+            if(!this.modeloEmple.borrarEncargado(dni)){
+                res=false;
+            }
+        }else if(tipo.equalsIgnoreCase("Empleado")){
+            if(!this.modeloEmple.borrarTrabajador(dni)){
+                res=false;
+            }
+        }else{//Conductor , tractorista
+            if(!this.modeloEmple.borrarConductor(dni)){
+                res=false;
+            }
+        }
+        
+        return res;
     }
 
     private void abrirModTrabajo() {

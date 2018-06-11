@@ -116,10 +116,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaAddPlant.setLocationRelativeTo(null);
         this.vistaAddVenta.setLocationRelativeTo(null);
         this.vistaTabla.jLabelExplotacion.setText(this.idExplotacion);
-        //Oculta jlabel auxiliares
-        this.vistaAddPlant.jLabelIdPlant.setVisible(false);
-        this.vistaAddVenta.jLabelIdPlant.setVisible(false);
-        this.vistaAddVenta.jLabelIdVenta.setVisible(false);
         this.vistaTabla.setVisible(true);
     }
 
@@ -481,6 +477,11 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaAddVenta.campoColor.setText("");
         this.vistaAddVenta.jComboTam.setSelectedIndex(-1);
         this.vistaAddVenta.campoPrecio.setText("");
+        this.vistaAddVenta.errCantidad.setText(" ");
+        this.vistaAddVenta.errColor.setText(" ");
+        this.vistaAddVenta.errFecha.setText(" ");
+        this.vistaAddVenta.errPrecio.setText(" ");
+        this.vistaAddVenta.errTam.setText(" ");
     }
 
     private void limpiarCamposAddPlant() {
@@ -489,22 +490,74 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaAddPlant.campoVariedad.setText("");
         this.vistaAddPlant.campoFPlant.setText("");
         this.vistaAddPlant.campoFechaFin.setText("");
+        this.vistaAddPlant.errTipo.setText(" ");
+        this.vistaAddPlant.errVariedad.setText(" ");
+        this.vistaAddPlant.errFPlant.setText(" ");
+        this.vistaAddPlant.errFFin.setText(" ");
     }
 
     private boolean validarDatosPlant() {
         boolean res = true;
-        if(this.vistaAddPlant.campoFPlant.getText().equals("")){
-            res=false;
-        }
-        if(this.vistaAddPlant.campoTipo.getText().equals("")){
-            res=false;
-        }
-        if(this.vistaAddPlant.campoVariedad.getText().equals("")){
-            res=false;
-        }
+        res = validarFPlant(res);
+        res = validarTipoPlant(res);
+        res = validarVariedadPlant(res);
+        res = validarFFinPlant(res);
+        return res;
+    }
+
+    private boolean validarFFinPlant(boolean res) {
         if(this.isFechaFinSelected()){
             if(this.vistaAddPlant.campoFechaFin.getText().equals("")){
                 res=false;
+                vistaAddPlant.errFFin.setText("Debes introducir uan fecha");
+                if(Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText()) == null){
+                    vistaAddPlant.errFFin.setText("Debe tener formato dd/mm/aaaa");
+                }else{
+                    vistaAddPlant.errFFin.setText(" ");
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean validarVariedadPlant(boolean res) {
+        if(this.vistaAddPlant.campoVariedad.getText().equals("")){
+            res=false;
+            vistaAddPlant.errVariedad.setText("La variedad es obligatoria");
+        }else{
+            vistaAddPlant.errVariedad.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarTipoPlant(boolean res) {
+        if(this.vistaAddPlant.campoTipo.getText().equals("")){
+            res=false;
+            vistaAddPlant.errTipo.setText("El tipo es obligatorio");
+        }else{
+            String tipo = this.vistaAddPlant.campoTipo.getText();
+            for (int i = 0; i < tipo.length(); i++) {
+                if(Character.isDigit(tipo.charAt(i))){
+                    res=false;
+                    vistaAddPlant.errTipo.setText("No puede contener números");
+                }
+            }
+            if(res){
+                vistaAddPlant.errTipo.setText(" ");
+            }
+        }
+        return res;
+    }
+
+    private boolean validarFPlant(boolean res) {
+        if(this.vistaAddPlant.campoFPlant.getText().equals("")){
+            res=false;
+            vistaAddPlant.errFPlant.setText("La fecha es obligatoria");
+        }else{
+            if(Fechas.toLocalDate(this.vistaAddPlant.campoFPlant.getText()) == null){
+                vistaAddPlant.errFPlant.setText("Debe ser formato dd/mm/aaaa");
+            }else{
+                vistaAddPlant.errFPlant.setText(" ");
             }
         }
         return res;
@@ -512,28 +565,75 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private boolean validarDatosVenta() {
         boolean res = true;
-        String fecha = this.vistaAddVenta.campoFecha.getText(); 
-        if(fecha.equals("")){
-            res=false;
-            
-        }else{
-            if(Fechas.toLocalDate(fecha) == null){
-                res=false;
-            }
-        }
-        if(this.vistaAddVenta.campoColor.getText().equals("")){
-            res=false;
-        }
-        if(this.vistaAddVenta.campoPrecio.getText().equals("")){
-            res=false;
-        }
-        if(this.vistaAddVenta.jComboTam.getSelectedIndex() == -1){
-            res=false;
-        }
-        
+        res = validarFechaVenta(res);
+        res = validarColorVenta(res);
+        res = validarPrecioVenta(res);
+        res = validarTipoVenta(res);
+        res = validarCantidad(res);
+        return res;
+    }
+
+    private boolean validarCantidad(boolean res) {
         int kg = (int) this.vistaAddVenta.jSpinnerKg.getValue();
         if(kg <= 0){
             res=false;
+            vistaAddVenta.errCantidad.setText("La cantidad debe ser entera");
+        }else{
+            vistaAddVenta.errCantidad.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarTipoVenta(boolean res) {
+        if(this.vistaAddVenta.jComboTam.getSelectedIndex() == -1){
+            res=false;
+            vistaAddVenta.errTam.setText("El tamaño es obligatorio");
+        }else{
+            vistaAddVenta.errTam.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarPrecioVenta(boolean res) {
+        if(this.vistaAddVenta.campoPrecio.getText().equals("")){
+            res=false;
+            vistaAddVenta.errPrecio.setText("El precio es obligatorio");
+        }else{
+            try{
+                double num = Double.parseDouble(this.vistaAddVenta.campoPrecio.getText());
+            }catch(NumberFormatException e){
+                res=false;
+                vistaAddVenta.errPrecio.setText("El precio debe ser decimal");
+            }
+            if(res){
+                vistaAddVenta.errPrecio.setText(" ");
+            }
+        }
+        return res;
+    }
+
+    private boolean validarColorVenta(boolean res) {
+        if(this.vistaAddVenta.campoColor.getText().equals("")){
+            res=false;
+            vistaAddVenta.errColor.setText("El color es obligatorio");
+        }else{
+            vistaAddVenta.errColor.setText(" ");
+        }
+        return res;
+    }
+
+    private boolean validarFechaVenta(boolean res) {
+        String fecha = this.vistaAddVenta.campoFecha.getText();
+        if(fecha.equals("")){
+            res=false;
+            vistaAddVenta.errFecha.setText("La fecha es obligatoria");
+        }else{
+            if(Fechas.toLocalDate(fecha) == null){
+                res=false;
+                vistaAddVenta.errFecha.setText("Debe ser formato dd/mm/aaaa");
+            }else{
+                vistaAddVenta.errFecha.setText(" ");
+            }
         }
         return res;
     }
@@ -629,27 +729,28 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             double cantidad = 0;
             
             if(fila != -1){
-            String idPlant = (String) tabla.getValueAt(fila, 0);
-            //Carga ventas de la plantación
-            modTablaVentas.setRowCount(0);
-            rellenarTablaVentas(modeloVenta.recuperarPorPlant(idPlant));
-            cantidad = modeloVenta.calcularIngresos(idPlant);
+                String idPlant = (String) tabla.getValueAt(fila, 0);
+                //Carga ventas de la plantación
+                modTablaVentas.setRowCount(0);
+                rellenarTablaVentas(modeloVenta.recuperarPorPlant(idPlant));
+                cantidad = modeloVenta.calcularIngresos(idPlant);
+
+                if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
+                    
+                }
             }
             
             vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
     }
-
     
     public void mouseReleased(MouseEvent me) {
         
     }
 
-    
     public void mouseEntered(MouseEvent me) {
         
     }
 
-    
     public void mouseExited(MouseEvent me) {
         
     }
