@@ -88,7 +88,10 @@ public class PlantacionDAO {
             st.setString(1, idExp);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                LocalDate fInicio = rs.getDate("F_INICIO").toLocalDate();
+                LocalDate fInicio = null;
+                if(rs.getDate("F_INICIO") != null){
+                    fInicio = rs.getDate("F_INICIO").toLocalDate();
+                }
                 
                 LocalDate fFin = null;
                 if(rs.getDate("F_FIN") != null){
@@ -206,6 +209,32 @@ public class PlantacionDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Contar plantaciones: "+e.getMessage());
+        }
+        return res;
+    }
+
+    public boolean hayPlantSinFinalizar(String idExplotacion) {
+        boolean res = false;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT COUNT(*) FROM PLANTACION WHERE ID_EXPLOTACION = ? AND F_FIN IS NULL";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idExplotacion);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                if(rs.getInt(1)>0){
+                    //Hay plant sin finalizar
+                    res=true;
+                }else{
+                    //No hay plant sin finalizar
+                }
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Comprobar si hay plant sin finalizar: "+e.getMessage());
+            res=false;
         }
         return res;
     }

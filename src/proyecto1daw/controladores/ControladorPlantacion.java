@@ -43,7 +43,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private VentaDAO modeloVenta;
     private DefaultTableModel modTablaPlant;
     private DefaultTableModel modTablaVentas;
-    private DefaultComboBoxModel opcsTam;
     private String idExplotacion;
     private Finca finca;
 
@@ -65,10 +64,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaTabla.botonBuscarPlant.addActionListener(this);
         this.vistaTabla.botonBuscarVenta.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
-
-        //Asociar listener a botones Añadir Venta
-        this.vistaAddVenta.botonAceptar.addActionListener(this);
-        this.vistaAddVenta.botonCancelar.addActionListener(this);
 
         this.modTablaPlant = new DefaultTableModel();
         this.modTablaVentas = new DefaultTableModel();
@@ -93,15 +88,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaTabla.jTableVentas.setModel(modTablaVentas);
         //Añadir listener raton a tabla Plantaciones
         this.vistaTabla.jTablePlantaciones.addMouseListener(this);
-
-        //Establecer opciones Tamaño Venta
-        opcsTam = new DefaultComboBoxModel();
-        opcsTam.addElement("MMM");
-        opcsTam.addElement("MM");
-        opcsTam.addElement("M");
-        opcsTam.addElement("G");
-        opcsTam.addElement("GG");
-        this.vistaAddVenta.jComboTam.setModel(opcsTam);
         
         //Mostar ventana
         this.vistaAddVenta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -116,8 +102,14 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         JCheckBox checkbox = null;
         if (ae.getSource() instanceof JButton) {
             boton = (JButton) ae.getSource();
-            if (boton.equals(this.vistaTabla.botonAddPlant)) {                             //AÑADIR                           
-                abrirAddPlant();
+            if (boton.equals(this.vistaTabla.botonAddPlant)) {                             //ABRIR AÑADIR PLANTACION
+                if(!modeloPlant.hayPlantSinFinalizar(idExplotacion)){
+                    abrirAddPlant();
+                }else{
+                    String msg = "Hay una plantación sin fecha de fin.\n"
+                            + "Debes finalizarla antes de añadir una nueva.";
+                    JOptionPane.showMessageDialog(vistaTabla, msg, "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                }
 
             } else if (boton.equals(this.vistaTabla.botonVolver)){                         //VOLVER
                 volver();
@@ -167,33 +159,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                         + "una venta", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
-            } else if (boton.equals(this.vistaAddVenta.botonAceptar)) {                    //VENTA ACEPTAR
-                if(validarDatosVenta()){
-                    String nomBoton = boton.getText();
-                    Venta v = this.getVenta();
-                    
-                    if(nomBoton.equalsIgnoreCase("Aceptar")){                   //AÑADIR VENTA
-                        if(modeloVenta.addVenta(v)){
-                            JOptionPane.showMessageDialog(vistaTabla, "Venta añadida"
-                                    + " correctamente");
-                            actualizarTablaVentas(v);
-                            
-                        }else{
-                            JOptionPane.showMessageDialog(vistaTabla, "Se ha producido"
-                                    + " un error al añadir la venta", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                        
-                    }else if(nomBoton.equalsIgnoreCase("Modificar")){//MODIFICAR VENTA
-                        String s =actualizarVenta(v);
-                        if(s.charAt(0) == 'E'){//Se ha producido error
-                        JOptionPane.showMessageDialog(vistaAddVenta, s, "Error", JOptionPane.ERROR_MESSAGE);
-                        }else{//Todo correcto
-                            JOptionPane.showMessageDialog(vistaAddVenta, s);
-                            actualizarTablaVentas(v);
-                        }
-                    }
-                }
-            }else if (boton.equals(this.vistaTabla.botonBuscarPlant)){                      //BUSCAR PLANTACION
+            } else if (boton.equals(this.vistaTabla.botonBuscarPlant)){                      //BUSCAR PLANTACION
                 buscarPlantacion();
                 
             }else if(boton.equals(this.vistaTabla.botonBuscarVenta)){                       //BUSCAR VENTA
@@ -212,8 +178,21 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         LocalDate fVenta = null;
         fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVenta.getText());
         String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        
         this.modTablaVentas.setRowCount(0);
-        this.rellenarTablaVentas(modeloVenta.recuperarPorFecha(fVenta,idPlant));
+        ArrayList<Venta> listaVentas = modeloVenta.recuperarPorFecha(fVenta,idPlant);
+
+        String[] s = new String[6];
+        for (Venta v : listaVentas) {
+            s[0] = v.getId();
+            s[1] = v.getKg() + "";
+            s[2] = v.getPrecio() + "";
+            s[3] = v.getColor() + " " + v.getTamanio();
+            s[4] = (v.getKg() * v.getPrecio()) + "";
+            s[5] = Fechas.toString(v.getFecha());
+            modTablaVentas.addRow(s);
+        }
+        
     }
 
     private void buscarPlantacion() {
@@ -236,14 +215,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.modTablaVentas.setRowCount(0);
         this.modTablaPlant.setRowCount(0);
         this.actualizarTablaPlant();
-    }
-
-    public void actualizarTablaVentas(Venta v) {
-        this.limpiarCamposAddVenta();
-        this.vistaAddVenta.dispose();
-        vaciarTablaVentas();
-        rellenarTablaVentas(modeloVenta.recuperarPorPlant(v.getIdPlantacion()));
-    }
+    }    
 
     private void eliminarVenta(int confirmacion) {
         if(confirmacion==JOptionPane.YES_OPTION){
@@ -253,24 +225,27 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             String idVenta=(String) this.vistaTabla.jTableVentas.getValueAt(filaSelVenta,0);
             modeloVenta.borrarVenta(idVenta, idPlant);
             
-            this.vaciarTablaVentas();
-            this.rellenarTablaVentas(this.modeloVenta.recuperarPorPlant(idPlant));
+            this.actualizarTablaVentas();
         }
     }
 
     private void abrirModVenta() {
-        int fila = vistaTabla.jTableVentas.getSelectedRow();
-        String idPlant = (String) vistaTabla.jTableVentas.getValueAt(fila, 0);
+        int filaPlant = vistaTabla.jTablePlantaciones.getSelectedRow();
+        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(filaPlant, 0);
         Plantacion plant = modeloPlant.recuperarPorId(idPlant);
-        //ControladorAddVenta contAddVenta = new ControladorAddPlant(vistaTabla, modeloPlant, idExplotacion, finca, plant);
+        
+        int filaVenta = vistaTabla.jTableVentas.getSelectedRow();
+        String idVenta = (String) vistaTabla.jTableVentas.getValueAt(filaVenta, 0);
+        Venta vent = modeloVenta.recuperarPorId(idVenta, idPlant);
+        
+        ControladorAddVenta contAddVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant, vent);
     }
 
     private void abrirAddVenta() {
-        int filaSelPlant = this.vistaTabla.jTablePlantaciones.getSelectedRow();
-        String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(filaSelPlant, 0);
-        this.vistaAddVenta.jLabelIdPlant.setText(idPlant);
-        this.vistaAddVenta.botonAceptar.setText("Aceptar");
-        this.vistaAddVenta.setVisible(true);
+        int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
+        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        Plantacion plant = modeloPlant.recuperarPorId(idPlant);
+        ControladorAddVenta contAddVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant);
     }
 
     private void eliminarPlant(int confirmacion) {
@@ -322,152 +297,28 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         }
     }
 
-    private void rellenarTablaVentas(ArrayList<Venta> listaVentas) {
-        String[] s = new String[6];
-        for (Venta v : listaVentas) {
-            s[0] = v.getId();
-            s[1] = v.getKg() + "";
-            s[2] = v.getPrecio() + "";
-            s[3] = v.getColor() + " " + v.getTamanio();
-            s[4] = (v.getKg() * v.getPrecio()) + "";
-            s[5] = Fechas.toString(v.getFecha());
-            modTablaVentas.addRow(s);
-        }
-    }
-
-    private void vaciarTablaPlant() {
-        this.modTablaPlant.setRowCount(0);
-    }
-    
-    private void vaciarTablaVentas() {
+    public void actualizarTablaVentas() {
         this.modTablaVentas.setRowCount(0);
+        int filaSel = vistaTabla.jTablePlantaciones.getSelectedRow();
+        if(filaSel != -1) {
+            String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(filaSel, 0);
+            ArrayList<Venta> listaVentas = modeloVenta.recuperarPorPlant(idPlant);
+
+            String[] s = new String[6];
+            for (Venta v : listaVentas) {
+                s[0] = v.getId();
+                s[1] = v.getKg() + "";
+                s[2] = v.getPrecio() + "";
+                s[3] = v.getColor() + " " + v.getTamanio();
+                s[4] = (v.getKg() * v.getPrecio()) + "";
+                s[5] = Fechas.toString(v.getFecha());
+                modTablaVentas.addRow(s);
+            }
+        }
     }
     
-    private void limpiarCamposAddVenta() {
-        this.vistaAddVenta.jSpinnerKg.setValue(Integer.parseInt("0"));
-        this.vistaAddVenta.campoFecha.setText("");
-        this.vistaAddVenta.campoColor.setText("");
-        this.vistaAddVenta.jComboTam.setSelectedIndex(-1);
-        this.vistaAddVenta.campoPrecio.setText("");
-        this.vistaAddVenta.errCantidad.setText(" ");
-        this.vistaAddVenta.errColor.setText(" ");
-        this.vistaAddVenta.errFecha.setText(" ");
-        this.vistaAddVenta.errPrecio.setText(" ");
-        this.vistaAddVenta.errTam.setText(" ");
-    }
-
-    private boolean validarDatosVenta() {
-        boolean res = true;
-        res = validarFechaVenta(res);
-        res = validarColorVenta(res);
-        res = validarPrecioVenta(res);
-        res = validarTipoVenta(res);
-        res = validarCantidad(res);
-        return res;
-    }
-
-    private boolean validarCantidad(boolean res) {
-        int kg = (int) this.vistaAddVenta.jSpinnerKg.getValue();
-        if(kg <= 0){
-            res=false;
-            vistaAddVenta.errCantidad.setText("La cantidad debe ser entera");
-        }else{
-            vistaAddVenta.errCantidad.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarTipoVenta(boolean res) {
-        if(this.vistaAddVenta.jComboTam.getSelectedIndex() == -1){
-            res=false;
-            vistaAddVenta.errTam.setText("El tamaño es obligatorio");
-        }else{
-            vistaAddVenta.errTam.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarPrecioVenta(boolean res) {
-        if(this.vistaAddVenta.campoPrecio.getText().equals("")){
-            res=false;
-            vistaAddVenta.errPrecio.setText("El precio es obligatorio");
-        }else{
-            try{
-                double num = Double.parseDouble(this.vistaAddVenta.campoPrecio.getText());
-            }catch(NumberFormatException e){
-                res=false;
-                vistaAddVenta.errPrecio.setText("El precio debe ser decimal");
-            }
-            if(res){
-                vistaAddVenta.errPrecio.setText(" ");
-            }
-        }
-        return res;
-    }
-
-    private boolean validarColorVenta(boolean res) {
-        if(this.vistaAddVenta.campoColor.getText().equals("")){
-            res=false;
-            vistaAddVenta.errColor.setText("El color es obligatorio");
-        }else{
-            vistaAddVenta.errColor.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarFechaVenta(boolean res) {
-        String fecha = this.vistaAddVenta.campoFecha.getText();
-        if(fecha.equals("")){
-            res=false;
-            vistaAddVenta.errFecha.setText("La fecha es obligatoria");
-        }else{
-            if(Fechas.toLocalDate(fecha) == null){
-                res=false;
-                vistaAddVenta.errFecha.setText("Debe ser formato dd/mm/aaaa");
-            }else{
-                vistaAddVenta.errFecha.setText(" ");
-            }
-        }
-        return res;
-    }
-
-    private String generarIdVenta() {
-        String idVenta = null;
-        String idPlant = this.vistaAddVenta.jLabelIdPlant.getText();
-        LocalDate fecha = Fechas.toLocalDate(this.vistaAddVenta.campoFecha.getText());
-        int num = modeloVenta.contarVentas(idPlant, fecha)+1;
-        idVenta=Fechas.toString(fecha)+"-"+num;
-        while(modeloVenta.recuperarPorId(idVenta, idPlant) != null){
-            num++;
-            idVenta=Fechas.toString(fecha)+"-"+num;
-        }
-        return idVenta;
-    }
-
-    private String actualizarVenta(Venta v) {
-        String s = "Error:";
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "KG", v.getKg()+"")){
-            s+="\nAl modificar la cantidad";
-        }
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "PRECIO", v.getPrecio()+"")){
-            s+="\nAl modificar el precio";
-        }
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "TAMANIO", v.getTamanio())){
-            s+="\nAl modificar el tamaño";
-        }
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "COLOR", v.getColor())){
-            s+="\nAl modificar el color";
-        }
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "FECHA", Fechas.toString(v.getFecha()))){
-            s+="\nAl modificar la fecha";
-        }
-        
-        if(s.equals("Error:")){
-            s="Venta actualizada correctamente.";
-        }
-        return s;
-    }
-
+   
+    
     private boolean validarFInicio() {
         boolean res=true;
         String s = this.vistaTabla.campoFIn.getText();
@@ -513,8 +364,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             if(fila != -1){
                 String idPlant = (String) tabla.getValueAt(fila, 0);
                 //Carga ventas de la plantación
-                modTablaVentas.setRowCount(0);
-                rellenarTablaVentas(modeloVenta.recuperarPorPlant(idPlant));
+                actualizarTablaVentas();
                 cantidad = modeloVenta.calcularIngresos(idPlant);
 
                 if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
@@ -535,19 +385,6 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     public void mouseExited(MouseEvent me) {
         
-    }
-
-    private Venta getVenta() {
-        String idPlant = this.vistaAddVenta.jLabelIdPlant.getText();
-        String idVenta = this.generarIdVenta();
-        int cantidad = (int) this.vistaAddVenta.jSpinnerKg.getValue();
-        String color = (String) this.vistaAddVenta.campoColor.getText();
-        String tamanio = (String) this.vistaAddVenta.jComboTam.getSelectedItem();
-        String fechaSt = this.vistaAddVenta.campoFecha.getText();
-        float precio = Float.parseFloat(this.vistaAddVenta.campoPrecio.getText());
-        LocalDate fecha=Fechas.toLocalDate(fechaSt);
-        Venta v = new Venta(idVenta, cantidad, precio, tamanio, color, fecha, idPlant);
-        return v;
     }
     
 }

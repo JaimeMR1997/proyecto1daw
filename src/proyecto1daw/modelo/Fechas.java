@@ -5,6 +5,7 @@
  */
 package proyecto1daw.modelo;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 
 /**
@@ -50,7 +51,11 @@ public class Fechas {
                         anio = Integer.parseInt(anioString);
                         mes = Integer.parseInt(mesString);
                         dia = Integer.parseInt(diaString);
-                        f = LocalDate.of(anio, mes, dia);
+                        try{
+                            f = LocalDate.of(anio, mes, dia);
+                        }catch(DateTimeException e){
+                            
+                        }
                     }
                 }
             }

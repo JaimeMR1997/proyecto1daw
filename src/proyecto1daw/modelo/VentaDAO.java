@@ -23,9 +23,9 @@ public class VentaDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA WHERE ID_PLANT = ? AND ID_PLANT = ?");
-            st.setString(1, idVenta);
-            st.setString(2, idPlant);
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM VENTA WHERE ID_PLANT = ? AND ID_VENTA = ?");
+            st.setString(1, idPlant);
+            st.setString(2, idVenta);
             
             ResultSet rs = st.executeQuery();
             if(rs.next()){

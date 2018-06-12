@@ -133,16 +133,19 @@ public class ControladorEncFinca implements ActionListener{
 
     private boolean asignarEncargados() {
         boolean res = true;
-        
-        for (Encargado enc : listaParaQuitar) {
-            if(!modeloTrab.finAsignacionFinca(enc.getDni(),finca.getId())){
-                res=false;
+        if(listaParaQuitar.size() != 0){
+            for (Encargado enc : listaParaQuitar) {
+                if(!modeloTrab.finAsignacionFinca(enc.getDni(),finca.getId())){
+                    res=false;
+                }
             }
         }
         
-        for (Encargado enc : listaParaAniadir) {
-            if(!modeloTrab.asignarFinca(enc.getDni(), finca.getId())){
-                res=false;
+        if(listaParaAniadir.size() != 0){
+            for (Encargado enc : listaParaAniadir) {
+                if(!modeloTrab.asignarFinca(enc.getDni(), finca.getId())){
+                    res=false;
+                }
             }
         }
         

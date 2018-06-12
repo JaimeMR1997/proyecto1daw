@@ -154,15 +154,18 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
 
     private boolean validarFFin(boolean res) {
         if(this.isFechaFinSelected()){
-            if(this.vistaAddPlant.campoFechaFin.getText().equals("")){
+            if(this.vistaAddPlant.campoFechaFin.getText().equals("") || this.vistaAddPlant.campoFechaFin.getText() == null){
                 res=false;
-                vistaAddPlant.errFFin.setText("Debes introducir uan fecha");
+                vistaAddPlant.errFFin.setText("Debes introducir una fecha");
+            }else{
                 if(Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText()) == null){
+                    res=false;
                     vistaAddPlant.errFFin.setText("Debe tener formato dd/mm/aaaa");
                 }else{
                     LocalDate fFin = Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText());
                     LocalDate fInicio = Fechas.toLocalDate(vistaAddPlant.campoFPlant.getText());
                     if(fInicio != null && fFin.isBefore(fInicio)){
+                        res=false;
                         vistaAddPlant.errFFin.setText("No puede ser menor a F.Plant");
                     }else{
                         vistaAddPlant.errFFin.setText(" ");
@@ -210,6 +213,7 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         }else{
             if(Fechas.toLocalDate(this.vistaAddPlant.campoFPlant.getText()) == null){
                 vistaAddPlant.errFPlant.setText("Debe ser formato dd/mm/aaaa");
+                res=false;
             }else{
                 vistaAddPlant.errFPlant.setText(" ");
             }

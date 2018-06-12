@@ -33,8 +33,6 @@ public class JFVentaAdd extends javax.swing.JFrame {
         jLabelKg = new javax.swing.JLabel();
         jLabelColor = new javax.swing.JLabel();
         jLabelTamanio = new javax.swing.JLabel();
-        jLabelIdVenta = new javax.swing.JLabel();
-        jLabelIdPlant = new javax.swing.JLabel();
         jLabelPrecio = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         campoColor = new javax.swing.JTextField();
@@ -67,12 +65,6 @@ public class JFVentaAdd extends javax.swing.JFrame {
         jLabelTamanio.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTamanio.setText("Tamaño");
 
-        jLabelIdVenta.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelIdVenta.setText("IDVENTA");
-
-        jLabelIdPlant.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelIdPlant.setText("IDPLANT");
-
         jLabelPrecio.setForeground(new java.awt.Color(255, 255, 255));
         jLabelPrecio.setText("Precio");
 
@@ -81,21 +73,14 @@ public class JFVentaAdd extends javax.swing.JFrame {
         jPanelIzqLayout.setHorizontalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
+                .addGap(13, 13, 13)
                 .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelPrecio)
-                            .addComponent(jLabelTamanio)
-                            .addComponent(jLabelKg)
-                            .addComponent(jLabelColor)
-                            .addComponent(jLabelFPlant)))
-                    .addGroup(jPanelIzqLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabelIdPlant)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelIdVenta)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jLabelPrecio)
+                    .addComponent(jLabelTamanio)
+                    .addComponent(jLabelKg)
+                    .addComponent(jLabelColor)
+                    .addComponent(jLabelFPlant))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,11 +95,7 @@ public class JFVentaAdd extends javax.swing.JFrame {
                 .addComponent(jLabelFPlant)
                 .addGap(30, 30, 30)
                 .addComponent(jLabelPrecio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelIdPlant)
-                    .addComponent(jLabelIdVenta))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         campoColor.addActionListener(new java.awt.event.ActionListener() {
@@ -314,8 +295,6 @@ public class JFVentaAdd extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> jComboTam;
     private javax.swing.JLabel jLabelColor;
     private javax.swing.JLabel jLabelFPlant;
-    public javax.swing.JLabel jLabelIdPlant;
-    public javax.swing.JLabel jLabelIdVenta;
     private javax.swing.JLabel jLabelKg;
     private javax.swing.JLabel jLabelPrecio;
     private javax.swing.JLabel jLabelTamanio;
