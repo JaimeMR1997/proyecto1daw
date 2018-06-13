@@ -15,15 +15,15 @@ import java.util.Date;
 public class Plantacion {
     private String id;
     private String tipo;
-    private String varidad;
+    private String variedad;
     private LocalDate fInicio;
     private LocalDate fFin;
     private String idExplotacion;
 
-    public Plantacion(String id, String tipo, String varidad, LocalDate fInicio, LocalDate fFin, String idExplotacion) {
+    public Plantacion(String id, String tipo, String variedad, LocalDate fInicio, LocalDate fFin, String idExplotacion) {
         this.id = id;
         this.tipo = tipo;
-        this.varidad = varidad;
+        this.variedad = variedad;
         this.fInicio = fInicio;
         this.fFin = fFin;
         this.idExplotacion = idExplotacion;
@@ -65,11 +65,11 @@ public class Plantacion {
     }
 
     public String getVariedad() {
-        return varidad;
+        return variedad;
     }
 
     public void setVariedad(String varidad) {
-        this.varidad = varidad;
+        this.variedad = varidad;
     }
 
     public LocalDate getfInicio() {
@@ -94,6 +94,11 @@ public class Plantacion {
 
     public void setIdExplotacion(String idExplotacion) {
         this.idExplotacion = idExplotacion;
+    }
+
+    @Override
+    public String toString() {
+        return tipo + ":" + variedad + "F.Inicio -> " + fInicio;
     }
     
     

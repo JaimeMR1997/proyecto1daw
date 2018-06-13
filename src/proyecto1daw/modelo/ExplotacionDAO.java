@@ -27,7 +27,10 @@ public class ExplotacionDAO {
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fCreacion = rs.getDate("F_CREACION").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
                 listaExplotaciones.add(new Explotacion(rs.getString("ID_EXPLOTACION"), rs.getInt("SUPERFICIE"),
                         rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA")));
             }

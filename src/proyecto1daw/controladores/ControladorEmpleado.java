@@ -7,6 +7,8 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JButton;
@@ -28,7 +30,7 @@ import proyecto1daw.vistas.JFInicio;
  *
  * @author Jaime
  */
-public class ControladorEmpleado implements ActionListener{
+public class ControladorEmpleado implements ActionListener,MouseListener{
     private JFEmpleados vistaTabla;
     private CuadrillaDAO modeloCuad;
     private TrabajadorDAO modeloEmple;
@@ -60,6 +62,10 @@ public class ControladorEmpleado implements ActionListener{
         this.vistaTabla.jCheckBoxTract.addActionListener(this);
         this.vistaTabla.jCheckBoxEnc.addActionListener(this);
         this.vistaTabla.jCheckBoxFinalizado.addActionListener(this);
+        //Añadir mouse listeners a tablas
+        this.vistaTabla.jTableCuadrilla.addMouseListener(this);
+        this.vistaTabla.jTableEmple.addMouseListener(this);
+        this.vistaTabla.jTableTrab.addMouseListener(this);
         //Modelos de tablas
         this.modTablaCuad = new DefaultTableModel();
         this.modTablaEmple = new DefaultTableModel();
@@ -402,5 +408,36 @@ public class ControladorEmpleado implements ActionListener{
     private void volver() {
         ControladorInicio contInicio = new ControladorInicio(new JFInicio());
         this.vistaTabla.dispose();
+    }
+
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+    
+    public void mousePressed(MouseEvent me) {
+        if(me.getClickCount() == 2){ //Doble click
+            if(me.getSource().equals(vistaTabla.jTableCuadrilla) && getSelFilaCuad() != -1){
+                abrirAddTrabajo();
+                
+            }else if(me.getSource().equals(vistaTabla.jTableEmple) && getSelFilaEmple() != -1){
+                abrirModEmple();
+                
+            }else if(me.getSource().equals(vistaTabla.jTableTrab) && getSelFilaTrab() != -1){
+                abrirModTrabajo();
+                
+            }
+        }
+    }
+    
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+    
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+    
+    public void mouseExited(MouseEvent me) {
+        
     }
 }

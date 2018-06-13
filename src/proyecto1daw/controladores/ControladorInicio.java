@@ -21,6 +21,8 @@ import proyecto1daw.vistas.JFInicio;
  */
 public class ControladorInicio implements ActionListener{
     private JFInicio vista;
+    private FincaDAO modeloFinca;
+    private ExplotacionDAO modeloExp;
 
     public ControladorInicio(JFInicio vista) {
         this.vista = vista;
@@ -32,6 +34,9 @@ public class ControladorInicio implements ActionListener{
         this.vista.jButtonFincas.addActionListener(this);
         this.vista.jButtonTrabajadores.addActionListener(this);
         this.vista.jButtonTractores.addActionListener(this);
+        //Crear modelo
+        this.modeloFinca = new FincaDAO();
+        this.modeloExp = new ExplotacionDAO();
     }
 
     public void actionPerformed(ActionEvent ae) {
@@ -39,15 +44,16 @@ public class ControladorInicio implements ActionListener{
         if(boton.equals(this.vista.jButtonTractores)){
             
         }else if(boton.equals(this.vista.jButtonFincas)){                       //VENTANA FINCAS
-            ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), new ExplotacionDAO());
+            ControladorFinca conFinca = new ControladorFinca(new JFFinca(), modeloFinca, modeloExp);
             this.vista.dispose();
             
         }else if(boton.equals(this.vista.jButtonTrabajadores)){                 //VENTANA TRABAJADORES
             ControladorEmpleado contEmp = new ControladorEmpleado(new JFEmpleados());
             this.vista.dispose();
             
-        }else if(boton.equals(this.vista.jButtonEstadisticas)){
-            
+        }else if(boton.equals(this.vista.jButtonEstadisticas)){                 //VENTANA ESTADISTICAS  
+            ControladorEstadisticas contEst = new ControladorEstadisticas(modeloFinca,modeloExp);
+            this.vista.dispose();
         }
     }
     

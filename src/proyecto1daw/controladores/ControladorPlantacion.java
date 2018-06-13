@@ -86,8 +86,9 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.actualizarTablaPlant();
         this.vistaTabla.jTablePlantaciones.setModel(modTablaPlant);
         this.vistaTabla.jTableVentas.setModel(modTablaVentas);
-        //Añadir listener raton a tabla Plantaciones
+        //Añadir listener raton a tablas
         this.vistaTabla.jTablePlantaciones.addMouseListener(this);
+        this.vistaTabla.jTableVentas.addMouseListener(this);
         
         //Mostar ventana
         this.vistaAddVenta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -358,21 +359,25 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     public void mousePressed(MouseEvent me) {
         JTable tabla = (JTable) me.getSource();
-            int fila = tabla.getSelectedRow();
-            double cantidad = 0;
-            
+        int fila = tabla.getSelectedRow();
+        double cantidad = 0;
+        if(tabla.equals(vistaTabla.jTablePlantaciones)){
             if(fila != -1){
                 String idPlant = (String) tabla.getValueAt(fila, 0);
                 //Carga ventas de la plantación
                 actualizarTablaVentas();
                 cantidad = modeloVenta.calcularIngresos(idPlant);
-
+                vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
                 if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
-                    
+                    abrirModPlant();
                 }
             }
+        }else{
+            if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
+                    abrirModVenta();
+                }
+        }
             
-            vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
     }
     
     public void mouseReleased(MouseEvent me) {
