@@ -32,21 +32,20 @@ import proyecto1daw.vistas.JFTrabajoAdd;
  * @author alumno
  */
 public class ControladorAddTrabajo implements ActionListener,FocusListener{
-    private JFEmpleados vistaTabla;
+    private ControladorEmpleado contEmple;
     private JFTrabajoAdd vistaAdd;
     private CuadrillaDAO modeloCuad;
-    private TrabajadorDAO modeloTrab;
     private FincaDAO modeloFinca;
     private ExplotacionDAO modeloExp;
     private DefaultComboBoxModel modComboCuad;
     private DefaultComboBoxModel modComboFinca;
     private DefaultComboBoxModel modComboExp;
+    private Trabajo trab;
 
-    public ControladorAddTrabajo(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modeloTrab) {
-        this.vistaTabla = vistaTabla;
+    public ControladorAddTrabajo(ControladorEmpleado contEmple,CuadrillaDAO modeloCuad) {
+        this.contEmple = contEmple;
         this.vistaAdd = new JFTrabajoAdd();
         this.modeloCuad = modeloCuad;
-        this.modeloTrab = modeloTrab;
         
         this.modeloFinca = new FincaDAO();
         this.modeloExp = new ExplotacionDAO();
@@ -61,6 +60,8 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
         cargarDespCuad();
         cargarDespFinca();
         cargarDespExp();
+        //Poner fecha a hoy
+        this.vistaAdd.campoFecha.setText(Fechas.toString(LocalDate.now()));
         //Asociar Actions listeners
         this.vistaAdd.botonAceptar.addActionListener(this);
         this.vistaAdd.botonCancelar.addActionListener(this);
@@ -81,14 +82,25 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
     }
     
     //Constructor Modificar
-    public ControladorAddTrabajo(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modeloTrab,boolean mod) {
-        this(vistaTabla, modeloCuad, modeloTrab);
-        if(mod){                                                                //Constructor Modificar
+    public ControladorAddTrabajo(ControladorEmpleado contEmple, CuadrillaDAO modeloCuad,Trabajo trab) {
+        this(contEmple, modeloCuad);
+        if(trab != null){                                                                //Constructor Modificar
+            this.trab = trab;
+            
             this.vistaAdd.botonAceptar.setText("Modificar");
             this.vistaAdd.jComboCuad.setEnabled(false);
             this.vistaAdd.jComboFinca.setEnabled(false);
             this.vistaAdd.jComboExp.setEnabled(false);
             this.vistaAdd.campoFecha.setEnabled(false);
+            
+            this.vistaAdd.jComboCuad.setSelectedItem(trab.getIdCuadrilla());
+            this.vistaAdd.jComboFinca.setSelectedItem("-");
+            this.vistaAdd.jComboExp.setSelectedItem(trab.getIdExplotacion());
+            this.vistaAdd.campoFecha.setText(Fechas.toString(trab.getFecha()));
+            this.vistaAdd.campoTarea.setText(trab.getTarea());
+            this.vistaAdd.jSpinnerHoras.setValue(Integer.valueOf(trab.getHoras()));
+        }else{
+            JOptionPane.showMessageDialog(vistaAdd, "Error inesperado. Trabajo no encontrado", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -99,7 +111,7 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
                 if(boton.getText().equalsIgnoreCase("Aceptar")){                    //AÑADIR NUEVO
                     if(addTrabajo()){
                         JOptionPane.showMessageDialog(boton, "El trabajo ha sido añadido correctamente");
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
+                        this.contEmple.cargarTablaTrab();
                         this.vistaAdd.dispose();
                    }else{
                        JOptionPane.showMessageDialog(vistaAdd, "Error al añadir el trabajo", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -108,7 +120,7 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
                 }else{                                                              //MODIFICAR
                     if(modTrabajo()){
                         JOptionPane.showMessageDialog(boton, "El trabajo ha sido modificado correctamente");
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
+                        this.contEmple.cargarTablaTrab();
                         this.vistaAdd.dispose();
                    }else{
                         JOptionPane.showMessageDialog(vistaAdd, "Error al modificar el trabajo", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -148,17 +160,22 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
     }
 
     private boolean validarTarea(boolean res) {
-        if(vistaAdd.campoTarea.getText() == null){
+        if(vistaAdd.campoTarea.getText().equals("") || vistaAdd.campoTarea.getText() == null){
             res=false;
             vistaAdd.errTarea.setText("Debes introducir una tarea");
         }else{
             String tarea = vistaAdd.campoTarea.getText();
-            for (int i = 0; i < tarea.length(); i++) {
-                if(!Character.isAlphabetic(tarea.charAt(i))){
-                    if(tarea.charAt(i) != '-' || tarea.charAt(i) != ' '){
-                        res=false;
-                        vistaAdd.errTarea.setText("Tarea contiene caracteres no permitidos");
-                        break;
+            if(tarea.length()>20){
+                res=false;
+                vistaAdd.errTarea.setText("Máximo 20 caracteres");
+            }else{
+                for (int i = 0; i < tarea.length(); i++) {
+                    if(!Character.isAlphabetic(tarea.charAt(i))){
+                        if(tarea.charAt(i) != '-' && tarea.charAt(i) != ' '){
+                            res=false;
+                            vistaAdd.errTarea.setText("Tarea contiene caracteres no permitidos");
+                            break;
+                        }
                     }
                 }
             }
@@ -286,13 +303,11 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
     }
 
     private boolean modTrabajo() {
-        Cuadrilla cuad = (Cuadrilla) vistaAdd.jComboCuad.getSelectedItem();
-        String stFecha = vistaAdd.campoFecha.getText();
-        LocalDate fecha = Fechas.toLocalDate(stFecha);
-        int horas = getHoras();
+        Trabajo t = this.trab;
+        
         String tarea = vistaAdd.campoTarea.getText();
-        Explotacion exp = getExp();
-        Trabajo t = new Trabajo(cuad.getId(), fecha, horas, tarea, exp.getId());
+        t.setHoras(getHoras());
+        t.setTarea(tarea);
         
         boolean res = true;
         String errMensaje="Error:";

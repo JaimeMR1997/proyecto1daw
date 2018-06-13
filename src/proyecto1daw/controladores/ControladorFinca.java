@@ -111,7 +111,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
                 int fila = this.vistaTabla.jTableFincas.getSelectedRow();
                 String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
                 Finca finca = modeloFinca.recuperarPorId(idFinca);
-                ControladorEncFinca contEnc = new ControladorEncFinca(vistaTabla, vistaAdd, modeloFinca, modeloExp, finca);
+                ControladorEncFinca contEnc = new ControladorEncFinca(this, modeloFinca, modeloExp, finca);
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                         + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -185,7 +185,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         return f;
     }
 
-    private void actualizarTabla() {
+    public void actualizarTabla() {
         this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
         this.rellenarTabla(modeloFinca.recuperarTodas());

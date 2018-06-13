@@ -28,15 +28,13 @@ import proyecto1daw.vistas.JFEmpleados;
  * @author alumno
  */
 public class ControladorAddEmple implements ActionListener,FocusListener{
-    private JFEmpleados vistaTabla;
+    private ControladorEmpleado contEmple;
     private JFEmpleAdd vistaAdd;
-    private CuadrillaDAO modeloCuad;
     private TrabajadorDAO modeloTrab;
     private Trabajador emple;
 
-    public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab) {
-        this.vistaTabla = vistaTabla;
-        this.modeloCuad = modeloCuad;
+    public ControladorAddEmple(ControladorEmpleado contEmple, TrabajadorDAO modTrab) {
+        this.contEmple = contEmple;
         this.modeloTrab = modTrab;
         this.vistaAdd = new JFEmpleAdd();
         
@@ -67,8 +65,8 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
     }
 
     //CONSTRUCTOR MODIFICAR
-    public ControladorAddEmple(JFEmpleados vistaTabla, CuadrillaDAO modeloCuad, TrabajadorDAO modTrab,Trabajador emple) {
-        this(vistaTabla, modeloCuad, modTrab);
+    public ControladorAddEmple(ControladorEmpleado contEmple, TrabajadorDAO modTrab,Trabajador emple) {
+        this(contEmple, modTrab);
         if(emple != null){
             this.emple=emple;
             this.vistaAdd.botonAceptar.setText("Modificar");
@@ -107,17 +105,17 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
                 JButton boton = (JButton) ae.getSource();
                 if(boton.getText().equalsIgnoreCase("Aceptar")){                //AÑADIR
                     if(addEmple()){
-                        JOptionPane.showMessageDialog(boton, "El empleado ha sido añadido correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "El empleado ha sido añadido correctamente");
+                        contEmple.cargarTablaEmple();
                         this.vistaAdd.dispose();
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
                    }else{
                        JOptionPane.showMessageDialog(vistaAdd, "Error al añadir el empleado", "ERROR", JOptionPane.ERROR_MESSAGE);
                    }   
                 }else{                                                          //MODIFICAR
                     if(modEmple()){
-                        JOptionPane.showMessageDialog(boton, "El empleado ha sido modificado correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "El empleado ha sido modificado correctamente");
+                        contEmple.cargarTablaEmple();
                         this.vistaAdd.dispose();
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
                     }else{
                         JOptionPane.showMessageDialog(vistaAdd, "Error al modificar el empleado", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
@@ -238,13 +236,18 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
             res=false;
             vistaAdd.errTlf.setText("El tlf es obligatorio");
         }else{
-            try{
-                Integer.parseInt(vistaAdd.campoTlf.getText());
-            }catch(NumberFormatException e){
-                res=false;
-                vistaAdd.errTlf.setText("Solo puede contener numeros");
+            String num = vistaAdd.campoTlf.getText();
+            if(num.length() == 9){
+                try{
+                    Integer.parseInt(vistaAdd.campoTlf.getText());
+                }catch(NumberFormatException e){
+                    res=false;
+                    vistaAdd.errTlf.setText("Solo puede contener numeros");
+                }
+                vistaAdd.errTlf.setText(" ");
+            }else{
+                vistaAdd.errTlf.setText("El num debe tener 9 digitos");
             }
-            vistaAdd.errTlf.setText(" ");
         }
         return res;
     }
@@ -272,12 +275,24 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
             res=false;
             vistaAdd.errFCont.setText("La fecha de cont es obligatoria");
         }else{
-            String fecha = vistaAdd.campoFCont.getText();
-            if(Fechas.toLocalDate(fecha) == null){
+            String fechaSt = vistaAdd.campoFCont.getText();
+            if(Fechas.toLocalDate(fechaSt) == null){
                 res=false;
                 vistaAdd.errFCont.setText("La fecha debe ser dd/mm/aaaa");
             }else{
-                vistaAdd.errFCont.setText(" ");
+                LocalDate fecha = Fechas.toLocalDate(vistaAdd.campoFCont.getText());
+                if(validarFNac(res)){
+                    LocalDate fechaNac = Fechas.toLocalDate(vistaAdd.campoFNac.getText());
+                    if(fecha.isBefore(fechaNac.plusYears(16))){
+                        //Si tiene meno de 16 años no es válido
+                        res=false;
+                        vistaAdd.errFCont.setText("Es menor de 16");
+                    }else{
+                        vistaAdd.errFCont.setText(" ");
+                    }
+                }else{
+                    vistaAdd.errFCont.setText(" ");
+                }
             }
         }
         return res;

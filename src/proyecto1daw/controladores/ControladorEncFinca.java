@@ -26,8 +26,7 @@ import proyecto1daw.vistas.JFFincaAdd;
  * @author Jaime
  */
 public class ControladorEncFinca implements ActionListener{
-    private JFFinca vistaTabla;
-    private JFFincaAdd vistaAdd;
+    private ControladorFinca contFinca;
     private JFEncFinca vistaEnc;
     private FincaDAO modeloFinca;
     private ExplotacionDAO modeloExp;
@@ -38,9 +37,8 @@ public class ControladorEncFinca implements ActionListener{
     private ArrayList<Encargado> listaParaQuitar;
     private Finca finca;
 
-    public ControladorEncFinca(JFFinca vistaTabla, JFFincaAdd vistaAdd, FincaDAO modeloFinca, ExplotacionDAO modeloExp,Finca finca) {
-        this.vistaTabla = vistaTabla;
-        this.vistaAdd = vistaAdd;
+    public ControladorEncFinca(ControladorFinca contFinca, FincaDAO modeloFinca, ExplotacionDAO modeloExp,Finca finca) {
+        this.contFinca = contFinca;
         this.vistaEnc = new JFEncFinca();
         this.modeloFinca = modeloFinca;
         this.modeloExp = modeloExp;
@@ -79,7 +77,7 @@ public class ControladorEncFinca implements ActionListener{
         }else if(ae.getSource().equals(vistaEnc.botonAceptar)){                 //ACEPTAR
             if(asignarEncargados()){
                 JOptionPane.showMessageDialog(vistaEnc,"Encargados reasignados correctamente.");
-                ControladorFinca contFinca = new ControladorFinca(vistaTabla, modeloFinca, modeloExp);
+                contFinca.actualizarTabla();
                 this.vistaEnc.dispose();
             }else{
                 JOptionPane.showMessageDialog(vistaEnc,"Error al reasignar los encargados", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -88,13 +86,11 @@ public class ControladorEncFinca implements ActionListener{
         }else if(ae.getSource().equals(vistaEnc.botonCancelar)){                //CANCELAR
             if(listaParaAniadir.size() == 0 && listaParaQuitar.size() == 0){
                 //No se ha modificado nada, se sale sin preguntar
-                ControladorFinca contFinca = new ControladorFinca(vistaTabla, modeloFinca, modeloExp);
                 this.vistaEnc.dispose();
             }else{
                 //Se ha modificado algo, advertir al usuario
                 int n=JOptionPane.showConfirmDialog(vistaEnc, "¿Quieres salir y descartar los cambios?");
                 if(n == JOptionPane.YES_OPTION){
-                    ControladorFinca contFinca = new ControladorFinca(vistaTabla, modeloFinca, modeloExp);
                     this.vistaEnc.dispose();
                 }
             }

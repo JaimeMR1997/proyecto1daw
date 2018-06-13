@@ -6,6 +6,7 @@
 package proyecto1daw.modelo;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 
@@ -103,9 +104,19 @@ public class Trabajador {
         this.salario = salario;
     }
 
-    @Override
     public String toString() {
         return dni+" - "+nombre + " " + apellidos;
+    }
+
+
+    public boolean equals(Object o) {
+        boolean res = false;
+        if (o instanceof Trabajador){
+            if(this.dni.equalsIgnoreCase(((Trabajador) o).getDni())){
+                res=true;
+            }
+        }
+        return res;
     }
 
     

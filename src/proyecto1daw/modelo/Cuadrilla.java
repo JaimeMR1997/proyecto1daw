@@ -17,11 +17,16 @@ public class Cuadrilla {
     private String id;
     private LocalDate fInicio;
     private LocalDate fFin;
+    private Encargado enc;
 
     public Cuadrilla(String idCuadrilla, LocalDate fInicio, LocalDate fFin) {
         this.id = idCuadrilla;
         this.fInicio = fInicio;
         this.fFin = fFin;
+        
+        CuadrillaDAO modeloCuad = new CuadrillaDAO();
+        String dni = modeloCuad.getDniEncargado(this);
+        enc = modeloCuad.recuperarEncargado(dni);
     }
 
     public String getId() {
@@ -50,6 +55,14 @@ public class Cuadrilla {
 
     public String toString() {
         return "Cuadrilla - " + id;
+    }
+
+    public Encargado getEncargado() {
+        return enc;
+    }
+
+    public void setEncargado(Encargado enc) {
+        this.enc = enc;
     }
     
     

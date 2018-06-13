@@ -37,6 +37,8 @@ public class Encargado extends Trabajador{
         return super.toString()+" - Encargado";
     }
 
-    
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
     
 }

@@ -213,11 +213,15 @@ public class TrabajadorDAO {
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
             PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM CONDUCTOR WHERE DNI = ?");
+            st.setString(1, dni);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
                 LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                LocalDate fFin = null;    
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();    
+                }
                 cond = new Conductor(rs.getString("PERMISOS"),rs.getString("DNI"), rs.getString("NOMBRE"),
                         rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO"));
             }
@@ -238,7 +242,10 @@ public class TrabajadorDAO {
             while(rs.next()){
                 LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
                 LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
-                LocalDate fFin = rs.getDate("F_FIN").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
                 listaConductores.add(new Conductor(rs.getString("PERMISOS"),rs.getString("DNI"), rs.getString("NOMBRE"),
                         rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
             }
@@ -365,7 +372,11 @@ public class TrabajadorDAO {
             st.setString(3, conduct.getApellidos());
             st.setDate(4, Date.valueOf(conduct.getfNacimiento()));
             st.setDate(5, Date.valueOf(conduct.getfContratacion()));
-            st.setDate(6, Date.valueOf(conduct.getfFin()));
+            if(conduct.getfFin() != null){
+                st.setDate(6, Date.valueOf(conduct.getfFin()));
+            }else{
+                st.setDate(6, null);
+            }
             st.setString(7, conduct.getTlf());
             st.setInt(8, conduct.getSalario());
             st.setString(9, conduct.getPermisos());
@@ -586,5 +597,99 @@ public class TrabajadorDAO {
     
     public boolean finAsignacionFinca(String dni, String idFinca) {
         return this.finAsignacionFinca(dni, idFinca, null);
+    }
+
+    public ArrayList<Trabajador> recuperarTrabajadoresLibres() {
+        ArrayList<Trabajador> listaTodos = new ArrayList<Trabajador>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            String consulta = "SELECT * FROM TRABAJADOR WHERE F_FIN IS NULL OR F_FIN>SYSDATE";
+            
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();    
+                }
+                listaTodos.add(new Trabajador(rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta trabajadores libres(trab cont finalizado): "+e.getMessage());
+        }
+        ArrayList<Trabajador> listaQuitar = new ArrayList<Trabajador>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            String consulta = "SELECT * FROM TRABAJADOR WHERE DNI = "
+                    + "(SELECT DNI FROM FORMA WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
+                LocalDate fCont = rs.getDate("F_CONT").toLocalDate();
+                LocalDate fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();    
+                }
+                listaQuitar.add(new Trabajador(rs.getString("DNI"), rs.getString("NOMBRE"),
+                        rs.getString("APELLIDOS"), fNac, fCont, fFin, rs.getString("TLF"), rs.getInt("SALARIO")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta trabajadores libres(trab ocupados): "+e.getMessage());
+        }
+
+        //Se restan los que estan asignados
+        listaTodos.removeAll(listaQuitar);
+        return listaTodos;
+    }
+
+    public boolean finAsigCuadrilla(String dni, String idCuad) {
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "UPDATE FORMA SET F_FIN= ? WHERE DNI=? AND ID_CUADRILLA = ?";
+        LocalDate fFin=LocalDate.now();
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setDate(1, Date.valueOf(fFin));
+            st.setString(2, dni);
+            st.setString(3, idCuad);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL.Fin asignacion empleado: "+e.getMessage());
+            res=false;
+        }
+        return res;
+    }
+
+    public boolean asignarCuad(String dni, String idCuad) {
+        boolean res = true;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "INSERT INTO FORMA(DNI,F_INICIO,ID_CUADRILLA) "
+                + "VALUES(?,?,?)";        
+            LocalDate fInicio=LocalDate.now();
+
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, dni);
+            st.setDate(2, Date.valueOf(fInicio));
+            st.setString(3, idCuad);
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL.Asignar trabajador: "+e.getMessage());
+            res=false;
+        }
+        return res;
     }
 }

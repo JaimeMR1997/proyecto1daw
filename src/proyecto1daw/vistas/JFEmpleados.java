@@ -40,6 +40,7 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonAddCuad = new javax.swing.JButton();
         botonModCuad = new javax.swing.JButton();
         botonEliminarCuad = new javax.swing.JButton();
+        botonAsignarCuad = new javax.swing.JButton();
         jPanelEmpleados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEmple = new javax.swing.JTable();
@@ -156,18 +157,26 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonEliminarCuad.setBorderPainted(false);
         botonEliminarCuad.setContentAreaFilled(false);
 
+        botonAsignarCuad.setForeground(new java.awt.Color(255, 255, 255));
+        botonAsignarCuad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/icono_cuad.png"))); // NOI18N
+        botonAsignarCuad.setText("Gest. miembros");
+        botonAsignarCuad.setBorderPainted(false);
+        botonAsignarCuad.setContentAreaFilled(false);
+
         javax.swing.GroupLayout jPanelBot2Layout = new javax.swing.GroupLayout(jPanelBot2);
         jPanelBot2.setLayout(jPanelBot2Layout);
         jPanelBot2Layout.setHorizontalGroup(
             jPanelBot2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBot2Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(48, 48, 48)
                 .addComponent(botonGestionarCuad)
-                .addGap(118, 118, 118)
+                .addGap(64, 64, 64)
                 .addComponent(botonAddCuad)
-                .addGap(116, 116, 116)
+                .addGap(65, 65, 65)
                 .addComponent(botonModCuad)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addGap(63, 63, 63)
+                .addComponent(botonAsignarCuad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonEliminarCuad)
                 .addGap(89, 89, 89))
         );
@@ -179,7 +188,8 @@ public class JFEmpleados extends javax.swing.JFrame {
                     .addComponent(botonGestionarCuad)
                     .addComponent(botonAddCuad)
                     .addComponent(botonModCuad)
-                    .addComponent(botonEliminarCuad))
+                    .addComponent(botonEliminarCuad)
+                    .addComponent(botonAsignarCuad))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -517,6 +527,7 @@ public class JFEmpleados extends javax.swing.JFrame {
     public javax.swing.JButton botonAddCuad;
     public javax.swing.JButton botonAddEmp;
     public javax.swing.JButton botonAddTrab;
+    public javax.swing.JButton botonAsignarCuad;
     public javax.swing.JButton botonBuscarEmp;
     public javax.swing.JButton botonEliminarCuad;
     public javax.swing.JButton botonEliminarEmp;

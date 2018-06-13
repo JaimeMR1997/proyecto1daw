@@ -135,21 +135,23 @@ public class CuadrillaDAO {
         return res;
     }
     
-    public void actualizarCampoCuadrilla(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoCuadrilla(String id, String campo, String nuevoValor){
+        boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE CUADRILLA SET ?=? WHERE ID_CUADRILLA = ?";
+        String consulta = "UPDATE CUADRILLA SET "+campo+"=? WHERE ID_CUADRILLA = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, campo);
-            st.setString(2, nuevoValor);
-            st.setString(3, id);
+            st.setString(1, nuevoValor);
+            st.setString(2, id);
             
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar cuadrilla: "+e.getMessage());
+            res=false;
         }
+        return res;
     }
 
     public ArrayList<Trabajo> recuperarTrabajos(Cuadrilla cuad) {
@@ -170,6 +172,7 @@ public class CuadrillaDAO {
         }
         return listaTrabajos;
     }
+    
     public Trabajo recuperarUltTrabajo(Cuadrilla cuad){
         Trabajo t = null;
         try{
@@ -319,6 +322,7 @@ public class CuadrillaDAO {
         }
         return res;
     }
+    
     public Cuadrilla buscarCuadrillaPorId(String id){
         Cuadrilla cuad = null;
         Conexion c = new Conexion();
@@ -341,5 +345,61 @@ public class CuadrillaDAO {
             System.out.println("Excepcion SQL. buscar cuadrilla por Id: "+e.getMessage());
         }
         return cuad;
+    }
+
+    Encargado recuperarEncargado(String dni) {
+        TrabajadorDAO modeloTrab = new TrabajadorDAO();
+        return modeloTrab.recuperarEncargado(dni);
+    }
+
+    public ArrayList<Trabajador> recuperarTrabajadores(String idCuad) {
+        ArrayList<Trabajador> listaTrab = new ArrayList<Trabajador>();
+        
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT DNI FROM FORMA WHERE ID_CUADRILLA = ? AND (F_FIN IS NULL OR F_FIN >= ?)";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idCuad);
+            //Se le pasa la fecha como parametro y no se usa la funcion SYSDATE de Oracle
+            //porque al devolver hora no aparecen en la lista de trabajadores actuales
+            //los que han sido cambiados de cuadrilla hoy
+            st.setDate(2, Date.valueOf(LocalDate.now()));
+            ResultSet rs = st.executeQuery();
+            TrabajadorDAO modeloTrab = new TrabajadorDAO();
+            while(rs.next()){
+                listaTrab.add(modeloTrab.recuperarTrabajador(rs.getString(1)));//Recupera DNI y busca por DNI
+                //y lo añade a la lista
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. recuperar emples de cuadrilla: "+e.getMessage());
+        }
+        
+        return listaTrab;
+    }
+    
+    public boolean borrarTrabajo(Trabajo t){
+        boolean res = true;
+        
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "DELETE FROM TRABAJA WHERE ID_CUADRILLA = ? "
+                + "AND FECHA = ? AND TAREA = ? AND ID_EXPLOTACION = ?";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, t.getIdCuadrilla());
+            st.setDate(2, Date.valueOf(t.getFecha()));
+            st.setString(3, t.getTarea());
+            st.setString(4, t.getIdExplotacion());
+            
+            st.executeUpdate();
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. recuperar emples de cuadrilla: "+e.getMessage());
+            res=false;
+        }
+        
+        return res;
     }
 }

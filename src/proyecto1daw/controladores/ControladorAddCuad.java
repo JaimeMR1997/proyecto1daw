@@ -30,11 +30,12 @@ import proyecto1daw.vistas.JFEmpleados;
  */
 public class ControladorAddCuad implements ActionListener, FocusListener {
     private JFCuadAdd vistaAdd;
-    private JFEmpleados vistaTabla;
+    private ControladorEmpleado contEmple;
     private CuadrillaDAO modeloCuad;
     private TrabajadorDAO modeloTrab;
     private DefaultListModel modLista;
     private boolean accionEsMod;
+    private Cuadrilla cuad;
     
     /**
      *
@@ -42,9 +43,9 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
      * @param vistaTabla
      * @param modelo
      */
-    public ControladorAddCuad(JFEmpleados vistaTabla, CuadrillaDAO modelo){
+    public ControladorAddCuad(ControladorEmpleado contEmple, CuadrillaDAO modelo){
         this.vistaAdd = new JFCuadAdd();
-        this.vistaTabla = vistaTabla;
+        this.contEmple = contEmple;
         this.modeloCuad = modelo;
         this.modeloTrab = new TrabajadorDAO();
         this.modLista = new DefaultListModel<Trabajador>();
@@ -74,20 +75,23 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         this.vistaAdd.setVisible(true);
     }
 
-    public ControladorAddCuad(Cuadrilla cuadrilla,JFEmpleados vistaTabla, CuadrillaDAO modeloCuad) {
-        this(vistaTabla, modeloCuad);
+    public ControladorAddCuad(ControladorEmpleado contEmple, CuadrillaDAO modeloCuad,Cuadrilla cuad) {
+        this(contEmple, modeloCuad);
         
-        boolean accionEsMod = true;
+        this.cuad = cuad;
+        this.accionEsMod = true;
         this.vistaAdd.botonAceptar.setText("Modificar");
-        this.vistaAdd.campoId.setText(cuadrilla.getId());
-        this.vistaAdd.campoFInicio.setText(Fechas.toString(cuadrilla.getfInicio()));
+        this.vistaAdd.campoId.setText(cuad.getId());
+        this.vistaAdd.campoFInicio.setText(Fechas.toString(cuad.getfInicio()));
         this.vistaAdd.campoFInicio.setEnabled(false);
-        if(cuadrilla.getfFin() != null){
-            this.vistaAdd.campoFFin.setText(Fechas.toString(cuadrilla.getfFin()));
+        if(cuad.getfFin() != null){
+            this.vistaAdd.campoFFin.setText(Fechas.toString(cuad.getfFin()));
         }
         this.vistaAdd.jRadioEmpleado.setEnabled(false);
         this.vistaAdd.jRadioTractorista.setEnabled(false);
         this.vistaAdd.jRadioEncargado.setEnabled(false);
+        this.vistaAdd.jRadioEncargado.setSelected(true);
+        this.actualizarLista();
         this.vistaAdd.jList.setEnabled(false);
         
     }
@@ -103,7 +107,7 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
                         JOptionPane.showMessageDialog(vistaAdd, err, "Error", JOptionPane.ERROR_MESSAGE);
                     }else{// Sin error
                         JOptionPane.showMessageDialog(vistaAdd, "Se ha modificcado correctamente la cuadrilla");
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
+                        contEmple.cargarTablaCuadrillas();
                         this.vistaAdd.dispose();
                     }
                 }else{
@@ -112,7 +116,7 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
                         JOptionPane.showMessageDialog(vistaAdd, err, "Error", JOptionPane.ERROR_MESSAGE);
                     }else{// Sin error
                         JOptionPane.showMessageDialog(vistaAdd, "Se ha añadido correctamente la cuadrilla\ny se ha asignado el encargado");
-                        ControladorEmpleado contEmple = new ControladorEmpleado(vistaTabla);
+                        contEmple.cargarTablaCuadrillas();
                         this.vistaAdd.dispose();
                     }
                 }
@@ -141,29 +145,32 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         if(this.vistaAdd.campoFInicio == null){
             res=false;
             this.vistaAdd.jErrorFCreacion.setText("Debes introducir una fecha de inicio");
-            this.vistaAdd.jErrorFCreacion.setVisible(true);
             
         }else if(FInicio != null && Fechas.toLocalDate(FInicio) == null){
             res=false;
             this.vistaAdd.jErrorFCreacion.setText("Debe tener formato dd/mm/aaaa");
-            this.vistaAdd.jErrorFCreacion.setVisible(true);
+        }else{
+            this.vistaAdd.jErrorFCreacion.setText(" ");
         }
         
         if(isFFinSelected() && FFin == null){
             res=false;
             this.vistaAdd.jErrorFechaFin.setText("Debes introducir una fecha de fin");
-            this.vistaAdd.jErrorFechaFin.setVisible(true);
             
         }else if(isFFinSelected() && Fechas.toLocalDate(FFin) == null){
             res=false;
             this.vistaAdd.jErrorFechaFin.setText("Debe tener formato dd/mm/aaaa");
-            this.vistaAdd.jErrorFechaFin.setVisible(true);
+        }else{
+            this.vistaAdd.jErrorFechaFin.setText(" ");
         }
         
-        if(this.vistaAdd.jList.getSelectedIndex() == -1){
-            res = false;
-            this.vistaAdd.jErrorEncargado.setText("Debes elegir un empleado como encargado");
-            this.vistaAdd.jErrorEncargado.setVisible(true);
+        if(!accionEsMod){
+            if(this.vistaAdd.jList.getSelectedIndex() == -1){
+                res = false;
+                this.vistaAdd.jErrorEncargado.setText("Debes un empleado como encargado");
+            }else{
+                this.vistaAdd.jErrorEncargado.setText(" ");
+            }
         }
         
         return res;
@@ -247,8 +254,18 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
     private String modCuadrilla() {
         String res = "Error:";
         Cuadrilla c = getCuadrilla();
+        
+        if(!modeloCuad.actualizarCampoCuadrilla(c.getId(), "F_CREACION", Fechas.toString(c.getfInicio()))){
+            res+="\nAl actualizar la fecha de creacion";
+        }
+        if(isFFinSelected()){
+            if(!modeloCuad.actualizarCampoCuadrilla(c.getId(), "F_FIN", Fechas.toString(c.getfFin()))){
+                res+="\nAl actualizar la fecha de fin";
+            }
+        }
+        
         if(res.equals("Error:")){
-            res="";
+            res=" ";
         }
         return res;
     }

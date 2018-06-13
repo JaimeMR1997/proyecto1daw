@@ -45,6 +45,7 @@ public class ControladorEmpleado implements ActionListener{
         this.vistaTabla.botonGestionarCuad.addActionListener(this);
         this.vistaTabla.botonAddCuad.addActionListener(this);
         this.vistaTabla.botonModCuad.addActionListener(this);
+        this.vistaTabla.botonAsignarCuad.addActionListener(this);
         this.vistaTabla.botonEliminarCuad.addActionListener(this);
         this.vistaTabla.botonGestionarEmp.addActionListener(this);
         this.vistaTabla.botonAddEmp.addActionListener(this);
@@ -107,9 +108,15 @@ public class ControladorEmpleado implements ActionListener{
                 }
             }else if(boton.equals(this.vistaTabla.botonAddCuad)){                   //AÑADIR CUADRILLA
                 abrirAddCuadrilla();
-            }else if(boton.equals(this.vistaTabla.botonModCuad)){                   //MODIFICAR CUACRILLA
+            }else if(boton.equals(this.vistaTabla.botonModCuad)){                   //MODIFICAR CUADRILLA
                 if(getSelFilaCuad()!= -1){
                     abrirModCuadrilla();   
+                }else{
+                    JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una cuadrilla", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                }
+            }else if(boton.equals(this.vistaTabla.botonAsignarCuad)){                 //ASIGNAR EMPLE CUADRILLA
+                if(getSelFilaCuad()!= -1){
+                    abrirGestionarCuadrilla();   
                 }else{
                     JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar una cuadrilla", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
@@ -176,7 +183,7 @@ public class ControladorEmpleado implements ActionListener{
         return this.vistaTabla.jTableTrab.getSelectedRow();
     }
     
-    private void cargarTablaCuadrillas() {
+    public void cargarTablaCuadrillas() {
         modTablaCuad.setRowCount(0);
         ArrayList<Cuadrilla> listaCuad = this.modeloCuad.recuperarTodas();
         String fila[] = new String[4];
@@ -194,7 +201,7 @@ public class ControladorEmpleado implements ActionListener{
         }
     }
 
-    private void cargarTablaEmple() {
+    public void cargarTablaEmple() {
         this.modTablaEmple.setRowCount(0);
         ArrayList<Trabajador> listaEmple = new ArrayList<>();
         if(isEmpleadoSelected()){
@@ -239,7 +246,8 @@ public class ControladorEmpleado implements ActionListener{
         }
     }
 
-    private void cargarTablaTrab(Cuadrilla c) {
+    public void cargarTablaTrab(Cuadrilla c) {
+        this.modTablaTrabajos.setRowCount(0);
         ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos(c);
         String fila[] = new String[5];
         for (Trabajo trabajo : listaTrabajos) {
@@ -252,7 +260,8 @@ public class ControladorEmpleado implements ActionListener{
         }
     }
 
-    private void cargarTablaTrab() {
+    public void cargarTablaTrab() {
+        this.modTablaTrabajos.setRowCount(0);
         ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos();
         String fila[] = new String[5];
         for (Trabajo trabajo : listaTrabajos) {
@@ -266,19 +275,25 @@ public class ControladorEmpleado implements ActionListener{
     }
     
     private void abrirAddCuadrilla() {
-        ControladorAddCuad contAddCuad = new ControladorAddCuad(vistaTabla,modeloCuad);
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(this,modeloCuad);
     }
 
     private void abrirAddTrabajo() {
-        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(vistaTabla, modeloCuad, modeloEmple);
+        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(this, modeloCuad);
     }
 
     private void abrirModCuadrilla() {
         String idCuad = (String) this.vistaTabla.jTableCuadrilla.getValueAt(getSelFilaCuad(), 0);
         Cuadrilla cuad = modeloCuad.recuperarPorId(idCuad);
-        ControladorAddCuad contAddCuad = new ControladorAddCuad(cuad, vistaTabla, modeloCuad);
+        ControladorAddCuad contAddCuad = new ControladorAddCuad(this, modeloCuad, cuad);
     }
 
+    private void abrirGestionarCuadrilla() {
+        String idCuad = (String) this.vistaTabla.jTableCuadrilla.getValueAt(getSelFilaCuad(), 0);
+        Cuadrilla cuad = modeloCuad.recuperarPorId(idCuad);
+        ControladorAsignarCuad contAsigCuad = new ControladorAsignarCuad(this, modeloEmple, modeloCuad, cuad);
+    }
+    
     private void eliminarCuadrilla(int confirmacion) {
         if(confirmacion == JOptionPane.YES_OPTION){
             String idCuad = (String) vistaTabla.jTableCuadrilla.getValueAt(getSelFilaCuad(), 0);
@@ -294,7 +309,7 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirAddEmple() {
-        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple);
+        ControladorAddEmple contAddEmple = new ControladorAddEmple(this, modeloEmple);
     }
 
     private boolean eliminarTrabajador(int confirmacion) {
@@ -320,11 +335,38 @@ public class ControladorEmpleado implements ActionListener{
     }
 
     private void abrirModTrabajo() {
-        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(vistaTabla, modeloCuad, modeloEmple, true);
+        int fila = vistaTabla.jTableTrab.getSelectedRow();
+        String idCuadrilla = (String) vistaTabla.jTableTrab.getValueAt(fila, 0);
+        String fechaSt = (String) vistaTabla.jTableTrab.getValueAt(fila, 1);
+        LocalDate fecha = Fechas.toLocalDate(fechaSt);
+        int horas = Integer.parseInt((String) vistaTabla.jTableTrab.getValueAt(fila, 2));
+        String tarea = (String) vistaTabla.jTableTrab.getValueAt(fila, 3);
+        String idExplotacion = (String) vistaTabla.jTableTrab.getValueAt(fila, 4);
+        
+        Trabajo trab = new Trabajo(idCuadrilla, fecha, horas, tarea, idExplotacion);
+        
+        ControladorAddTrabajo contAddTrab = new ControladorAddTrabajo(this, modeloCuad, trab);
     }
 
     private void eliminarTrabajo(int confirmacion) {
-        
+        if(confirmacion == JOptionPane.YES_OPTION){
+            int fila = vistaTabla.jTableTrab.getSelectedRow();
+            String idCuadrilla = (String) vistaTabla.jTableTrab.getValueAt(fila, 0);
+            String fechaSt = (String) vistaTabla.jTableTrab.getValueAt(fila, 1);
+            LocalDate fecha = Fechas.toLocalDate(fechaSt);
+            int horas = Integer.parseInt((String) vistaTabla.jTableTrab.getValueAt(fila, 2));
+            String tarea = (String) vistaTabla.jTableTrab.getValueAt(fila, 3);
+            String idExplotacion = (String) vistaTabla.jTableTrab.getValueAt(fila, 4);
+
+            Trabajo trab = new Trabajo(idCuadrilla, fecha, horas, tarea, idExplotacion);
+            
+            if(modeloCuad.borrarTrabajo(trab)){
+                JOptionPane.showMessageDialog(vistaTabla, "Trabajo borrado correctamente");
+            }else{
+                JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al borrar el trabajo","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+            this.cargarTablaTrab();
+        }
     }
 
     private void abrirModEmple() {
@@ -338,7 +380,7 @@ public class ControladorEmpleado implements ActionListener{
         }else{//Conductor , tractorista
             emple = modeloEmple.recuperarConductor(dni);
         }
-        ControladorAddEmple contAddEmple = new ControladorAddEmple(vistaTabla, modeloCuad, modeloEmple, emple);
+        ControladorAddEmple contAddEmple = new ControladorAddEmple(this, modeloEmple, emple);
     }
 
     private boolean isEmpleadoSelected() {

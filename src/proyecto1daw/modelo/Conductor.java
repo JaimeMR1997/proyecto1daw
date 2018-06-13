@@ -6,6 +6,7 @@
 package proyecto1daw.modelo;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 
@@ -36,4 +37,10 @@ public class Conductor extends Trabajador{
     public String toString() {
         return super.toString()+" - Conductor";
     }
+
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+    
+    
 }
