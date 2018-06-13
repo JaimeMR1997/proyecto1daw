@@ -37,6 +37,13 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
     private Finca finca;
     private Plantacion plant;
 
+    /**
+     *
+     * @param contPlant el controlador que llama a este
+     * @param modeloPlant modelo de acceso a datos relacionados con Plantacion
+     * @param idExplotacion Id de la explotacion que se cargaán sus plantaciones y ventas
+     * @param finca Finca a la que pertenece la explotacion
+     */
     public ControladorAddPlant(ControladorPlantacion contPlant, PlantacionDAO modeloPlant, String idExplotacion, Finca finca) {
         this.contPlant = contPlant;
         this.vistaAddPlant = new JFPlantacionAdd();
@@ -63,6 +70,15 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         this.vistaAddPlant.setVisible(true);
     }
     
+    /**
+     *
+     * @param contPlant el controlador que llama a este
+     * @param modeloPlant modelo de acceso a datos relacionados con Plantacion
+     * @param idExplotacion Id de la explotacion que se cargaán sus plantaciones y ventas
+     * @param finca Finca a la que pertenece la explotacion
+     * @param plant plantacion a modificar, se abre la ventana en modo modifcar
+     * y carga sus datos en los campos
+     */
     public ControladorAddPlant(ControladorPlantacion contPlant, PlantacionDAO modeloPlant, String idExplotacion, Finca finca,Plantacion plant) {
         this(contPlant, modeloPlant, idExplotacion, finca);
         
@@ -76,6 +92,10 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         this.vistaAddPlant.botonAceptar.setText("Modificar");
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaAddPlant.botonAceptar)){                  //ACEPTAR
             JButton boton = (JButton) ae.getSource();
@@ -255,10 +275,18 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         return idPlant;
     }
     
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAddPlant.campoTipo)){
             validarTipo(true);

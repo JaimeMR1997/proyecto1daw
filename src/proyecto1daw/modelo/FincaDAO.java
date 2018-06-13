@@ -19,6 +19,10 @@ import java.util.ArrayList;
  */
 public class FincaDAO {
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Finca> recuperarTodas(){
         ArrayList<Finca> listaFincas = new ArrayList<Finca>();
         try{
@@ -43,6 +47,11 @@ public class FincaDAO {
         return listaFincas;
     }
     
+    /**
+     *
+     * @param idFinca
+     * @return
+     */
     public Finca recuperarPorId(String idFinca) {
         Finca finca = null;
         try{
@@ -68,6 +77,11 @@ public class FincaDAO {
         return finca;
     }
     
+    /**
+     *
+     * @param idFinca
+     * @return
+     */
     public ArrayList<Encargado> recuperarEncargadosFinca(String idFinca) {
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
         try{
@@ -95,6 +109,11 @@ public class FincaDAO {
         return listaEncargados;
     }
     
+    /**
+     *
+     * @param idFinca
+     * @return
+     */
     public int contarTractores(String idFinca){
         int cont=0;
         Conexion c = new Conexion();
@@ -111,6 +130,11 @@ public class FincaDAO {
         return cont;
     }
     
+    /**
+     *
+     * @param f
+     * @return
+     */
     public boolean addFinca(Finca f){
         boolean res=true;
         Conexion c = new Conexion();
@@ -134,6 +158,10 @@ public class FincaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     */
     public void borrarFinca(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -149,6 +177,13 @@ public class FincaDAO {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampo(String id, String campo, String nuevoValor){
         boolean res = true;
         Conexion c = new Conexion();

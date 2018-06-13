@@ -49,6 +49,12 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
     private DefaultComboBoxModel modComboSubtipo;
     private Finca finca;
 
+    /**
+     *
+     * @param vistaTabla ventana donde se muestran las explotaciones de la finca
+     * @param modeloExp modelo de acceso a datos relacionados con Explotacion
+     * @param finca Finca de la que se recuperaran las explotaciones
+     */
     public ControladorExplotacion(JFExplotacion vistaTabla, ExplotacionDAO modeloExp, Finca finca) {
         this.vistaTabla = vistaTabla;
         this.vistaAdd = new JFExplotacionAdd();
@@ -106,6 +112,10 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.vistaTabla.setVisible(true);
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() instanceof JButton) {
             JButton boton = (JButton) ae.getSource();
@@ -379,6 +389,9 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         return id;
     }
 
+    /**
+     *
+     */
     public void cargarComboTipos() {
         //Cargar opciones Tipo
         this.modComboTipo.removeAllElements();
@@ -386,6 +399,9 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.modComboTipo.addElement("Campo");
     }
 
+    /**
+     *
+     */
     public void cargarComboSubtipos() {
         //Cargar opciones Subtipo segun el tipo elegido
         String sel = (String) this.vistaAdd.jComboBoxTipo.getSelectedItem();
@@ -406,10 +422,18 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         }
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseClicked(MouseEvent me) {
 
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mousePressed(MouseEvent me) {
         JTable tabla = (JTable) me.getSource();
         int fila = tabla.getSelectedRow();
@@ -420,22 +444,42 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         }
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseReleased(MouseEvent me) {
 
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseEntered(MouseEvent me) {
 
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseExited(MouseEvent me) {
 
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAdd.campoSuperficie)){
             validarSuperficie(true);

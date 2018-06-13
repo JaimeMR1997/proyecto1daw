@@ -18,6 +18,14 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class PlantacionDAO {
+
+    /**
+     *
+     * @param fInicio
+     * @param fFin
+     * @param idExp
+     * @return
+     */
     public ArrayList<Plantacion> recuperarPorFecha(LocalDate fInicio,LocalDate fFin,String idExp){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
         try{
@@ -53,6 +61,11 @@ public class PlantacionDAO {
         return listaPlantaciones;
     }
     
+    /**
+     *
+     * @param idPlant
+     * @return
+     */
     public Plantacion recuperarPorId(String idPlant){
         Plantacion plant = null;
         try{
@@ -79,6 +92,11 @@ public class PlantacionDAO {
         return plant;
     }
     
+    /**
+     *
+     * @param idExp
+     * @return
+     */
     public ArrayList<Plantacion> recuperarPorExp(String idExp){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
         try{
@@ -108,6 +126,10 @@ public class PlantacionDAO {
         return listaPlantaciones;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Plantacion> recuperarTodas(){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
         try{
@@ -128,6 +150,11 @@ public class PlantacionDAO {
         return listaPlantaciones;
     }
     
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean addPlantacion(Plantacion p){
         boolean res = true;
         Conexion c = new Conexion();
@@ -158,6 +185,10 @@ public class PlantacionDAO {
         return res;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void borrarPlantacion(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -172,6 +203,13 @@ public class PlantacionDAO {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampo(String id, String campo, String nuevoValor){
         boolean res = true;
         Conexion c = new Conexion();
@@ -193,6 +231,11 @@ public class PlantacionDAO {
         return res;
     }
 
+    /**
+     *
+     * @param idExplotacion
+     * @return
+     */
     public int contarPlant(String idExplotacion) {
         int res = -1;
         Conexion c = new Conexion();
@@ -213,6 +256,11 @@ public class PlantacionDAO {
         return res;
     }
 
+    /**
+     *
+     * @param idExplotacion
+     * @return
+     */
     public boolean hayPlantSinFinalizar(String idExplotacion) {
         boolean res = false;
         Conexion c = new Conexion();

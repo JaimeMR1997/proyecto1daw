@@ -18,6 +18,11 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class CuadrillaDAO {
+
+    /**
+     *
+     * @return Un ArrayList de objetos Cuadrilla con todas las cuadrillas
+     */
     public ArrayList<Cuadrilla> recuperarTodas(){
         ArrayList<Cuadrilla> listaCuadrillas = new ArrayList<Cuadrilla>();
         try{
@@ -40,6 +45,11 @@ public class CuadrillaDAO {
         return listaCuadrillas;
     }
     
+    /**
+     *
+     * @param idCuad id por el cual buscar uan cuadrilla
+     * @return Un objeto cuadrilla con el id especificado o null 
+     */
     public Cuadrilla recuperarPorId(String idCuad){
         Cuadrilla cuad = null;
         try{
@@ -63,6 +73,11 @@ public class CuadrillaDAO {
         return cuad;
     }
     
+    /**
+     *
+     * @param cuad cuadrilla a añadir a la BD
+     * @return true si se ha añadiddo correctamente la cuadrilla o false si ha habido un error
+     */
     public boolean addCuadrilla(Cuadrilla cuad){
         boolean res = true;
         Conexion c = new Conexion();
@@ -87,6 +102,12 @@ public class CuadrillaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id Id de la cuadrilla a eliminar así como las relaciones de los 
+     * empleados y encargados con ella
+     * @return true si se elimina correctamente ,false si ha habido error
+     */
     public boolean borrarCuadrilla(String id){
         boolean res = true;
         Conexion c = new Conexion();
@@ -135,6 +156,13 @@ public class CuadrillaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id Id de la cuadrilla por el cual se identifica
+     * @param campo Campo o columna de la tabla a actualizar
+     * @param nuevoValor nuevo valor
+     * @return true si se actualiza correctamente false si hay error
+     */
     public boolean actualizarCampoCuadrilla(String id, String campo, String nuevoValor){
         boolean res = true;
         Conexion c = new Conexion();
@@ -154,6 +182,11 @@ public class CuadrillaDAO {
         return res;
     }
 
+    /**
+     *
+     * @param cuad cuadrilla de la que buscar los trabajos
+     * @return arraylist de trabajos realizados por la cuadrilla especificada
+     */
     public ArrayList<Trabajo> recuperarTrabajos(Cuadrilla cuad) {
         ArrayList<Trabajo> listaTrabajos=  new ArrayList<Trabajo>();
         try{
@@ -173,6 +206,11 @@ public class CuadrillaDAO {
         return listaTrabajos;
     }
     
+    /**
+     *
+     * @param cuad cuadrilla de al que buscar el ultimo trabajo
+     * @return un objeto trabajo, el ultimo realizado por la cuadrilla pasada por parametro
+     */
     public Trabajo recuperarUltTrabajo(Cuadrilla cuad){
         Trabajo t = null;
         try{
@@ -195,6 +233,10 @@ public class CuadrillaDAO {
         return t;
     }
     
+    /**
+     *
+     * @return arraylist de todos los trabajos de todas las cuadrillas
+     */
     public ArrayList<Trabajo> recuperarTrabajos() {
         ArrayList<Trabajo> listaTrabajos=  new ArrayList<Trabajo>();
         try{
@@ -214,6 +256,11 @@ public class CuadrillaDAO {
         return listaTrabajos;
     }
     
+    /**
+     *
+     * @param cuad cuadrilla de la que recuperar su encargado
+     * @return el dni del encargado del a cuadrilla pasada por parametro
+     */
     public String getDniEncargado(Cuadrilla cuad) {
         String res = "";
         try{
@@ -233,6 +280,11 @@ public class CuadrillaDAO {
         return res;
     }
 
+    /**
+     *
+     * @param t trabajo a añadir a la BD
+     * @return true si se alade correctamente y faalse si hay error
+     */
     public boolean addTrabajo(Trabajo t) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -255,11 +307,24 @@ public class CuadrillaDAO {
         return res;
     }
 
-    public boolean asignarEncargado(Trabajador t, Cuadrilla cuad) {
-        boolean res = asignarEncargado(t, cuad, null);
+    /**
+     *
+     * @param emple empleado a asignar a la cuadrilla
+     * @param cuad cuadrilal al a que asignar el encargado
+     * @return true si se ejecuta correctaente false si hay un error al inserar
+     */
+    public boolean asignarEncargado(Trabajador emple, Cuadrilla cuad) {
+        boolean res = asignarEncargado(emple, cuad, null);
         return res;
     }
     
+    /**
+     *
+     * @param t empleado a asignar a la cuadrilla
+     * @param cuad cuadrilal al a que asignar el encargado
+     * @param fecha fecha de inicio en la que el empleado empieza a ser el encargado de la cuadrilla
+     * @return true si se ejecuta correctaente false si hay un error al inserar
+     */
     public boolean asignarEncargado(Trabajador t, Cuadrilla cuad,LocalDate fecha) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -283,6 +348,13 @@ public class CuadrillaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param campo campo o columna a actualiar
+     * @param nuevoValor nueo valor
+     * @param t trabajo a actualizar
+     * @return true si se ejecuta correctamente false si hay error
+     */
     public boolean actualizarCampoTrabajo(String campo,String nuevoValor,Trabajo t) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -304,6 +376,10 @@ public class CuadrillaDAO {
         return res;
     }
     
+    /**
+     *
+     * @return el numero de cuadrillas que existen
+     */
     public int contarCuadrillas(){
         int res = 0;
         Conexion c = new Conexion();
@@ -323,6 +399,11 @@ public class CuadrillaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id id de la cuadrilla que buscar
+     * @return la cuadrilla que coincide con el id o null
+     */
     public Cuadrilla buscarCuadrillaPorId(String id){
         Cuadrilla cuad = null;
         Conexion c = new Conexion();
@@ -352,6 +433,11 @@ public class CuadrillaDAO {
         return modeloTrab.recuperarEncargado(dni);
     }
 
+    /**
+     *
+     * @param idCuad cuadrilla de la que recuperar los trabajadores
+     * @return arraylist de los trabajadores de la cuadrilla
+     */
     public ArrayList<Trabajador> recuperarTrabajadores(String idCuad) {
         ArrayList<Trabajador> listaTrab = new ArrayList<Trabajador>();
         
@@ -379,6 +465,11 @@ public class CuadrillaDAO {
         return listaTrab;
     }
     
+    /**
+     *
+     * @param t trabajo a borrar
+     * @return true si se ejecuta correctaemnte false si hay error
+     */
     public boolean borrarTrabajo(Trabajo t){
         boolean res = true;
         

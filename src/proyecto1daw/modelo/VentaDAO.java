@@ -18,6 +18,13 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class VentaDAO {
+
+    /**
+     *
+     * @param idVenta
+     * @param idPlant
+     * @return
+     */
     public Venta recuperarPorId(String idVenta,String idPlant){
         Venta v = null;
         try{
@@ -39,6 +46,12 @@ public class VentaDAO {
         return v;
     }
 
+    /**
+     *
+     * @param fecha
+     * @param idPlant
+     * @return
+     */
     public ArrayList<Venta> recuperarPorFecha(LocalDate fecha,String idPlant){
         ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
@@ -70,7 +83,11 @@ public class VentaDAO {
         return listaVentas;
     }
     
-    
+    /**
+     *
+     * @param idPlant
+     * @return
+     */
     public ArrayList<Venta> recuperarPorPlant(String idPlant){
         ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
@@ -90,6 +107,10 @@ public class VentaDAO {
         return listaVentas;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Venta> recuperarTodas(){
         ArrayList<Venta> listaVentas = new ArrayList<Venta>();
         try{
@@ -112,6 +133,11 @@ public class VentaDAO {
         return listaVentas;
     }
     
+    /**
+     *
+     * @param v
+     * @return
+     */
     public boolean addVenta(Venta v){
         boolean res = true;
         Conexion c = new Conexion();
@@ -136,6 +162,12 @@ public class VentaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @param idPlant
+     * @return
+     */
     public boolean borrarVenta(String id,String idPlant){
         boolean res = true;
         Conexion c = new Conexion();
@@ -154,6 +186,11 @@ public class VentaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param idPlant
+     * @return
+     */
     public boolean borrarVentasPlantacion(String idPlant) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -171,6 +208,14 @@ public class VentaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @param idPlant
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampo(String id, String idPlant, String campo, String nuevoValor){
         boolean res =true;
         Conexion c = new Conexion();
@@ -191,6 +236,13 @@ public class VentaDAO {
         return res;
     }
     
+    /**
+     *
+     * @param idVenta
+     * @param idPlant
+     * @param campo
+     * @return
+     */
     public String buscar(String idVenta, String idPlant, String campo){
         String res=null;
         Conexion c = new Conexion();
@@ -213,6 +265,12 @@ public class VentaDAO {
         return res;
     }
 
+    /**
+     *
+     * @param idPlant
+     * @param fecha
+     * @return
+     */
     public int contarVentas(String idPlant, LocalDate fecha) {
         int res = -1;
         Conexion c = new Conexion();
@@ -235,6 +293,11 @@ public class VentaDAO {
         return res;
     }
 
+    /**
+     *
+     * @param idPlant
+     * @return
+     */
     public double calcularIngresos(String idPlant) {
         double res = 0;
         Conexion c = new Conexion();

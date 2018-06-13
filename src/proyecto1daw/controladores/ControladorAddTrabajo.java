@@ -29,7 +29,7 @@ import proyecto1daw.vistas.JFTrabajoAdd;
 
 /**
  *
- * @author alumno
+ * @author Jaime
  */
 public class ControladorAddTrabajo implements ActionListener,FocusListener{
     private ControladorEmpleado contEmple;
@@ -42,6 +42,11 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
     private DefaultComboBoxModel modComboExp;
     private Trabajo trab;
 
+    /**
+     *
+     * @param contEmple el controlador que llama a este
+     * @param modeloCuad modelo relacionado con el acceso a datos de Cuadrilla
+     */
     public ControladorAddTrabajo(ControladorEmpleado contEmple,CuadrillaDAO modeloCuad) {
         this.contEmple = contEmple;
         this.vistaAdd = new JFTrabajoAdd();
@@ -82,6 +87,14 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
     }
     
     //Constructor Modificar
+
+    /**
+     *
+     * @param contEmple el controlador que llama a este
+     * @param modeloCuad modelo relacionado con el acceso a datos de Cuadrilla
+     * @param trab trabajo a modificar , se abre la ventana en modo modificar y 
+     * se cargan sus datos en los campos de la ventana
+     */
     public ControladorAddTrabajo(ControladorEmpleado contEmple, CuadrillaDAO modeloCuad,Trabajo trab) {
         this(contEmple, modeloCuad);
         if(trab != null){                                                                //Constructor Modificar
@@ -104,6 +117,10 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
         }
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaAdd.botonAceptar)){
             if(validarCampos()){
@@ -333,10 +350,18 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
         return exp;
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAdd.jComboCuad)){
             validarCuadrilla(true);

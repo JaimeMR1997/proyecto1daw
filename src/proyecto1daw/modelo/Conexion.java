@@ -15,9 +15,16 @@ import java.sql.SQLException;
  */
 public class Conexion {
 
+    /**
+     *
+     */
     public Conexion() {
     }
     
+    /**
+     *
+     * @return Un objeto Connection con la base de datos especificado en el método
+     */
     public Connection getConexion(){
         Connection conn=null;
         try{
@@ -34,6 +41,10 @@ public class Conexion {
         return conn;
     }
     
+    /**
+     *
+     * @param conn Cierra la conexion con el objeto Connection pasado
+     */
     public void cerrarConexion(Connection conn){
         try{
             conn.close();

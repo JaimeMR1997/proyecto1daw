@@ -39,9 +39,8 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
     
     /**
      *
-     * @param mod Si es false la ventana será la de añadir y si es true la ventana será la de modificar
-     * @param vistaTabla
-     * @param modelo
+     * @param contEmple Recibe el controlador que invocó a este como parametro 
+     * @param modelo Modelo de acceso a datos relacinados con la clase cuadrilla
      */
     public ControladorAddCuad(ControladorEmpleado contEmple, CuadrillaDAO modelo){
         this.vistaAdd = new JFCuadAdd();
@@ -75,6 +74,15 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         this.vistaAdd.setVisible(true);
     }
 
+    /**
+     *
+     * @param contEmple El controlador que invoco a este
+     * @param modeloCuad Modelo de acceso a datos relacinados con la clase cuadrilla
+     * @param cuad Cuadrilla a modificar,se carga´ran lso datos de esta en los campos
+     * de la ventana 
+     * @see Cuadrilla
+     * @see JFCuadAdd
+     */
     public ControladorAddCuad(ControladorEmpleado contEmple, CuadrillaDAO modeloCuad,Cuadrilla cuad) {
         this(contEmple, modeloCuad);
         
@@ -96,8 +104,10 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         
     }
     
-    
-
+    /**
+     *
+     * @param ae objeto generado por la interaccion del usuario con los botones
+     */
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(this.vistaAdd.botonAceptar)){                  //ACEPTAR
             if(validarCampos()){
@@ -278,10 +288,18 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         return n+"";
     }
     
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         validarCampos();
     }

@@ -18,6 +18,11 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class ExplotacionDAO {
+
+    /**
+     *
+     * @return
+     */
     public ArrayList<Explotacion> recuperarTodas(){
         ArrayList<Explotacion> listaExplotaciones = new ArrayList<Explotacion>();
         try{
@@ -41,6 +46,11 @@ public class ExplotacionDAO {
         return listaExplotaciones;
     }
     
+    /**
+     *
+     * @param exp
+     * @return
+     */
     public boolean addExplotacion(Explotacion exp){
         boolean res=true;
         Conexion c = new Conexion();
@@ -66,6 +76,10 @@ public class ExplotacionDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     */
     public void borrarExplotacion(String id){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -80,6 +94,13 @@ public class ExplotacionDAO {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampo(String id, String campo, String nuevoValor){
         boolean res=true;
         Conexion c = new Conexion();
@@ -99,6 +120,11 @@ public class ExplotacionDAO {
         return res;
     }
     
+    /**
+     *
+     * @param idFinca
+     * @return
+     */
     public ArrayList<Explotacion> recuperarPorFinca(String idFinca){
         ArrayList<Explotacion> listaExplotaciones = new ArrayList<Explotacion>();
         try{
@@ -123,6 +149,11 @@ public class ExplotacionDAO {
         return listaExplotaciones;
     }
     
+    /**
+     *
+     * @param idFinca
+     * @return
+     */
     public int contarPorFinca(String idFinca){
         int n = 0;
         try{
@@ -142,6 +173,11 @@ public class ExplotacionDAO {
         return n;
     }
 
+    /**
+     *
+     * @param idExp
+     * @return
+     */
     public Explotacion recuperarPorId(String idExp) {
         Explotacion exp = null;
         try{

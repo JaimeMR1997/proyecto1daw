@@ -19,6 +19,12 @@ import java.util.ArrayList;
  */
 public class TrabajadorDAO {
     
+    /**
+     *
+     * @param t
+     * @param fFin
+     * @return
+     */
     public boolean ascensoTrabajador(Trabajador t, LocalDate fFin) {
         boolean res = true;
         if(fFin==null){
@@ -54,6 +60,12 @@ public class TrabajadorDAO {
         return res;
     }
 
+    /**
+     *
+     * @param t
+     * @param fFin
+     * @return
+     */
     public boolean ascensoConductor(Trabajador t, LocalDate fFin) {
         boolean res = true;
         if(fFin==null){
@@ -89,6 +101,12 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param t
+     * @param fFin
+     * @return
+     */
     public boolean ascensoEncargado(Trabajador t,LocalDate fFin){
         boolean res = true;
         if(fFin==null){
@@ -124,6 +142,13 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param dni
+     * @param idFinca
+     * @param fInicio
+     * @return
+     */
     public boolean asignarEncargado(String dni,String idFinca,LocalDate fInicio){
         boolean res = true;
         Conexion c = new Conexion();
@@ -147,10 +172,20 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param dni
+     * @param idFinca
+     * @return
+     */
     public boolean asignarFinca(String dni,String idFinca){
         return this.asignarEncargado(dni, idFinca,null);
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Trabajador> recuperarTodos(){
         ArrayList<Trabajador> listaTodos = recuperarTrabajadores();
         listaTodos.addAll(this.recuperarConductores());
@@ -158,6 +193,11 @@ public class TrabajadorDAO {
         return listaTodos;
     }
 
+    /**
+     *
+     * @param dni
+     * @return
+     */
     public Trabajador recuperarTrabajador(String dni) {
         Trabajador trab = null;
         try{
@@ -183,6 +223,10 @@ public class TrabajadorDAO {
         return trab;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Trabajador> recuperarTrabajadores(){
         ArrayList<Trabajador> listaTrabajadores = new ArrayList<Trabajador>();
         try{
@@ -207,6 +251,11 @@ public class TrabajadorDAO {
         return listaTrabajadores;
     }
     
+    /**
+     *
+     * @param dni
+     * @return
+     */
     public Conductor recuperarConductor(String dni) {
         Conductor cond = null;
         try{
@@ -232,6 +281,10 @@ public class TrabajadorDAO {
         return cond;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Conductor> recuperarConductores(){         //Tractoristas-Conductores
         ArrayList<Conductor> listaConductores = new ArrayList<Conductor>();
         try{
@@ -256,6 +309,11 @@ public class TrabajadorDAO {
         return listaConductores;
     }
     
+    /**
+     *
+     * @param dni
+     * @return
+     */
     public Encargado recuperarEncargado(String dni) {
         Encargado enc = null;
         try{
@@ -281,6 +339,10 @@ public class TrabajadorDAO {
         return enc;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Encargado> recuperarEncargados(){         //Encargados incluidos contrato finalizado
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
         try{
@@ -305,6 +367,10 @@ public class TrabajadorDAO {
         return listaEncargados;
     }
     
+    /**
+     *
+     * @return
+     */
     public ArrayList<Encargado> recuperarEncargadosVigentes(){         //Encargados con contrato
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
         try{
@@ -329,6 +395,11 @@ public class TrabajadorDAO {
         return listaEncargados;
     }
     
+    /**
+     *
+     * @param t
+     * @return
+     */
     public boolean addTrabajador(Trabajador t){
         boolean res = true;
         Conexion c = new Conexion();
@@ -359,6 +430,11 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param conduct
+     * @return
+     */
     public boolean addConductor(Conductor conduct){
         boolean res = true;
         Conexion c = new Conexion();
@@ -390,6 +466,11 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param enc
+     * @return
+     */
     public boolean addEncargado(Encargado enc){
         boolean res = true;
         Conexion c = new Conexion();
@@ -421,6 +502,11 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public boolean borrarTrabajador(String id){
         boolean res = true;
         Conexion c = new Conexion();
@@ -438,6 +524,11 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public boolean borrarEncargado(String id){
         boolean res = true;
         Conexion c = new Conexion();
@@ -455,6 +546,11 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public boolean borrarConductor (String id){
         boolean res = true;
         Conexion c = new Conexion();
@@ -484,6 +580,13 @@ public class TrabajadorDAO {
         accesoBD.close();
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampoTrab(String id, String campo, String nuevoValor){
         boolean res = true;
         try{
@@ -495,6 +598,13 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampoEnc(String id, String campo, String nuevoValor){
         boolean res = true;
         try{
@@ -506,6 +616,13 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     * @return
+     */
     public boolean actualizarCampoCond(String id, String campo, String nuevoValor){
         boolean res = true;
         try{
@@ -517,6 +634,10 @@ public class TrabajadorDAO {
         return res;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Encargado> recuperarEncargadosLibres() {
         ArrayList<Encargado> listaEncargados = this.recuperarEncargadosVigentes();
         try{
@@ -573,6 +694,13 @@ public class TrabajadorDAO {
         return listaEncargados;
     }
 
+    /**
+     *
+     * @param dni
+     * @param idFinca
+     * @param fFin
+     * @return
+     */
     public boolean finAsignacionFinca(String dni, String idFinca,LocalDate fFin) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -595,10 +723,20 @@ public class TrabajadorDAO {
         return res;
     }
     
+    /**
+     *
+     * @param dni
+     * @param idFinca
+     * @return
+     */
     public boolean finAsignacionFinca(String dni, String idFinca) {
         return this.finAsignacionFinca(dni, idFinca, null);
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Trabajador> recuperarTrabajadoresLibres() {
         ArrayList<Trabajador> listaTodos = new ArrayList<Trabajador>();
         try{
@@ -651,6 +789,12 @@ public class TrabajadorDAO {
         return listaTodos;
     }
 
+    /**
+     *
+     * @param dni
+     * @param idCuad
+     * @return
+     */
     public boolean finAsigCuadrilla(String dni, String idCuad) {
         boolean res = true;
         Conexion c = new Conexion();
@@ -671,6 +815,12 @@ public class TrabajadorDAO {
         return res;
     }
 
+    /**
+     *
+     * @param dni
+     * @param idCuad
+     * @return
+     */
     public boolean asignarCuad(String dni, String idCuad) {
         boolean res = true;
         Conexion c = new Conexion();

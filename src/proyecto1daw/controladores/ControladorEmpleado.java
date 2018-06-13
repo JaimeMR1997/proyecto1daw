@@ -38,6 +38,10 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
     private DefaultTableModel modTablaEmple;
     private DefaultTableModel modTablaTrabajos;
 
+    /**
+     *
+     * @param vistaTabla Ventana que tiene las tablas de cuadrilla,empleados y trabajos
+     */
     public ControladorEmpleado(JFEmpleados vistaTabla) {
         this.vistaTabla = vistaTabla;
         this.modeloCuad = new CuadrillaDAO();
@@ -103,6 +107,10 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         this.cargarTablaTrab();
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() instanceof JButton){
             JButton boton = (JButton) ae.getSource();
@@ -189,6 +197,9 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         return this.vistaTabla.jTableTrab.getSelectedRow();
     }
     
+    /**
+     *
+     */
     public void cargarTablaCuadrillas() {
         modTablaCuad.setRowCount(0);
         ArrayList<Cuadrilla> listaCuad = this.modeloCuad.recuperarTodas();
@@ -207,6 +218,9 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         }
     }
 
+    /**
+     *
+     */
     public void cargarTablaEmple() {
         this.modTablaEmple.setRowCount(0);
         ArrayList<Trabajador> listaEmple = new ArrayList<>();
@@ -252,6 +266,10 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         }
     }
 
+    /**
+     *
+     * @param c
+     */
     public void cargarTablaTrab(Cuadrilla c) {
         this.modTablaTrabajos.setRowCount(0);
         ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos(c);
@@ -266,6 +284,9 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         }
     }
 
+    /**
+     *
+     */
     public void cargarTablaTrab() {
         this.modTablaTrabajos.setRowCount(0);
         ArrayList<Trabajo> listaTrabajos = this.modeloCuad.recuperarTrabajos();
@@ -410,10 +431,18 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         this.vistaTabla.dispose();
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseClicked(MouseEvent me) {
         
     }
     
+    /**
+     *
+     * @param me
+     */
     public void mousePressed(MouseEvent me) {
         if(me.getClickCount() == 2){ //Doble click
             if(me.getSource().equals(vistaTabla.jTableCuadrilla) && getSelFilaCuad() != -1){
@@ -429,14 +458,26 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         }
     }
     
+    /**
+     *
+     * @param me
+     */
     public void mouseReleased(MouseEvent me) {
         
     }
     
+    /**
+     *
+     * @param me
+     */
     public void mouseEntered(MouseEvent me) {
         
     }
     
+    /**
+     *
+     * @param me
+     */
     public void mouseExited(MouseEvent me) {
         
     }

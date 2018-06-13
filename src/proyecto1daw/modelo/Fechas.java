@@ -14,6 +14,11 @@ import java.time.LocalDate;
  */
 public class Fechas {
 
+    /**
+     *
+     * @param fecha
+     * @return
+     */
     public static String toString(LocalDate fecha) {
         String s = null;
         if(fecha != null){
@@ -22,6 +27,11 @@ public class Fechas {
         return s;
     }
 
+    /**
+     *
+     * @param fecha
+     * @return
+     */
     public static LocalDate toLocalDate(String fecha) {
         LocalDate f = null;
         String diaString = "";
@@ -64,6 +74,11 @@ public class Fechas {
         return f;
     }
 
+    /**
+     *
+     * @param nif
+     * @return
+     */
     public static boolean validarDni(String nif) {
         boolean res = true;
         nif=nif.toUpperCase();

@@ -33,6 +33,11 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
     private TrabajadorDAO modeloTrab;
     private Trabajador emple;
 
+    /**
+     *
+     * @param contEmple el controlador que llama a este
+     * @param modTrab modelo de acceso a datos relacionados con Trabajador, Encargado y Conductor
+     */
     public ControladorAddEmple(ControladorEmpleado contEmple, TrabajadorDAO modTrab) {
         this.contEmple = contEmple;
         this.modeloTrab = modTrab;
@@ -65,6 +70,14 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
     }
 
     //CONSTRUCTOR MODIFICAR
+
+    /**
+     *
+     * @param contEmple el controlador que llama a este
+     * @param modTrab modelo de acceso a datos relacionados con Trabajador, Encargado y Conductor
+     * @param emple empleado a modificar, si se recibe este parámetro se inicia la ventana en
+     * modo modificar y se rellenan los campos con su informacion
+     */
     public ControladorAddEmple(ControladorEmpleado contEmple, TrabajadorDAO modTrab,Trabajador emple) {
         this(contEmple, modTrab);
         if(emple != null){
@@ -99,6 +112,10 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
         }
     }
     
+    /**
+     *
+     * @param ae objeto generado por la interaccion del usuario con los botones
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaAdd.botonAceptar)){              //ACEPTAR
             if(validarDatos()){
@@ -617,10 +634,18 @@ public class ControladorAddEmple implements ActionListener,FocusListener{
         return enc;
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAdd.campoNombre)){
             validarNombre(true);

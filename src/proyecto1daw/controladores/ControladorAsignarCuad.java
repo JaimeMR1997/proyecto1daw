@@ -36,6 +36,13 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
     private ArrayList<Trabajador> listaParaQuitar;
     private Cuadrilla cuad;
 
+    /**
+     *
+     * @param contEmple controlador que llama a este
+     * @param modeloTrab modelo relacionado con el acceso a datos de Trabajador,Conductor,Encargado
+     * @param modeloCuad modelo relacionado con el acceso a datos de Cuadrilla
+     * @param cuad cuadrilla a la que se asignaran los empleados
+     */
     public ControladorAsignarCuad(ControladorEmpleado contEmple, TrabajadorDAO modeloTrab, CuadrillaDAO modeloCuad,Cuadrilla cuad) {
         this.contEmple = contEmple;
         this.modeloTrab = modeloTrab;
@@ -66,6 +73,10 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
         this.vista.setVisible(true);
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vista.botonAbajo)){                         //ABAJO
             if(vista.jListPosibles.getSelectedIndex() != -1){
@@ -113,7 +124,7 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
             //es porque ya estaba asignado y lo hemos movido para borrar y
             //ahora de vuelta a asignado
                 listaParaQuitar.remove(emple);
-            }else{//Era un candidato que hemos asignado
+            }else{//Era un candidato que hemos asignado nuevo
                 listaParaAniadir.add(emple);    
             }
         }
@@ -175,10 +186,18 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
         }
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseClicked(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mousePressed(MouseEvent me) {
         if(me.getClickCount() == 2){//Doble click
             if(me.getSource().equals(vista.jListPosibles) && vista.jListPosibles.getSelectedIndex() != -1){
@@ -189,15 +208,26 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
         }
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseReleased(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseEntered(MouseEvent me) {
         
     }
 
-    
+    /**
+     *
+     * @param me
+     */
     public void mouseExited(MouseEvent me) {
         
     }

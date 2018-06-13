@@ -38,6 +38,14 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
     private Venta vent;
     private DefaultComboBoxModel opcsTam;
 
+    /**
+     *
+     * @param contPlant controlador que llaama a este
+     * @param modeloVenta modelo relacionado con el acceso a datos de Venta
+     * @param idExplotacion id de la explotacion a la que pertenece la venta
+     * @param finca ficna a la que pertenece al venta
+     * @param plant plantacion a la que pertenece la venta
+     */
     public ControladorAddVenta(ControladorPlantacion contPlant, VentaDAO modeloVenta, String idExplotacion, Finca finca,Plantacion plant) {
         this.contPlant = contPlant;
         this.vistaAddVenta = new JFVentaAdd();
@@ -75,6 +83,15 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         this.vistaAddVenta.setVisible(true);
     }
     
+    /**
+     *
+     * @param contPlant controlador que llaama a este
+     * @param modeloVenta modelo relacionado con el acceso a datos de Venta
+     * @param idExplotacion id de la explotacion a la que pertenece la venta
+     * @param finca ficna a la que pertenece al venta
+     * @param plant plantacion a la que pertenece la venta
+     * @param vent venta a modificar
+     */
     public ControladorAddVenta(ControladorPlantacion contPlant, VentaDAO modeloVenta, String idExplotacion, Finca finca, Plantacion plant, Venta vent) {
         this(contPlant, modeloVenta, idExplotacion, finca,plant);
         
@@ -92,6 +109,10 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         }
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaAddVenta.botonAceptar)){                  //ACEPTAR
             JButton boton = (JButton) ae.getSource();
@@ -268,10 +289,18 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         return idVenta;
     }
     
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAddVenta.jSpinnerKg)){
             validarCantidad(true);

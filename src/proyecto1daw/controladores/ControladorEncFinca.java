@@ -37,6 +37,13 @@ public class ControladorEncFinca implements ActionListener{
     private ArrayList<Encargado> listaParaQuitar;
     private Finca finca;
 
+    /**
+     *
+     * @param contFinca controlador qeu llama a este
+     * @param modeloFinca modelo relacionado con el acceso a datos de Finca
+     * @param modeloExp modelo relacionado con el acceso a datos de Explotacion
+     * @param finca finca a la que asignar los encargados
+     */
     public ControladorEncFinca(ControladorFinca contFinca, FincaDAO modeloFinca, ExplotacionDAO modeloExp,Finca finca) {
         this.contFinca = contFinca;
         this.vistaEnc = new JFEncFinca();
@@ -67,6 +74,10 @@ public class ControladorEncFinca implements ActionListener{
         this.vistaEnc.setVisible(true);
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaEnc.botonAbajo)){                         //ABAJO
             bajarEncargado();

@@ -38,6 +38,16 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     private ExplotacionDAO modeloExp;
     private DefaultTableModel modTabla;
 
+    /**
+     *
+     * @param vistaTabla Ventana de tipo JFFinca contiene la tabla con las fincas y
+     * botones para gestionar,modificar,añadir y asignar @see Encargado
+     * @param modeloFinca Es el modelo de acceso a datos relacionados con Finca
+     * @param modeloExp Es el modelo de acceso a datos relacionados con Explotacion
+     * @see Finca
+     * @see Explotacion
+     * @see JFFinca
+     */
     public ControladorFinca(JFFinca vistaTabla, FincaDAO modeloFinca,ExplotacionDAO modeloExp) {
         this.vistaTabla = vistaTabla;
         this.modeloFinca = modeloFinca;
@@ -84,6 +94,11 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
+    /**
+     *
+     * @param ae es el objeto generado por la accion.Según el botón usado 
+     * se realiza un tratamiento
+     */
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(vistaTabla.botonVolver)){                      //VOLVER
             volver();
@@ -163,7 +178,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
             }
         }
     }
-
+    /**
+     * @return Abre la ventana para añadir nuevas fincas
+     * @see JFFincaAdd
+     */
     private void abrirAdd() {
         //ABRIR AÑADIR
         //Llamar a ventanaAñadir
@@ -173,7 +191,11 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         vistaAdd.setVisible(true);
         vistaAdd.setAlwaysOnTop(true);
     }
-
+    /**
+     * @return Devuelve un objeto Finca recuperador a aprtir de los campos de
+     * la ventana JFFincaAdd
+     * @see JFFincaAdd
+     */
     private Finca getFinca(){
         //Recupera campos
         String id = this.vistaAdd.campoId.getText();
@@ -185,12 +207,21 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         return f;
     }
 
+    /**
+     * @return Recarga la tabla de la ventana JFFinca
+     * @see JFFinca
+     */
     public void actualizarTabla() {
         this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
         this.rellenarTabla(modeloFinca.recuperarTodas());
     }
 
+    /**
+     * @return Elimina la finca seleccionada
+     * @param Confirmacion pedida al usuario con un JOptionPane
+     */
+    
     private void eliminarFinca(int confirmacion) {
         if(confirmacion==JOptionPane.YES_OPTION){
             String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),0);
@@ -199,6 +230,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
             actualizarTabla();
         }
     }
+    /**
+     * @return Abre la ventana JFFincaAdd en modo modificar
+     * @see JFFincaAdd
+     */
 
     private void abrirModificar() {
         //Carga los datos de la tabla al formulario
@@ -218,6 +253,11 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         vistaAdd.setVisible(true);
     }
 
+    /**
+     * @return Vuelve a la ventana de inicio
+     * @see JFInicio
+     */
+    
     private void volver() {
         //VOLVER
         //Volver a Inicio
@@ -225,6 +265,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaTabla.dispose();
     }
 
+    /**
+     * @return Recarga la tabla de la ventana JFFinca
+     * @see JFFinca
+     */
     private void abrirVentanaExplotaciones() {
         //Abre explotaciones de esa Finca
         int fila = this.vistaTabla.jTableFincas.getSelectedRow();
@@ -279,6 +323,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaAdd.errSuperficie.setText(" ");
     }
     
+    /**
+     *
+     * @return true si el Checkbox de Fecha Fin de JFFincaAdd está activado
+     */
     public boolean isFFinSelected(){
         boolean res=false;
         if(this.vistaAdd.jCheckBoxFFin.isSelected()){
@@ -287,6 +335,11 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         return res;
     }
     
+    /**
+     *
+     * @param listaFincas La lista de fincas a ser cargada en la tabla
+     * de la ventana JFFinca
+     */
     public void rellenarTabla(ArrayList<Finca> listaFincas){
         String[] fila = new String[7];
         for (Finca f : listaFincas) {
@@ -302,6 +355,12 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         
     }
     
+    /**
+     *
+     * @return true si todos los campos de JFFincaAdd son correctos y false si 
+     * alguno no lo es, está compuesto por submétodos que comprueban cada campo 
+     * y si es incorrecto activar un jLabel con un mensaje de error
+     */
     public boolean validarDatosAdd(){
         boolean res=true;
         res = validarId(res);
@@ -402,12 +461,18 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         return res;
     }
 
-    
+    /**
+     *
+     * @param me evento generado por el click del raton
+     */
     public void mouseClicked(MouseEvent me) {
         
     }
 
-    
+    /**
+     *
+     * @param me evento generado por el click del raton
+     */
     public void mousePressed(MouseEvent me) {
         JTable tabla = (JTable) me.getSource();
             int fila = tabla.getSelectedRow();
@@ -418,25 +483,43 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
             }
     }
 
-    
+    /**
+     *
+     * @param me evento generado por el click del raton
+     */
     public void mouseReleased(MouseEvent me) {
         
     }
 
-    
+    /**
+     *
+     * @param me evento generado por el click del raton
+     */
     public void mouseEntered(MouseEvent me) {
         
     }
 
-    
+    /**
+     *
+     * @param me evento generado por el click del raton
+     */
     public void mouseExited(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param fe
+     */
     public void focusGained(FocusEvent fe) {
         
     }
 
+    /**
+     *
+     * @param fe objeto generado al perder el foco un campo de JFFincaAdd
+     * lo uqe hace es validar el campo que ha generado el objeto FocusEvent
+     */
     public void focusLost(FocusEvent fe) {
         if(fe.getSource().equals(vistaAdd.campoId)){
             validarId(true);

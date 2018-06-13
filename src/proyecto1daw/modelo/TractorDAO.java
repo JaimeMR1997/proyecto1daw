@@ -18,6 +18,11 @@ import java.util.ArrayList;
  * @author Jaime
  */
 public class TractorDAO {
+
+    /**
+     *
+     * @return
+     */
     public ArrayList<Tractor> recuperarTodos(){
         ArrayList<Tractor> listaTractores = new ArrayList<Tractor>();
         try{
@@ -36,6 +41,10 @@ public class TractorDAO {
         return listaTractores;
     }
     
+    /**
+     *
+     * @param t
+     */
     public void addTractor(Tractor t){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -58,6 +67,10 @@ public class TractorDAO {
         }
     }
     
+    /**
+     *
+     * @param matricula
+     */
     public void borrarTractor(String matricula){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -72,6 +85,12 @@ public class TractorDAO {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @param campo
+     * @param nuevoValor
+     */
     public void actualizarCampo(String id, String campo, String nuevoValor){
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();

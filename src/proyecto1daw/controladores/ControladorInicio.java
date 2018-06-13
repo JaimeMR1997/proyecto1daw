@@ -24,6 +24,10 @@ public class ControladorInicio implements ActionListener{
     private FincaDAO modeloFinca;
     private ExplotacionDAO modeloExp;
 
+    /**
+     *
+     * @param vista Ventana de inicio
+     */
     public ControladorInicio(JFInicio vista) {
         this.vista = vista;
         vista.setLocationRelativeTo(null);
@@ -39,6 +43,10 @@ public class ControladorInicio implements ActionListener{
         this.modeloExp = new ExplotacionDAO();
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         JButton boton =(JButton)ae.getSource();
         if(boton.equals(this.vista.jButtonTractores)){

@@ -23,6 +23,16 @@ public class Tractor {
     private int anio;
     private String idFinca;
 
+    /**
+     *
+     * @param matricula
+     * @param modelo
+     * @param potencia
+     * @param altura
+     * @param ancho
+     * @param fItv
+     * @param anio
+     */
     public Tractor(String matricula, String modelo, int potencia, int altura, int ancho, LocalDate fItv, int anio) {
         this.matricula = matricula;
         this.modelo = modelo;
@@ -33,11 +43,26 @@ public class Tractor {
         this.anio = anio;
     }
 
+    /**
+     *
+     * @param matricula
+     * @param modelo
+     * @param potencia
+     * @param altura
+     * @param ancho
+     * @param fItv
+     * @param anio
+     * @param idFinca
+     */
     public Tractor(String matricula, String modelo, int potencia, int altura, int ancho, LocalDate fItv, int anio, String idFinca) {
         this(matricula, modelo, potencia, altura, ancho, fItv, anio);
         this.idFinca = idFinca;
     }
 
+    /**
+     *
+     * @return
+     */
     public LocalDate calcularItv() {
         LocalDate calculoProxItv = fItv;
         int antiguedad = fItv.minusYears(anio).getYear();
@@ -55,6 +80,11 @@ public class Tractor {
         return calculoProxItv;
     }
 
+    /**
+     *
+     * @param m
+     * @return
+     */
     public static boolean validarMatriculaTractor(String m) {
         boolean res = false;
         m=m.toUpperCase();
@@ -109,6 +139,11 @@ public class Tractor {
         return res;
     }
     
+    /**
+     *
+     * @param m
+     * @return
+     */
     public static boolean validarMatriculaCoche(String m) {
         boolean res = false;
         m=m.toUpperCase();
@@ -128,66 +163,130 @@ public class Tractor {
         return res;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getMatricula() {
         return matricula;
     }
 
+    /**
+     *
+     * @param matricula
+     */
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getModelo() {
         return modelo;
     }
 
+    /**
+     *
+     * @param modelo
+     */
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPotencia() {
         return potencia;
     }
 
+    /**
+     *
+     * @param potencia
+     */
     public void setPotencia(int potencia) {
         this.potencia = potencia;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAltura() {
         return altura;
     }
 
+    /**
+     *
+     * @param altura
+     */
     public void setAltura(int altura) {
         this.altura = altura;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAncho() {
         return ancho;
     }
 
+    /**
+     *
+     * @param ancho
+     */
     public void setAncho(int ancho) {
         this.ancho = ancho;
     }
 
+    /**
+     *
+     * @return
+     */
     public LocalDate getfItv() {
         return fItv;
     }
 
+    /**
+     *
+     * @param fItv
+     */
     public void setfItv(LocalDate fItv) {
         this.fItv = fItv;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAnio() {
         return anio;
     }
 
+    /**
+     *
+     * @param anio
+     */
     public void setAnio(int anio) {
         this.anio = anio;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getIdFinca() {
         return idFinca;
     }
 
+    /**
+     *
+     * @param idFinca
+     */
     public void setIdFinca(String idFinca) {
         this.idFinca = idFinca;
     }

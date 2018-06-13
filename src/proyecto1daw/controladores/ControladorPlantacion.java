@@ -46,6 +46,12 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private String idExplotacion;
     private Finca finca;
 
+    /**
+     *
+     * @param vistaTabla ventana donde se cargan las plantaciones y sus respectivas ventas
+     * @param idExplotacion explotacion a al que pertenecen las plantaciones
+     * @param finca finca a al que pertenencen las plantaciones
+     */
     public ControladorPlantacion(JFPlantacion vistaTabla,String idExplotacion,Finca finca) {
         this.vistaTabla = vistaTabla;
         this.vistaAddVenta = new JFVentaAdd();
@@ -98,6 +104,10 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaTabla.setVisible(true);
     }
 
+    /**
+     *
+     * @param ae
+     */
     public void actionPerformed(ActionEvent ae) {
         JButton boton = null;
         JCheckBox checkbox = null;
@@ -280,6 +290,9 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         ControladorAddPlant contAddPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca, plant);
     }
 
+    /**
+     *
+     */
     public void actualizarTablaPlant() {
         this.modTablaPlant.setRowCount(0);
         ArrayList<Plantacion> listaPlant = modeloPlant.recuperarPorExp(idExplotacion);
@@ -298,6 +311,9 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         }
     }
 
+    /**
+     *
+     */
     public void actualizarTablaVentas() {
         this.modTablaVentas.setRowCount(0);
         int filaSel = vistaTabla.jTablePlantaciones.getSelectedRow();
@@ -353,10 +369,18 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         return res;
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseClicked(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mousePressed(MouseEvent me) {
         JTable tabla = (JTable) me.getSource();
         int fila = tabla.getSelectedRow();
@@ -380,14 +404,26 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             
     }
     
+    /**
+     *
+     * @param me
+     */
     public void mouseReleased(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseEntered(MouseEvent me) {
         
     }
 
+    /**
+     *
+     * @param me
+     */
     public void mouseExited(MouseEvent me) {
         
     }

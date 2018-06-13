@@ -22,6 +22,15 @@ public class Explotacion {
     private String idFinca;
     private ArrayList<Plantacion> listaPlant;
 
+    /**
+     *
+     * @param id
+     * @param superficie
+     * @param tipo
+     * @param fCreacion
+     * @param fFin
+     * @param idFinca
+     */
     public Explotacion(String id, int superficie, String tipo, LocalDate fCreacion, LocalDate fFin, String idFinca) {
         this.id = id;
         this.superficie = superficie;
@@ -34,6 +43,10 @@ public class Explotacion {
         this.listaPlant = modeloPlant.recuperarPorExp(this.id);
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean hayPlantacion(){
         boolean res = false;
         for (Plantacion p : this.listaPlant) {
@@ -44,6 +57,10 @@ public class Explotacion {
         return res;
     }
     
+    /**
+     *
+     * @return
+     */
     public String calcularEstado(){
         //Este método se llama asi para futura ampliacion
         //Se planea avisar de cuando no es rentable mantener la plantacion
@@ -57,67 +74,131 @@ public class Explotacion {
         return res;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTipo() {
         return tipo;
     }
 
+    /**
+     *
+     * @param tipo
+     */
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
+    /**
+     *
+     * @return
+     */
     public LocalDate getfCreacion() {
         return fCreacion;
     }
 
+    /**
+     *
+     * @param fCreacion
+     */
     public void setfCreacion(LocalDate fCreacion) {
         this.fCreacion = fCreacion;
     }
 
+    /**
+     *
+     * @return
+     */
     public LocalDate getfFin() {
         return fFin;
     }
 
+    /**
+     *
+     * @param fFin
+     */
     public void setfFin(LocalDate fFin) {
         this.fFin = fFin;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSuperficie() {
         return superficie;
     }
 
+    /**
+     *
+     * @param superficie
+     */
     public void setSuperficie(int superficie) {
         this.superficie = superficie;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getIdFinca() {
         return idFinca;
     }
 
+    /**
+     *
+     * @param idFinca
+     */
     public void setIdFinca(String idFinca) {
         this.idFinca = idFinca;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Plantacion> getListaPlant() {
         return listaPlant;
     }
 
+    /**
+     *
+     * @param listaPlant
+     */
     public void setListaPlant(ArrayList<Plantacion> listaPlant) {
         this.listaPlant = listaPlant;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNum(){
         String num = id.substring(id.indexOf("-")+1);
         return Integer.parseInt(num);
     }
     
+    /**
+     *
+     * @return
+     */
     public String toString() {
         return getNum() + " - " + getTipo() + " " + getSuperficie()+" ha";
     }
