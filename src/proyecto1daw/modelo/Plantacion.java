@@ -169,9 +169,8 @@ public class Plantacion {
      *
      * @return
      */
-    @Override
     public String toString() {
-        return tipo + ":" + variedad + "F.Inicio -> " + fInicio;
+        return tipo + "-" + variedad + " F.In: " + fInicio;
     }
     
     

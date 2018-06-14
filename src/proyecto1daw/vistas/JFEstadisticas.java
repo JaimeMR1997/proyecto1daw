@@ -5,6 +5,9 @@
  */
 package proyecto1daw.vistas;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+
 /**
  *
  * @author Jaime-torre
@@ -36,8 +39,6 @@ public class JFEstadisticas extends javax.swing.JFrame {
         jLabelSubtipo = new javax.swing.JLabel();
         jComboSubtipo = new javax.swing.JComboBox<>();
         jPanelGraficos = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane = new javax.swing.JScrollPane();
         jListOpciones = new javax.swing.JList<>();
 
@@ -89,6 +90,11 @@ public class JFEstadisticas extends javax.swing.JFrame {
         jLabelTipo.setText("Explotación");
 
         jComboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboTipoActionPerformed(evt);
+            }
+        });
 
         jLabelSubtipo.setText("Plantación");
 
@@ -100,14 +106,14 @@ public class JFEstadisticas extends javax.swing.JFrame {
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addComponent(jLabelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jComboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                .addComponent(jLabelSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jComboSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73))
+                .addComponent(jComboSubtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
         jPanelConfigLayout.setVerticalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,32 +131,15 @@ public class JFEstadisticas extends javax.swing.JFrame {
 
         jPanelGraficos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jProgressBar1.setMinimum(56);
-
-        jLabel1.setText("jLabel1");
-
         javax.swing.GroupLayout jPanelGraficosLayout = new javax.swing.GroupLayout(jPanelGraficos);
         jPanelGraficos.setLayout(jPanelGraficosLayout);
         jPanelGraficosLayout.setHorizontalGroup(
             jPanelGraficosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelGraficosLayout.createSequentialGroup()
-                .addGroup(jPanelGraficosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelGraficosLayout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelGraficosLayout.createSequentialGroup()
-                        .addGap(276, 276, 276)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 764, Short.MAX_VALUE)
         );
         jPanelGraficosLayout.setVerticalGroup(
             jPanelGraficosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelGraficosLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel1)
-                .addGap(50, 50, 50)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(213, Short.MAX_VALUE))
+            .addGap(0, 326, Short.MAX_VALUE)
         );
 
         jListOpciones.setModel(new javax.swing.AbstractListModel<String>() {
@@ -192,6 +181,17 @@ public class JFEstadisticas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jComboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboTipoActionPerformed
+
+    public void cargarGrafico(JFreeChart grafico){
+        this.jPanelGraficos.removeAll();
+        ChartPanel panelGrafico = new ChartPanel(grafico);
+        panelGrafico.setSize(jPanelGraficos.getWidth(), jPanelGraficos.getHeight());
+        this.jPanelGraficos.add(panelGrafico);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -234,7 +234,6 @@ public class JFEstadisticas extends javax.swing.JFrame {
     public javax.swing.JButton botonVolver;
     public javax.swing.JComboBox<String> jComboSubtipo;
     public javax.swing.JComboBox<String> jComboTipo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelEstadisticas;
     public javax.swing.JLabel jLabelSubtipo;
     public javax.swing.JLabel jLabelTipo;
@@ -242,7 +241,6 @@ public class JFEstadisticas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelConfig;
     private javax.swing.JPanel jPanelGraficos;
     private javax.swing.JPanel jPanelTop;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane;
     // End of variables declaration//GEN-END:variables
 }

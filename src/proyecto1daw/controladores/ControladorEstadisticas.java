@@ -8,7 +8,11 @@ package proyecto1daw.controladores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.ExplotacionDAO;
 import proyecto1daw.modelo.Finca;
@@ -81,7 +85,14 @@ class ControladorEstadisticas implements ActionListener{
     }
 
     private void cargarEstadisticas() {
+        DefaultPieDataset datosGraf = new DefaultPieDataset();
+        datosGraf.setValue("Tomate", 60);
+        datosGraf.setValue("Tomate en otro color", 20);
+        datosGraf.setValue("Lechuga", 10);
+        JFreeChart grafico = ChartFactory.createPieChart3D("Mi gráfico :3", datosGraf,true, false,false);
         
+        this.vista.cargarGrafico(grafico);
     }
+    
     
 }
