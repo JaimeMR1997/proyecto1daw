@@ -121,6 +121,7 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
                     if(addPlant()){
                         JOptionPane.showMessageDialog(vistaAddVenta, "Plantacion añadida correctamente");
                         this.contPlant.actualizarTablaVentas();
+                        this.contPlant.actualizarIngresos();
                         this.vistaAddVenta.dispose();
                     }else{
                         JOptionPane.showMessageDialog(vistaAddVenta, "Error al añadir la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);

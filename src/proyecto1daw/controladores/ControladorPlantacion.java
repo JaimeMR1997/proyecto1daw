@@ -71,9 +71,22 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.vistaTabla.botonBuscarVenta.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
 
-        this.modTablaPlant = new DefaultTableModel();
-        this.modTablaVentas = new DefaultTableModel();
+        this.modTablaPlant = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        this.modTablaVentas = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
         //Crear columnas tabla Plantaciones
+        this.vistaTabla.jTablePlantaciones.getTableHeader().setReorderingAllowed(false);
         this.modTablaPlant.addColumn("ID");
         this.modTablaPlant.addColumn("Tipo");
         this.modTablaPlant.addColumn("Variedad");
@@ -81,6 +94,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         this.modTablaPlant.addColumn("Fecha arrancar");
 
         //Crear columnas tabla Ventas
+        this.vistaTabla.jTableVentas.getTableHeader().setReorderingAllowed(false);
         this.modTablaVentas.addColumn("Id-Venta");
         this.modTablaVentas.addColumn("Kg");
         this.modTablaVentas.addColumn("€/KG");
@@ -225,7 +239,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
         this.modTablaVentas.setRowCount(0);
         this.modTablaPlant.setRowCount(0);
-        this.actualizarTablaPlant();
+        this.actualizarTablaPlant(fInicio, fFin);
     }    
 
     private void eliminarVenta(int confirmacion) {
@@ -237,6 +251,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             modeloVenta.borrarVenta(idVenta, idPlant);
             
             this.actualizarTablaVentas();
+            this.actualizarIngresos();
         }
     }
 
@@ -267,6 +282,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                 this.modeloPlant.borrarPlantacion(idPlant);
                 this.actualizarTablaPlant();
                 JOptionPane.showMessageDialog(vistaTabla, "Ventas y plantación borrados correctamente.");
+                this.actualizarTablaVentas();
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al eliminar las plantaciones."
                         + "\nContacta con tu administrador si el problema persiste.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -296,6 +312,24 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     public void actualizarTablaPlant() {
         this.modTablaPlant.setRowCount(0);
         ArrayList<Plantacion> listaPlant = modeloPlant.recuperarPorExp(idExplotacion);
+        String[] s = new String[5];
+        for (Plantacion p : listaPlant) {
+            s[0] = p.getId();
+            s[1] = p.getTipo();
+            s[2] = p.getVariedad();
+            s[3] = Fechas.toString(p.getfInicio());
+            if(p.getfFin() != null){
+                s[4] = Fechas.toString(p.getfFin());
+            }else{
+                s[4]="";
+            }
+            modTablaPlant.addRow(s);
+        }
+    }
+    
+    public void actualizarTablaPlant(LocalDate fInicio, LocalDate fFin) {
+        this.modTablaPlant.setRowCount(0);
+        ArrayList<Plantacion> listaPlant = modeloPlant.recuperarPorFecha(fInicio, fFin, idExplotacion);
         String[] s = new String[5];
         for (Plantacion p : listaPlant) {
             s[0] = p.getId();
@@ -387,13 +421,10 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         double cantidad = 0;
         if(tabla.equals(vistaTabla.jTablePlantaciones)){
             if(fila != -1){
-                String idPlant = (String) tabla.getValueAt(fila, 0);
-                //Carga ventas de la plantación
-                actualizarTablaVentas();
-                cantidad = modeloVenta.calcularIngresos(idPlant);
-                vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
                 if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
                     abrirModPlant();
+                }else{
+                    actualizarIngresos();
                 }
             }
         }else{
@@ -402,6 +433,20 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                 }
         }
             
+    }
+
+    /**
+     *
+     * @return actaliza el jLabel con los ingresos de la plantacion
+     */
+    public void actualizarIngresos() {
+        double cantidad;
+        int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
+        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        //Carga ventas de la plantación
+        actualizarTablaVentas();
+        cantidad = modeloVenta.calcularIngresos(idPlant);
+        vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
     }
     
     /**

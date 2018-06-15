@@ -77,7 +77,14 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaTabla.jTableFincas.addMouseListener(this);
         
         //Cargar datos en tabla
-        modTabla=new DefaultTableModel();
+        modTabla=new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        this.vistaTabla.jTableFincas.getTableHeader().setReorderingAllowed(false);
         modTabla.addColumn("ID");
         modTabla.addColumn("Localización");
         modTabla.addColumn("Superficie");

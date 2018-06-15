@@ -84,7 +84,15 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.vistaTabla.jTableExplotaciones.addMouseListener(this);
 
         //Cargar tabla
-        this.modTabla = new DefaultTableModel();
+        this.modTabla = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        this.vistaTabla.jTableExplotaciones.getTableHeader().setReorderingAllowed(false);
+        //Añadir columnas
         this.modTabla.addColumn("ID");
         this.modTabla.addColumn("Plant.");
         this.modTabla.addColumn("Tipo");

@@ -71,9 +71,32 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         this.vistaTabla.jTableEmple.addMouseListener(this);
         this.vistaTabla.jTableTrab.addMouseListener(this);
         //Modelos de tablas
-        this.modTablaCuad = new DefaultTableModel();
-        this.modTablaEmple = new DefaultTableModel();
-        this.modTablaTrabajos = new DefaultTableModel();
+        this.modTablaCuad = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        this.modTablaEmple = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        this.modTablaTrabajos = new DefaultTableModel(){   //Para no poder editar las celdas de la tabla
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+        };
+        //Para que el usuario no pueda reordenar las columnas e las tablas
+        this.vistaTabla.jTableCuadrilla.getTableHeader().setReorderingAllowed(false);
+        this.vistaTabla.jTableEmple.getTableHeader().setReorderingAllowed(false);
+        this.vistaTabla.jTableTrab.getTableHeader().setReorderingAllowed(false);
+        
         //Añadir columnas Cuadrilla
         this.modTablaCuad.addColumn("ID");
         this.modTablaCuad.addColumn("Encargado");
@@ -157,10 +180,12 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
                 if(getSelFilaEmple()!= -1){
                     int confirmacion= JOptionPane.showConfirmDialog(vistaTabla, 
                             "¿Estás seguro de eliminar este trabajador?");
-                    if(eliminarTrabajador(confirmacion)){
-                        JOptionPane.showMessageDialog(vistaTabla, "Se ha eliminado el trabajador correctamente");
-                    }else{
-                        JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al eliminar al trabajador","Error",JOptionPane.ERROR_MESSAGE);
+                    if(confirmacion == JOptionPane.YES_OPTION ){
+                        if(eliminarTrabajador()){
+                            JOptionPane.showMessageDialog(vistaTabla, "Se ha eliminado el trabajador correctamente");
+                        }else{
+                            JOptionPane.showMessageDialog(vistaTabla, "Ha habido un error al eliminar al trabajador","Error",JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     this.cargarTablaEmple();
                 }
@@ -210,9 +235,12 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
             fila[0]=c.getId();
             fila[1]=modeloCuad.getDniEncargado(c); //Encargado
             fila[2]=Fechas.toString(c.getfInicio());
-            if(t != null){
+            if(t != null){                          //Ultimo trabajo
                 fila[3]=t.getTarea()+" - "+t.getIdExplotacion();
-            }//Ultimo trabajo
+            }else{
+                fila[3]="";
+            }
+
             this.modTablaCuad.addRow(fila);
             t = null;
         }
@@ -339,7 +367,7 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
         ControladorAddEmple contAddEmple = new ControladorAddEmple(this, modeloEmple);
     }
 
-    private boolean eliminarTrabajador(int confirmacion) {
+    private boolean eliminarTrabajador() {
         boolean res = true;
         
         String tipo = (String) vistaTabla.jTableEmple.getValueAt(getSelFilaEmple(), 0);

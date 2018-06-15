@@ -127,8 +127,9 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
                 JButton boton = (JButton) ae.getSource();
                 if(boton.getText().equalsIgnoreCase("Aceptar")){                    //AÑADIR NUEVO
                     if(addTrabajo()){
-                        JOptionPane.showMessageDialog(boton, "El trabajo ha sido añadido correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "El trabajo ha sido añadido correctamente");
                         this.contEmple.cargarTablaTrab();
+                        this.contEmple.cargarTablaCuadrillas();//Por el ultimo trabajo realizado
                         this.vistaAdd.dispose();
                    }else{
                        JOptionPane.showMessageDialog(vistaAdd, "Error al añadir el trabajo", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -136,8 +137,9 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
                     
                 }else{                                                              //MODIFICAR
                     if(modTrabajo()){
-                        JOptionPane.showMessageDialog(boton, "El trabajo ha sido modificado correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "El trabajo ha sido modificado correctamente");
                         this.contEmple.cargarTablaTrab();
+                        this.contEmple.cargarTablaCuadrillas();//Por el ultimo trabajo realizado
                         this.vistaAdd.dispose();
                    }else{
                         JOptionPane.showMessageDialog(vistaAdd, "Error al modificar el trabajo", "ERROR", JOptionPane.ERROR_MESSAGE);
