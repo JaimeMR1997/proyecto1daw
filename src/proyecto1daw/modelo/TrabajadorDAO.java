@@ -765,7 +765,7 @@ public class TrabajadorDAO {
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
             String consulta = "SELECT * FROM TRABAJADOR WHERE DNI = "
-                    + "(SELECT DNI FROM FORMA WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+                    + "(SELECT DNI FROM FORMA WHERE F_FIN >= SYSDATE OR F_FIN IS NULL)";
             
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();

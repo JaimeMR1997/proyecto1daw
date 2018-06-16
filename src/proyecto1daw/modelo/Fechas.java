@@ -55,7 +55,7 @@ public class Fechas {
                         anioString += fecha.charAt(i);
                         i++;
                     }
-
+                        //AÑO ENTRE 1900 Y 2200
                     if (anioString.length()>0 && Integer.parseInt(anioString) >= 1900 && Integer.parseInt(anioString) <= 2200) {
                         int anio, mes, dia;
                         anio = Integer.parseInt(anioString);
@@ -107,7 +107,7 @@ public class Fechas {
             if(!Character.isAlphabetic(ultimoCar)){
                 res=false;   
             }else{
-                if(nif.charAt(0) == 'X'){                       //NIE
+                if(nif.charAt(0) == 'X'){
                     //Quita el primer caracter y el ultimo
                     nif = nif.substring(1, nif.length()-1);
                     for (int i = 0; i < nif.length(); i++) {
@@ -116,7 +116,7 @@ public class Fechas {
                             break;
                         }
                     }
-                }else{                                          //DNI
+                }else{
                     res=false;
                 }
             }

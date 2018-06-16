@@ -48,7 +48,7 @@ public class JFExplotacionAdd extends javax.swing.JFrame {
         botonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Añadir Finca");
+        setTitle("Añadir Explotación");
 
         jPanelIzq.setBackground(new java.awt.Color(119, 182, 134));
 

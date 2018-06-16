@@ -40,7 +40,7 @@ public class JFAsignarCuad extends javax.swing.JFrame {
         botonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Añadir cuadrilla");
+        setTitle("Asignar encargado");
 
         jPanel.setBackground(new java.awt.Color(119, 182, 134));
 
