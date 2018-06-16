@@ -188,8 +188,8 @@ public class JFEstadisticas extends javax.swing.JFrame {
     public void cargarGrafico(JFreeChart grafico){
         this.jPanelGraficos.removeAll();
         ChartPanel panelGrafico = new ChartPanel(grafico);
-        panelGrafico.setSize(jPanelGraficos.getWidth(), jPanelGraficos.getHeight());
         this.jPanelGraficos.add(panelGrafico);
+        panelGrafico.setSize(jPanelGraficos.getWidth(), jPanelGraficos.getHeight());
     }
     
     /**

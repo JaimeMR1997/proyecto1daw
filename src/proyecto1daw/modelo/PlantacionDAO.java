@@ -11,7 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -283,6 +287,113 @@ public class PlantacionDAO {
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Comprobar si hay plant sin finalizar: "+e.getMessage());
             res=false;
+        }
+        return res;
+    }
+    
+    public HashMap estadisticasColorTotal(Plantacion p) {
+        HashMap res = new HashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT COLOR,SUM(KG) FROM VENTA WHERE ID_PLANT = ? GROUP BY COLOR";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, p.getId());
+            ResultSet rs = st.executeQuery();
+            String color = "";
+            int cantidad = 0;
+            while(rs.next()){
+                 color = rs.getString(1);
+                 cantidad = rs.getInt(2);
+                 res.put(color, cantidad);
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Plantacion estadisticas color: "+e.getMessage());
+        }
+        return res;
+    }
+    
+    public HashMap estadisticasPrecioMes(Plantacion p,int anio) {
+        HashMap res = new HashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        for (int i = 1; i <= 12; i++) {
+            
+        
+            String consulta = "SELECT AVG(PRECIO) FROM VENTA WHERE ID_PLANT = ?"
+                    + " AND FECHA>= ? AND FECHA<?  GROUP BY COLOR";
+            LocalDate fInicio = LocalDate.of(anio, i, 1);
+            LocalDate fFin = null;
+            if(i != 12){
+                fFin = LocalDate.of(anio, i+1, 1);
+            }else{
+                fFin = LocalDate.of(anio+1, 1, 1);
+            }
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                double precio = 0;
+                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                while(rs.next()){
+                     precio = rs.getDouble(1);
+                     res.put(mes, precio);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas precio/mes: "+e.getMessage());
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg/mes: "+e.getMessage());
+        }
+        
+        return res;
+    }
+    
+    public HashMap estadisticasKgMes(Plantacion p,int anio) {
+        HashMap res = new HashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        for (int i = 1; i <= 12; i++) {
+            
+        
+            String consulta = "SELECT SUM(KG) FROM VENTA WHERE ID_PLANT = ?"
+                    + " AND FECHA>= ? AND FECHA<?";
+            LocalDate fInicio = LocalDate.of(anio, i, 1);
+            LocalDate fFin = null;
+            if(i != 12){
+                fFin = LocalDate.of(anio, i+1, 1);
+            }else{
+                fFin = LocalDate.of(anio+1, 1, 1);
+            }
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                int cantidad = 0;
+                while(rs.next()){
+                     cantidad = rs.getInt(1);
+                     res.put(mes, cantidad);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas kg/mes: "+e.getMessage());
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg/mes: "+e.getMessage());
         }
         return res;
     }
