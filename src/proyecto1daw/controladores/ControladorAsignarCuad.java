@@ -111,42 +111,46 @@ public class ControladorAsignarCuad implements ActionListener,MouseListener{
     }
 
      private void bajarTrabajador() {
-        Object o = vista.jListPosibles.getSelectedValue();
-        Trabajador emple = (Trabajador) o;
-        
-        if(modActuales.contains(emple)){
-            JOptionPane.showMessageDialog(vista, "Este empleado ya está asignado a esta cuadrilla.", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }else{
-            modPosibles.removeElement(o);
-            modActuales.addElement(o);
+        if(this.vista.jListPosibles.getSelectedIndex() != -1){
+           Object o = vista.jListPosibles.getSelectedValue();
+           Trabajador emple = (Trabajador) o;
 
-            if(listaParaQuitar.contains(emple)){//Si estaba en "para quitar"
-            //es porque ya estaba asignado y lo hemos movido para borrar y
-            //ahora de vuelta a asignado
-                listaParaQuitar.remove(emple);
-            }else{//Era un candidato que hemos asignado nuevo
-                listaParaAniadir.add(emple);    
-            }
+           if(modActuales.contains(emple)){
+               JOptionPane.showMessageDialog(vista, "Este empleado ya está asignado a esta cuadrilla.", "ERROR", JOptionPane.ERROR_MESSAGE);
+           }else{
+               modPosibles.removeElement(o);
+               modActuales.addElement(o);
+
+               if(listaParaQuitar.contains(emple)){//Si estaba en "para quitar"
+               //es porque ya estaba asignado y lo hemos movido para borrar y
+               //ahora de vuelta a asignado
+                   listaParaQuitar.remove(emple);
+               }else{//Era un candidato que hemos asignado nuevo
+                   listaParaAniadir.add(emple);    
+               }
+           }
         }
         
     }
 
     private void subirTrabajador() {
-        Object o = vista.jListActuales.getSelectedValue();
-        Trabajador emple = (Trabajador) o;
-        
-        if(modPosibles.contains(emple)){
-            JOptionPane.showMessageDialog(vista, "Este empleado ya está sin asignar.(A partir de hoy)", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }else{
-            modActuales.removeElement(o);
-            modPosibles.addElement(o);
-            
-            if(listaParaAniadir.contains(emple)){//Si estaba en "para añadir" 
-                //es porque era un candidato que hemos movido para asignar
-                //y ahora movemos de vuelta a posibles candidatos
-                listaParaAniadir.remove(emple);
-            }else{//Era un encargado asignado que vamos a quitar
-                listaParaQuitar.add(emple);
+        if(this.vista.jListActuales.getSelectedIndex() != -1){
+            Object o = vista.jListActuales.getSelectedValue();
+            Trabajador emple = (Trabajador) o;
+
+            if(modPosibles.contains(emple)){
+                JOptionPane.showMessageDialog(vista, "Este empleado ya está sin asignar.(A partir de hoy)", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else{
+                modActuales.removeElement(o);
+                modPosibles.addElement(o);
+
+                if(listaParaAniadir.contains(emple)){//Si estaba en "para añadir" 
+                    //es porque era un candidato que hemos movido para asignar
+                    //y ahora movemos de vuelta a posibles candidatos
+                    listaParaAniadir.remove(emple);
+                }else{//Era un encargado asignado que vamos a quitar
+                    listaParaQuitar.add(emple);
+                }
             }
         }
     }

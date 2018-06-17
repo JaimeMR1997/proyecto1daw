@@ -109,38 +109,53 @@ public class ControladorEncFinca implements ActionListener{
     }
 
     private void bajarEncargado() {
-        Object o = vistaEnc.jListPosibles.getSelectedValue();
-        modPosibles.removeElement(o);
-        modActuales.addElement(o);
-        Encargado enc = (Encargado) o;
-        
-        if(listaParaQuitar.contains(enc)){//Si estaba en "para quitar"
-            //es porque ya estaba asignado y lo hemos movido para borrar y
-            //ahora de vuelta a asignado
-            listaParaQuitar.remove(enc);
-        }else{//Era un candidato qeu hemos asignado
-            listaParaAniadir.add(enc);
+        if(this.vistaEnc.jListPosibles.getSelectedIndex() != -1){
+            Object o = vistaEnc.jListPosibles.getSelectedValue();
+            Encargado enc = (Encargado) o;
+
+            if(modActuales.contains(enc)){
+                JOptionPane.showMessageDialog(vistaEnc, "Este encargado ya está asignado a esta finca.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else{
+                modPosibles.removeElement(o);
+                modActuales.addElement(o);
+
+                if(listaParaQuitar.contains(enc)){//Si estaba en "para quitar"
+                //es porque ya estaba asignado y lo hemos movido para borrar y
+                //ahora de vuelta a asignado
+                    listaParaQuitar.remove(enc);
+                }else{//Era un candidato que hemos asignado nuevo
+                    listaParaAniadir.add(enc);    
+                }
+            }
         }
+        
     }
 
     private void subirEncargado() {
-        Object o = vistaEnc.jListActuales.getSelectedValue();
-        modActuales.removeElement(o);
-        modPosibles.addElement(o);
-        Encargado enc = (Encargado) o;
-        
-        if(listaParaAniadir.contains(enc)){//Si estaba en "para añadir" 
-            //es porque era un candidato que hemos movido para asignar
-            //y ahora movemos de vuelta a posibles candidatos
-            listaParaAniadir.remove(enc);
-        }else{//Era un encargado asignado que vamos a quitar
-            listaParaQuitar.add(enc);
+        if(this.vistaEnc.jListActuales.getSelectedIndex() != -1){
+            Object o = vistaEnc.jListActuales.getSelectedValue();
+            Encargado enc = (Encargado) o;
+
+            if(modPosibles.contains(enc)){
+                JOptionPane.showMessageDialog(vistaEnc, "Este encargado ya está sin asignar.(A partir de hoy)", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else{
+                modActuales.removeElement(o);
+                modPosibles.addElement(o);
+
+                if(listaParaAniadir.contains(enc)){//Si estaba en "para añadir" 
+                    //es porque era un candidato que hemos movido para asignar
+                    //y ahora movemos de vuelta a posibles candidatos
+                    listaParaAniadir.remove(enc);
+                }else{//Era un encargado asignado que vamos a quitar
+                    listaParaQuitar.add(enc);
+                }
+            }
         }
     }
 
     private boolean asignarEncargados() {
         boolean res = true;
-        if(listaParaQuitar.size() != 0){
+        if(listaParaQuitar.size() > 0){
             for (Encargado enc : listaParaQuitar) {
                 if(!modeloTrab.finAsignacionFinca(enc.getDni(),finca.getId())){
                     res=false;
@@ -148,7 +163,7 @@ public class ControladorEncFinca implements ActionListener{
             }
         }
         
-        if(listaParaAniadir.size() != 0){
+        if(listaParaAniadir.size() > 0){
             for (Encargado enc : listaParaAniadir) {
                 if(!modeloTrab.asignarFinca(enc.getDni(), finca.getId())){
                     res=false;
