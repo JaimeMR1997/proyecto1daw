@@ -5,6 +5,8 @@
  */
 package proyecto1daw.vistas;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Jaime-torre
@@ -16,6 +18,7 @@ public class JFFinca extends javax.swing.JFrame {
      */
     public JFFinca() {
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/proyecto1daw/img/icono_logo.png")));
     }
 
     /**

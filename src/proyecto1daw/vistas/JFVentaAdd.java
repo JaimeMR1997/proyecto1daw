@@ -5,6 +5,8 @@
  */
 package proyecto1daw.vistas;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Jaime-torre
@@ -16,6 +18,7 @@ public class JFVentaAdd extends javax.swing.JFrame {
      */
     public JFVentaAdd() {
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/proyecto1daw/img/icono_logo.png")));
     }
 
     /**

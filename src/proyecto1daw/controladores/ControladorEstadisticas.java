@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -65,7 +66,9 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.vista.jListOpciones.setSelectedIndex(0);
         //Cargar desplegables
         this.cargarTipo();
-        this.cargarSubtipo();
+        if(isTipoSelected()){
+            this.cargarSubtipo();
+        }
         //Mostrar
         this.vista.setLocationRelativeTo(null);
         this.vista.setVisible(true);
@@ -76,7 +79,9 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
             ControladorInicio contInicio = new ControladorInicio(new JFInicio());
             vista.dispose();
         }else if(ae.getSource().equals(vista.jComboTipo)){
-            cargarSubtipo();
+            if(isTipoSelected()){
+                cargarSubtipo();
+            }
         }else if(ae.getSource().equals(vista.jComboSubtipo)){
             if(isSubtipoSelected() && isListaSelected()){
                 cargarEstadisticas();
@@ -153,7 +158,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
         
         Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
-        HashMap valores = modeloPlant.estadisticasKgMes(p, 2017);
+        LinkedHashMap valores = modeloPlant.estadisticasKgMes(p, 2017);
         
         Iterator it = valores.keySet().iterator();
         String clave = "";
@@ -171,7 +176,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
         
         Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
-        HashMap valores = modeloPlant.estadisticasPrecioMes(p, 2017);
+        LinkedHashMap valores = modeloPlant.estadisticasPrecioMes(p, 2017);
         
         Iterator it = valores.keySet().iterator();
         String clave = "";
@@ -183,6 +188,10 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         JFreeChart grafico = ChartFactory.createBarChart("Precio(€/Kg) por mes", "Meses", "Precio(€)", datosGraf);
         
         this.vista.cargarGrafico(grafico);
+    }
+
+    private boolean isTipoSelected() {
+        return (vista.jComboTipo.getSelectedIndex() != -1);
     }
     
     

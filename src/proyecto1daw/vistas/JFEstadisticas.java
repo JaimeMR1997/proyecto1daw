@@ -5,6 +5,7 @@
  */
 package proyecto1daw.vistas;
 
+import java.awt.Toolkit;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
@@ -19,6 +20,7 @@ public class JFEstadisticas extends javax.swing.JFrame {
      */
     public JFEstadisticas() {
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/proyecto1daw/img/icono_logo.png")));
     }
 
     /**

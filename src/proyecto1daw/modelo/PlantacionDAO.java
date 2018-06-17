@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -315,8 +316,8 @@ public class PlantacionDAO {
         return res;
     }
     
-    public HashMap estadisticasPrecioMes(Plantacion p,int anio) {
-        HashMap res = new HashMap();
+    public LinkedHashMap estadisticasPrecioMes(Plantacion p,int anio) {
+        LinkedHashMap res = new LinkedHashMap();
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         for (int i = 1; i <= 12; i++) {
@@ -357,8 +358,8 @@ public class PlantacionDAO {
         return res;
     }
     
-    public HashMap estadisticasKgMes(Plantacion p,int anio) {
-        HashMap res = new HashMap();
+    public LinkedHashMap estadisticasKgMes(Plantacion p,int anio) {
+        LinkedHashMap res = new LinkedHashMap();
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         for (int i = 1; i <= 12; i++) {
@@ -381,7 +382,7 @@ public class PlantacionDAO {
                 ResultSet rs = st.executeQuery();
                 String mes = Fechas.mesToString(fInicio.getMonthValue());
                 int cantidad = 0;
-                while(rs.next()){
+                if(rs.next()){
                      cantidad = rs.getInt(1);
                      res.put(mes, cantidad);
                 }
