@@ -224,7 +224,7 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         ArrayList<Trabajador> listaTrabajadores = new ArrayList<Trabajador>();
         if(isEmpleSelected()){
             if(modeloTrab.recuperarTrabajadores().size() > 0){
-                listaTrabajadores.addAll(modeloTrab.recuperarTrabajadores());
+                listaTrabajadores.addAll(modeloTrab.recuperarTrabajadoresLibres());
             }
         }else if(isTractSelected()){
             if(modeloTrab.recuperarConductores().size() > 0){
@@ -232,7 +232,7 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
             }
         }else if(isEncSelected()){
             if(modeloTrab.recuperarEncargados().size() > 0){
-                listaTrabajadores.addAll(modeloTrab.recuperarEncargados());
+                listaTrabajadores.addAll(modeloTrab.recuperarEncargadosLibres());
             }
         }
         

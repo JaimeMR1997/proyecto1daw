@@ -21,9 +21,12 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param t
-     * @param fFin
-     * @return
+     * @param t Es el empleado a actualizar en la base de datos. Puede ser un objeto
+     * encargado o conductor
+     * @param fFin Es la fecha en la que empieza el contrato como trabajador y 
+     * termina el anterior contrato. Si el parámetro es null toma hoy como fecha
+     * @return Devuelve true si se ha realizado con éxito el ascenso a trabajador.
+     * Devuelve false si ha habido algun error al realizar el UPDATE
      */
     public boolean ascensoTrabajador(Trabajador t, LocalDate fFin) {
         boolean res = true;
@@ -31,7 +34,7 @@ public class TrabajadorDAO {
             fFin=LocalDate.now();
         }
         
-        String insertarCons = "INSERT INTO CONDUCTOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
+        String insertarCons = "INSERT INTO TRABAJADOR(DNI,NOMBRE,APELLIDOS,F_NAC,F_CONT,F_FIN,TLF,SALARIO)"
                 + " SELECT * FROM ";//trabajador o encargado WHERE DNI=?";
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
@@ -62,9 +65,12 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @param t
-     * @param fFin
-     * @return
+     * @param t Es el empleado a actualizar en la base de datos. Puede ser un objeto
+     * encargado o trabajador
+     * @param fFin Es la fecha en la que empieza el contrato como conductor y 
+     * termina el anterior contrato. Si el parámetro es null toma hoy como fecha
+     * @return Devuelve true si se ha realizado con éxito el ascenso a conductor.
+     * Devuelve false si ha habido algun error al realizar el UPDATE
      */
     public boolean ascensoConductor(Trabajador t, LocalDate fFin) {
         boolean res = true;
@@ -103,9 +109,12 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param t
-     * @param fFin
-     * @return
+     * @param t Es el empleado a actualizar en la base de datos. Puede ser un objeto
+     * conductor o trabajador
+     * @param fFin Es la fecha en la que empieza el contrato como encargado y 
+     * termina el anterior contrato. Si el parámetro es null toma hoy como fecha
+     * @return Devuelve true si se ha realizado con éxito el ascenso a encargado.
+     * Devuelve false si ha habido algun error al realizar el UPDATE
      */
     public boolean ascensoEncargado(Trabajador t,LocalDate fFin){
         boolean res = true;
@@ -144,10 +153,11 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param dni
-     * @param idFinca
-     * @param fInicio
-     * @return
+     * @param dni El dni del encargado a asignar
+     * @param idFinca La ficna a la que asignar el encaqrgado
+     * @param fInicio  La fecha en la que inicia el contrato. Si el parámetro es null toma hoy como fecha
+     * @return Devuelve true si la asignación se ha realizado con exito y
+     * false si ha habido un error
      */
     public boolean asignarEncargado(String dni,String idFinca,LocalDate fInicio){
         boolean res = true;
@@ -174,9 +184,10 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param dni
-     * @param idFinca
-     * @return
+     * @param dni El dni del encargado a asignar
+     * @param idFinca La ficna a la que asignar el encaqrgado
+     * @return Devuelve true si la asignación se ha realizado con exito y
+     * false si ha habido un error
      */
     public boolean asignarFinca(String dni,String idFinca){
         return this.asignarEncargado(dni, idFinca,null);
@@ -184,7 +195,8 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Trabajador con todos los trabajadores,
+     *  encargados y conductores.
      */
     public ArrayList<Trabajador> recuperarTodos(){
         ArrayList<Trabajador> listaTodos = recuperarTrabajadores();
@@ -195,8 +207,9 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @param dni
-     * @return
+     * @param dni El dni del trabajador a buscar en la base de datos
+     * @return Devuelve un objeto Trabajador que corresponde con el dni pasado por
+     * parámetro. Si no coincide ninguno devuelve null
      */
     public Trabajador recuperarTrabajador(String dni) {
         Trabajador trab = null;
@@ -225,7 +238,7 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Trabajador con todos los trabajadores
      */
     public ArrayList<Trabajador> recuperarTrabajadores(){
         ArrayList<Trabajador> listaTrabajadores = new ArrayList<Trabajador>();
@@ -253,8 +266,9 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param dni
-     * @return
+     * @param dni El dni del conductor a buscar en la base de datos
+     * @return Devuelve un objeto Conductor que corresponde con el dni pasado por
+     * parámetro. Si no coincide ninguno devuelve null
      */
     public Conductor recuperarConductor(String dni) {
         Conductor cond = null;
@@ -283,7 +297,7 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Conductor con todos los conductores
      */
     public ArrayList<Conductor> recuperarConductores(){         //Tractoristas-Conductores
         ArrayList<Conductor> listaConductores = new ArrayList<Conductor>();
@@ -311,8 +325,9 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param dni
-     * @return
+     * @param dni El dni del encargado a buscar en la base de datos
+     * @return Devuelve un objeto Encargado que corresponde con el dni pasado por
+     * parámetro. Si no coincide ninguno devuelve null
      */
     public Encargado recuperarEncargado(String dni) {
         Encargado enc = null;
@@ -341,7 +356,7 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Encargado con todos los encargados
      */
     public ArrayList<Encargado> recuperarEncargados(){         //Encargados incluidos contrato finalizado
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
@@ -369,7 +384,8 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Encargado con todos los encargados 
+     * activos, es decir, que tienen un contrato que no ha finalizado aún
      */
     public ArrayList<Encargado> recuperarEncargadosVigentes(){         //Encargados con contrato
         ArrayList<Encargado> listaEncargados = new ArrayList<Encargado>();
@@ -398,7 +414,7 @@ public class TrabajadorDAO {
     /**
      *
      * @param t
-     * @return
+     * @return 
      */
     public boolean addTrabajador(Trabajador t){
         boolean res = true;
@@ -504,17 +520,17 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param id
+     * @param dni
      * @return
      */
-    public boolean borrarTrabajador(String id){
+    public boolean borrarTrabajador(String dni){
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "DELETE FROM TRABAJADOR WHERE DNI = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, id);
+            st.setString(1, dni);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
@@ -526,17 +542,17 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param id
+     * @param dni
      * @return
      */
-    public boolean borrarEncargado(String id){
+    public boolean borrarEncargado(String dni){
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "DELETE FROM ENCARGADO WHERE DNI = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, id);
+            st.setString(1, dni);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
@@ -548,17 +564,17 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param id
+     * @param dni
      * @return
      */
-    public boolean borrarConductor (String id){
+    public boolean borrarConductor (String dni){
         boolean res = true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "DELETE FROM CONDUCTOR WHERE DNI = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
-            st.setString(1, id);
+            st.setString(1, dni);
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){
@@ -568,13 +584,13 @@ public class TrabajadorDAO {
         return res;
     }
     
-    private void actualizarCampo(String tabla,String id, String campo, String nuevoValor) throws SQLException{
+    private void actualizarCampo(String tabla,String dni, String campo, String nuevoValor) throws SQLException{
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
         String consulta = "UPDATE "+tabla+" SET "+campo+"=? WHERE DNI = ?";
         PreparedStatement st = accesoBD.prepareStatement(consulta);
         st.setString(1, nuevoValor);
-        st.setString(2, id);
+        st.setString(2, dni);
 
         st.executeUpdate();
         accesoBD.close();
@@ -582,15 +598,15 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param id
+     * @param dni
      * @param campo
      * @param nuevoValor
      * @return
      */
-    public boolean actualizarCampoTrab(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoTrab(String dni, String campo, String nuevoValor){
         boolean res = true;
         try{
-            this.actualizarCampo("TRABAJADOR", id, campo, nuevoValor);
+            this.actualizarCampo("TRABAJADOR", dni, campo, nuevoValor);
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar trabajador: "+e.getMessage());
             res=false;
@@ -618,15 +634,15 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param id
+     * @param dni
      * @param campo
      * @param nuevoValor
      * @return
      */
-    public boolean actualizarCampoCond(String id, String campo, String nuevoValor){
+    public boolean actualizarCampoCond(String dni, String campo, String nuevoValor){
         boolean res = true;
         try{
-            this.actualizarCampo("CONDUCTOR", id, campo, nuevoValor);
+            this.actualizarCampo("CONDUCTOR", dni, campo, nuevoValor);
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar conductor: "+e.getMessage());
             res=false;
@@ -636,7 +652,8 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Encargado con los encargados 
+     * que no extán asignados a ninguna finca ni cuadrilla y tienen contrato vigente
      */
     public ArrayList<Encargado> recuperarEncargadosLibres() {
         ArrayList<Encargado> listaEncargados = this.recuperarEncargadosVigentes();
@@ -645,7 +662,7 @@ public class TrabajadorDAO {
             Connection accesoBD = c.getConexion();
             
             //Encargados asignados a una cuadrilla sin fecha de fin o posterior a hoy
-            String consulta = "SELECT * FROM ENCARGADO WHERE DNI = "
+            String consulta = "SELECT * FROM ENCARGADO WHERE DNI IN "
                     + "(SELECT DNI FROM LIDERA WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();
@@ -696,10 +713,12 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @param dni
-     * @param idFinca
-     * @param fFin
-     * @return
+     * @param dni Dni del encargado para modificar
+     * @param idFinca Id de la finca a modificar
+     * @param fFin Fecha en la que acaba la asignación del encargado a la finca.
+     * Si la fecha es null se usa la fecha de hoy.
+     * @return Devuelve true si la operación de modificación slae bien y false si
+     * ha habido algún error.
      */
     public boolean finAsignacionFinca(String dni, String idFinca,LocalDate fFin) {
         boolean res = true;
@@ -725,9 +744,10 @@ public class TrabajadorDAO {
     
     /**
      *
-     * @param dni
-     * @param idFinca
-     * @return
+     * @param dni Dni del encargado para modificar
+     * @param idFinca Id de la finca a modificar
+     * @return Devuelve true si la operación de modificación slae bien y false si
+     * ha habido algún error.
      */
     public boolean finAsignacionFinca(String dni, String idFinca) {
         return this.finAsignacionFinca(dni, idFinca, null);
@@ -735,7 +755,8 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Trabajador con los trabajadores 
+     * que no están asignados a ninguna finca ni cuadrilla y tienen contrato vigente
      */
     public ArrayList<Trabajador> recuperarTrabajadoresLibres() {
         ArrayList<Trabajador> listaTodos = new ArrayList<Trabajador>();
@@ -791,9 +812,10 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @param dni
-     * @param idCuad
-     * @return
+     * @param dni Dni del encargado a modificar
+     * @param idCuad Id de la finca a modificar
+     * @return Devuelve true si se realiza la modificación correctamente y false
+     * si ha habido un error. La fecha que se toma es la de hoy
      */
     public boolean finAsigCuadrilla(String dni, String idCuad) {
         boolean res = true;
@@ -817,9 +839,10 @@ public class TrabajadorDAO {
 
     /**
      *
-     * @param dni
-     * @param idCuad
-     * @return
+     * @param dni Dni del encargado a modificar
+     * @param idCuad Id de la finca a modificar
+     * @return Devuelve true si se realiza la asignación correctamente y false
+     * si ha habido un error. La fecha que se toma es la de hoy
      */
     public boolean asignarCuad(String dni, String idCuad) {
         boolean res = true;
