@@ -45,7 +45,7 @@ public class JFEstadisticas extends javax.swing.JFrame {
         jListOpciones = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mi programa - Estadísticas");
+        setTitle("Estadísticas");
         setBackground(new java.awt.Color(174, 207, 182));
 
         jPanelTop.setBackground(new java.awt.Color(119, 182, 134));

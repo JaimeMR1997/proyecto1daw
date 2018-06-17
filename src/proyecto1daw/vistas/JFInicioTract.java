@@ -53,6 +53,7 @@ public class JFInicioTract extends javax.swing.JFrame {
         jLabelEliminar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tractores y Servicios");
         setBackground(new java.awt.Color(174, 207, 182));
 
         jPanelTop.setBackground(new java.awt.Color(119, 182, 134));

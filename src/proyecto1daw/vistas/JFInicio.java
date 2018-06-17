@@ -37,7 +37,7 @@ public class JFInicio extends javax.swing.JFrame {
         jButtonEstadisticas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mi programa - Inicio");
+        setTitle("Inicio");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jButtonTractores.setBackground(new java.awt.Color(119, 182, 134));

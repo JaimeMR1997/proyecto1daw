@@ -66,7 +66,7 @@ public class JFEmpleados extends javax.swing.JFrame {
         botonEliminarTrab = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mi programa - Fincas");
+        setTitle("Cuadrillas y Empleados");
         setBackground(new java.awt.Color(174, 207, 182));
 
         jPanelTop.setBackground(new java.awt.Color(119, 182, 134));
