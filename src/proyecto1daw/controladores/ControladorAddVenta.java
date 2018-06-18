@@ -118,7 +118,7 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
             JButton boton = (JButton) ae.getSource();
             if(validarDatos()){
                 if(boton.getText().equalsIgnoreCase("Aceptar")){            //AÑADIR
-                    if(addPlant()){
+                    if(addVenta()){
                         JOptionPane.showMessageDialog(vistaAddVenta, "Plantacion añadida correctamente");
                         this.contPlant.actualizarTablaVentas();
                         this.contPlant.actualizarIngresos();
@@ -141,7 +141,7 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         }
     }
 
-    private boolean addPlant() {
+    private boolean addVenta() {
         Venta v = getVenta();
         boolean res = true;
         
@@ -264,9 +264,19 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         return res;
     }
     
+    /** 
+     *@return Devuelve un objeto venta a partir de los campos del formulario.
+     * Genera un nuevo Id de venta si es para añadir una nueva venta y mantiene
+     * el anterior si es modificando la venta.
+    */
     private Venta getVenta() {
-        String idPlant = plant.getId();
-        String idVenta = this.generarIdVenta();
+        String idPlant = this.plant.getId();
+        String idVenta = "";
+        if(this.vent == null){ //Nueva venta
+            idVenta = this.generarIdVenta();
+        }else{ //Modificar venta
+            idVenta = this.vent.getId();
+        }
         int cantidad = (int) this.vistaAddVenta.jSpinnerKg.getValue();
         String color = (String) this.vistaAddVenta.campoColor.getText();
         String tamanio = (String) this.vistaAddVenta.jComboTam.getSelectedItem();

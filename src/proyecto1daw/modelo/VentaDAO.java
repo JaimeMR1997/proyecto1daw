@@ -220,17 +220,23 @@ public class VentaDAO {
         boolean res =true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "UPDATE VENTA SET "+campo+"=? WHERE ID_VENTA = ? AND ID_PLANT = ?";
+        String consulta = "UPDATE VENTA SET "+campo+"= ? WHERE ID_VENTA = ? AND ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, nuevoValor);
             st.setString(2, id);
             st.setString(3, idPlant);
             
+            if(campo.equalsIgnoreCase("PRECIO")){
+                st.setDouble(1, Double.parseDouble(nuevoValor));
+            }
+            
             st.executeUpdate();
+            
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Actualizar venta: "+e.getMessage());
+            e.printStackTrace();
             res=false;
         }
         return res;
