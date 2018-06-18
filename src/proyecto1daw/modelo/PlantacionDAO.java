@@ -26,10 +26,13 @@ public class PlantacionDAO {
 
     /**
      *
-     * @param fInicio
-     * @param fFin
-     * @param idExp
-     * @return
+     * @param fInicio Fecha minima en al que se planto. Busca plantaciones plantadas
+     * a partir de esta fecha, incluyendo esta.
+     * @param fFin Fecha maxima en al que se planto. Busca plantaciones plantadas
+     * antes de esta fecha, incluyendo esta.
+     * @param idExp Id de la explotacin en la que hay que buscar las plantaciones
+     * @return Devuelve un ArrayList de objetos de tipo Explotacion con
+     * objetos Plantacion comprendidos entre las fechas proporcionadas
      */
     public ArrayList<Plantacion> recuperarPorFecha(LocalDate fInicio,LocalDate fFin,String idExp){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
@@ -68,8 +71,9 @@ public class PlantacionDAO {
     
     /**
      *
-     * @param idPlant
-     * @return
+     * @param idPlant Id de pla plantacion por la que buscar
+     * @return Un objeto Plantacion con los datos del id proporcionado o un objeto
+     * Plantacion null si no conincide con nada en la BD.
      */
     public Plantacion recuperarPorId(String idPlant){
         Plantacion plant = null;
@@ -99,8 +103,9 @@ public class PlantacionDAO {
     
     /**
      *
-     * @param idExp
-     * @return
+     * @param idExp Id de la explotacin de la que se van a bsucar las plantaciones
+     * @return Un ArrayList de objetos Plantaciñon con todas las plantaciones de
+     * la explotacin
      */
     public ArrayList<Plantacion> recuperarPorExp(String idExp){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
@@ -133,7 +138,7 @@ public class PlantacionDAO {
     
     /**
      *
-     * @return
+     * @return Devuelve un ArrayList de objetos Plantacion con todas las plantaciones
      */
     public ArrayList<Plantacion> recuperarTodas(){
         ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
@@ -157,8 +162,8 @@ public class PlantacionDAO {
     
     /**
      *
-     * @param p
-     * @return
+     * @param p Plantacion para añadir a la BD
+     * @return true si se añade correctamente y false si ha habido algun error
      */
     public boolean addPlantacion(Plantacion p){
         boolean res = true;
@@ -192,7 +197,7 @@ public class PlantacionDAO {
 
     /**
      *
-     * @param id
+     * @param id Id de la plantacin a borrar
      */
     public void borrarPlantacion(String id){
         Conexion c = new Conexion();
@@ -210,10 +215,10 @@ public class PlantacionDAO {
     
     /**
      *
-     * @param id
-     * @param campo
-     * @param nuevoValor
-     * @return
+     * @param id Id de la plantacion a actualizar
+     * @param campo Campo de  la tabla que se va a actualizar
+     * @param nuevoValor Valor nuevo que va a tomar el campo
+     * @return True si se ejecuta correctamente y false si ha habido un error
      */
     public boolean actualizarCampo(String id, String campo, String nuevoValor){
         boolean res = true;
@@ -238,8 +243,8 @@ public class PlantacionDAO {
 
     /**
      *
-     * @param idExplotacion
-     * @return
+     * @param idExplotacion Id de la explotacion que se van a contar sus plantaciones
+     * @return El numero de plantaciones que tiene la explotacion pasada por parametro
      */
     public int contarPlant(String idExplotacion) {
         int res = -1;
@@ -263,8 +268,9 @@ public class PlantacionDAO {
 
     /**
      *
-     * @param idExplotacion
-     * @return
+     * @param idExplotacion Id de la explotacion que se va a buscar si tiene 
+     * plantaciones activas
+     * @return Devuelve true si hay plantaciones activas y false si no las hay
      */
     public boolean hayPlantSinFinalizar(String idExplotacion) {
         boolean res = false;
@@ -292,6 +298,13 @@ public class PlantacionDAO {
         return res;
     }
     
+    /**
+     * 
+     * @param p Plantacion de la que se va a recuperar las estadisticas de
+     * distribucin del color en sus ventas
+     * @return De vuelve un hashmap con los colores como clave y los kg por color
+     * como valor
+     */
     public HashMap estadisticasColorTotal(Plantacion p) {
         HashMap res = new HashMap();
         Conexion c = new Conexion();
@@ -316,6 +329,13 @@ public class PlantacionDAO {
         return res;
     }
     
+    /**
+     * 
+     * @param p Plantacion de la que recuperar el precio medio por meses
+     * @param anio Año del que se van a buscar las ventas
+     * @return Devuelve un hasmap con los meses como clave y como valor el
+     * precio medio cada mes
+     */
     public LinkedHashMap estadisticasPrecioMes(Plantacion p,int anio) {
         LinkedHashMap res = new LinkedHashMap();
         Conexion c = new Conexion();
@@ -357,7 +377,13 @@ public class PlantacionDAO {
         
         return res;
     }
-    
+    /**
+     * 
+     * @param p Plantacion de la que se van a buscar los kg 
+     * @param anio año en el que se van a buscar las ventas
+     * @return Un hashmap con los meses como clave y como valor la produccion
+     * de la plantacin or cada mes
+     */
     public LinkedHashMap estadisticasKgMes(Plantacion p,int anio) {
         LinkedHashMap res = new LinkedHashMap();
         Conexion c = new Conexion();
