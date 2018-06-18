@@ -398,4 +398,49 @@ public class PlantacionDAO {
         }
         return res;
     }
+
+    /**
+     * 
+     * @param p Objeto Plantacion de la que recuperar las estadísticas
+     * @param anios El numero de años hacia atrás en los que se buscarán datos
+     * @return Devuelve un objeto LinkedHashMap con los años como clave
+     * y como valor el numero de kg de la plantacion de todo el año
+     */
+    public LinkedHashMap estadisticasKgAnio(Plantacion p, int anios) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        for (int i = 0; i < anios; i++) {
+            
+        
+            String consulta = "SELECT SUM(KG) FROM VENTA WHERE ID_PLANT = ?"
+                    + " AND FECHA>= ? AND FECHA<?";
+            
+            int anio = LocalDate.now().getYear() -i;
+            
+            LocalDate fInicio = LocalDate.of(anio, 1, 1);
+            LocalDate fFin = LocalDate.of(anio+1, 1, 1);
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                int cantidad = 0;
+                if(rs.next()){
+                    cantidad = rs.getInt(1);
+                    res.put(anio, cantidad);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas kg/año: "+e.getMessage());
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg/año: "+e.getMessage());
+        }
+        return res;
+    }
 }

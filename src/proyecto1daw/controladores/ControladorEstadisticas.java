@@ -124,6 +124,8 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
             cargarGrafKgMes();
         }else if(vista.jListOpciones.getSelectedValue().equals("Precio por mes")){
             cargarGrafPrecioMes();
+        }else if(vista.jListOpciones.getSelectedValue().equals("Kg por año")){
+            cargarGrafKgAnio();
         }
     }
 
@@ -149,6 +151,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.modLista.addElement("Distribucion colores");
         this.modLista.addElement("Precio por mes");
         this.modLista.addElement("Kg por mes");
+        this.modLista.addElement("Kg por año");
     }
 
     private boolean isListaSelected() {
@@ -193,6 +196,24 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
 
     private boolean isTipoSelected() {
         return (vista.jComboTipo.getSelectedIndex() != -1);
+    }
+
+    private void cargarGrafKgAnio() {
+        DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
+        
+        Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
+        LinkedHashMap valores = modeloPlant.estadisticasKgAnio(p, 10);
+        
+        Iterator it = valores.keySet().iterator();
+        int clave = 0;
+        while(it.hasNext()){
+            clave = (int) it.next();
+            datosGraf.setValue((int) valores.get(clave),"KG", clave+"");
+        }
+        
+        JFreeChart grafico = ChartFactory.createBarChart("Cantidad(Kg) por mes", "Meses", "Cantidad(Kg)", datosGraf);
+        
+        this.vista.cargarGrafico(grafico);
     }
     
     
