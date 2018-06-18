@@ -383,8 +383,8 @@ public class PlantacionDAO {
                 String mes = Fechas.mesToString(fInicio.getMonthValue());
                 int cantidad = 0;
                 if(rs.next()){
-                     cantidad = rs.getInt(1);
-                     res.put(mes, cantidad);
+                    cantidad = rs.getInt(1);
+                    res.put(mes, cantidad);
                 }
 
             }catch(SQLException e){

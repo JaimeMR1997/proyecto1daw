@@ -7,6 +7,7 @@ package proyecto1daw.controladores;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -158,7 +159,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
         
         Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
-        LinkedHashMap valores = modeloPlant.estadisticasKgMes(p, 2017);
+        LinkedHashMap valores = modeloPlant.estadisticasKgMes(p, LocalDate.now().getYear());
         
         Iterator it = valores.keySet().iterator();
         String clave = "";
@@ -176,7 +177,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
         
         Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
-        LinkedHashMap valores = modeloPlant.estadisticasPrecioMes(p, 2017);
+        LinkedHashMap valores = modeloPlant.estadisticasPrecioMes(p, LocalDate.now().getYear());
         
         Iterator it = valores.keySet().iterator();
         String clave = "";
