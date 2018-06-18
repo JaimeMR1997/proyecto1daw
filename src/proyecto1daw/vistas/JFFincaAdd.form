@@ -56,17 +56,22 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabelLocalidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelSuperficie" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelFC" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelId" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="76" max="32767" attributes="0"/>
-                          <Component id="etiquetaId" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="etiquetaId" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jCheckBoxFFin" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabelLocalidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelSuperficie" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelFC" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckBoxFFin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="49" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -74,9 +79,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabelId" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="etiquetaId" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabelId" max="32767" attributes="0"/>
+                      <Component id="etiquetaId" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Component id="jLabelLocalidad" min="-2" max="-2" attributes="0"/>

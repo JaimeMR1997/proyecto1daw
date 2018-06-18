@@ -211,7 +211,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
             datosGraf.setValue((int) valores.get(clave),"KG", clave+"");
         }
         
-        JFreeChart grafico = ChartFactory.createBarChart("Cantidad(Kg) por mes", "Meses", "Cantidad(Kg)", datosGraf);
+        JFreeChart grafico = ChartFactory.createBarChart("Cantidad(Kg) por año", "Años", "Cantidad(Kg)", datosGraf);
         
         this.vista.cargarGrafico(grafico);
     }
