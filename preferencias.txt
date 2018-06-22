@@ -1,0 +1,8 @@
+Si no se guardan las preferencias añadir el siguiente registro a regedit:
+
+HKEY_LOCAL_MACHINE\Software\JavaSoft 
+(E nWindows 10 sería en: HKEY_LOCAL_MACHINE\Software\WOW6432Node\JavaSoft
+
+Y crear una clave llamada Pref:
+	Right click on the JavaSoft folder and click on New -> Key
+	Name the new Key Prefs and everything should work.

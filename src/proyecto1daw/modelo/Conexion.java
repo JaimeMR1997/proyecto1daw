@@ -5,6 +5,7 @@
  */
 package proyecto1daw.modelo;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,6 +28,18 @@ public class Conexion {
      */
     public Connection getConexion(){
         Connection conn=null;
+        Configuracion config = new Configuracion();
+        
+        if(config.getTipoServer().equalsIgnoreCase("oracle")){
+            conn = getConnectionOracle();
+        }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+            conn = getConnectionMysql();
+        }
+        return conn;
+    }
+
+    private Connection getConnectionOracle() {
+        Connection conn = null;
         try{
             Class.forName("oracle.jdbc.OracleDriver");
             String usuario="jaime";
@@ -36,7 +49,7 @@ public class Conexion {
         }catch(ClassNotFoundException e){
             System.out.println("Clase no encontrada: "+e.getMessage());
         }catch(SQLException e){
-            System.out.println("Excepción SQL: "+e.getMessage());
+            System.out.println("Error al obtener conexion oracle: "+e.getMessage());
         }
         return conn;
     }
@@ -49,7 +62,30 @@ public class Conexion {
         try{
             conn.close();
         }catch(SQLException e){
-            System.out.println("Excepción SQL: "+e.getMessage());
+            System.out.println("Excepción SQL al cerrar la conexion: "+e.getMessage());
         }
+    }
+
+    private Connection getConnectionMysql() {
+        Configuracion config = new Configuracion();
+        String ip = config.getIP();
+        int puerto = Integer.parseInt(config.getPuerto());
+        
+        Connection conn = null;
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUser("jaime");
+        dataSource.setPassword("1234");
+        dataSource.setServerName(ip);
+        dataSource.setPort(puerto);
+        dataSource.setDatabaseName("agricola");
+        
+        try{
+            dataSource.setVerifyServerCertificate(false);//Para que no salga aviso
+            dataSource.setServerTimezone("UTC");//Si no se especifica da error
+            conn = dataSource.getConnection();
+        }catch(SQLException e){
+            System.out.println("Error al obtener conexion Mysql: "+e);
+        }
+        return conn;
     }
 }

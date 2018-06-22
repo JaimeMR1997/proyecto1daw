@@ -29,68 +29,124 @@ public class JFInicio extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
-        jButtonTractores = new javax.swing.JButton();
-        jButtonFincas = new javax.swing.JButton();
-        jButtonTrabajadores = new javax.swing.JButton();
-        jButtonEstadisticas = new javax.swing.JButton();
+        jPanelOpcs = new javax.swing.JPanel();
+        botonConfig = new javax.swing.JButton();
+        listaFincas = new javax.swing.JLabel();
+        jPanelBotones = new javax.swing.JPanel();
+        botonTractores = new javax.swing.JButton();
+        botonFincas = new javax.swing.JButton();
+        botonEstadisticas = new javax.swing.JButton();
+        botonTrabajadores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio");
-        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jButtonTractores.setBackground(new java.awt.Color(119, 182, 134));
-        jButtonTractores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/tractores.jpg"))); // NOI18N
-        jButtonTractores.setPreferredSize(new java.awt.Dimension(200, 338));
-        jButtonTractores.addActionListener(new java.awt.event.ActionListener() {
+        jPanelOpcs.setBackground(new java.awt.Color(119, 182, 134));
+        jPanelOpcs.setForeground(new java.awt.Color(255, 255, 255));
+
+        botonConfig.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        botonConfig.setForeground(new java.awt.Color(255, 255, 255));
+        botonConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_engranaje.png"))); // NOI18N
+        botonConfig.setText("Configuración");
+        botonConfig.setBorderPainted(false);
+        botonConfig.setContentAreaFilled(false);
+        botonConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonTractoresActionPerformed(evt);
+                botonConfigActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(jButtonTractores, gridBagConstraints);
 
-        jButtonFincas.setBackground(new java.awt.Color(119, 182, 134));
-        jButtonFincas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/Finca.jpg"))); // NOI18N
-        jButtonFincas.setPreferredSize(new java.awt.Dimension(200, 338));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(jButtonFincas, gridBagConstraints);
+        listaFincas.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        listaFincas.setForeground(new java.awt.Color(255, 255, 255));
+        listaFincas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        listaFincas.setText("Ramillete ERP");
 
-        jButtonTrabajadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/empleados.jpg"))); // NOI18N
-        jButtonTrabajadores.setPreferredSize(new java.awt.Dimension(200, 338));
-        jButtonTrabajadores.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout jPanelOpcsLayout = new javax.swing.GroupLayout(jPanelOpcs);
+        jPanelOpcs.setLayout(jPanelOpcsLayout);
+        jPanelOpcsLayout.setHorizontalGroup(
+            jPanelOpcsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpcsLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(listaFincas)
+                .addGap(110, 110, 110)
+                .addComponent(botonConfig))
+        );
+        jPanelOpcsLayout.setVerticalGroup(
+            jPanelOpcsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpcsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelOpcsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(listaFincas)
+                    .addComponent(botonConfig))
+                .addContainerGap())
+        );
+
+        jPanelBotones.setLayout(new java.awt.GridLayout(1, 0));
+
+        botonTractores.setBackground(new java.awt.Color(119, 182, 134));
+        botonTractores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/tractores.jpg"))); // NOI18N
+        botonTractores.setPreferredSize(new java.awt.Dimension(200, 338));
+        botonTractores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonTrabajadoresActionPerformed(evt);
+                botonTractoresActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(jButtonTrabajadores, gridBagConstraints);
+        jPanelBotones.add(botonTractores);
 
-        jButtonEstadisticas.setBackground(new java.awt.Color(119, 182, 134));
-        jButtonEstadisticas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/estadisticas.jpg"))); // NOI18N
-        jButtonEstadisticas.setPreferredSize(new java.awt.Dimension(200, 338));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        getContentPane().add(jButtonEstadisticas, gridBagConstraints);
+        botonFincas.setBackground(new java.awt.Color(119, 182, 134));
+        botonFincas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/Finca.jpg"))); // NOI18N
+        botonFincas.setPreferredSize(new java.awt.Dimension(200, 338));
+        jPanelBotones.add(botonFincas);
+
+        botonEstadisticas.setBackground(new java.awt.Color(119, 182, 134));
+        botonEstadisticas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/estadisticas.jpg"))); // NOI18N
+        botonEstadisticas.setPreferredSize(new java.awt.Dimension(200, 338));
+        jPanelBotones.add(botonEstadisticas);
+
+        botonTrabajadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/empleados.jpg"))); // NOI18N
+        botonTrabajadores.setPreferredSize(new java.awt.Dimension(200, 338));
+        botonTrabajadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonTrabajadoresActionPerformed(evt);
+            }
+        });
+        jPanelBotones.add(botonTrabajadores);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelBotones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelOpcs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanelOpcs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonTractoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTractoresActionPerformed
+    private void botonTractoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTractoresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonTractoresActionPerformed
+    }//GEN-LAST:event_botonTractoresActionPerformed
 
-    private void jButtonTrabajadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTrabajadoresActionPerformed
+    private void botonTrabajadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTrabajadoresActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonTrabajadoresActionPerformed
+    }//GEN-LAST:event_botonTrabajadoresActionPerformed
+
+    private void botonConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConfigActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonConfigActionPerformed
 
     /**
      * @param args the command line arguments
@@ -129,9 +185,13 @@ public class JFInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jButtonEstadisticas;
-    public javax.swing.JButton jButtonFincas;
-    public javax.swing.JButton jButtonTrabajadores;
-    public javax.swing.JButton jButtonTractores;
+    public javax.swing.JButton botonConfig;
+    public javax.swing.JButton botonEstadisticas;
+    public javax.swing.JButton botonFincas;
+    public javax.swing.JButton botonTrabajadores;
+    public javax.swing.JButton botonTractores;
+    private javax.swing.JPanel jPanelBotones;
+    private javax.swing.JPanel jPanelOpcs;
+    private javax.swing.JLabel listaFincas;
     // End of variables declaration//GEN-END:variables
 }
