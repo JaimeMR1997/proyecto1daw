@@ -80,7 +80,7 @@ public class Conexion {
         dataSource.setDatabaseName("agricola");
         
         try{
-            dataSource.setVerifyServerCertificate(false);//Para que no salga aviso
+            dataSource.setUseSSL(false);//Para que no salga aviso
             dataSource.setServerTimezone("UTC");//Si no se especifica da error
             conn = dataSource.getConnection();
         }catch(SQLException e){

@@ -392,7 +392,14 @@ public class TrabajadorDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM ENCARGADO WHERE F_FIN >= SYSDATE OR F_FIN IS NULL");
+            String consulta = "";
+            Configuracion config = new Configuracion();
+            if(config.getTipoServer().equalsIgnoreCase("oracle")){
+                consulta = "SELECT * FROM ENCARGADO WHERE F_FIN >= SYSDATE OR F_FIN IS NULL";
+            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+                consulta = "SELECT * FROM ENCARGADO WHERE F_FIN >= SYSDATE() OR F_FIN IS NULL";
+            }
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 LocalDate fNac = rs.getDate("F_NAC").toLocalDate();
@@ -662,8 +669,17 @@ public class TrabajadorDAO {
             Connection accesoBD = c.getConexion();
             
             //Encargados asignados a una cuadrilla sin fecha de fin o posterior a hoy
-            String consulta = "SELECT * FROM ENCARGADO WHERE DNI IN "
+            
+            String consulta = "";
+            Configuracion config = new Configuracion();
+            if(config.getTipoServer().equalsIgnoreCase("oracle")){
+                consulta = "SELECT * FROM ENCARGADO WHERE DNI IN "
                     + "(SELECT DNI FROM LIDERA WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+                consulta = "SELECT * FROM ENCARGADO WHERE DNI IN "
+                    + "(SELECT DNI FROM LIDERA WHERE F_FIN > SYSDATE() OR F_FIN IS NULL)";
+            }
+            
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();
             
@@ -684,7 +700,12 @@ public class TrabajadorDAO {
             listaEncargados.removeAll(listaRestar);
             listaRestar.clear();
             
-            consulta = "SELECT * FROM ENCARGADO WHERE DNI = (SELECT DNI FROM DIRIGE WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            if(config.getTipoServer().equalsIgnoreCase("oracle")){
+                consulta = "SELECT * FROM ENCARGADO WHERE DNI = (SELECT DNI FROM DIRIGE WHERE F_FIN > SYSDATE OR F_FIN IS NULL)";
+            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+                consulta = "SELECT * FROM ENCARGADO WHERE DNI = (SELECT DNI FROM DIRIGE WHERE F_FIN > SYSDATE() OR F_FIN IS NULL)";
+            }
+            
             st = accesoBD.prepareStatement(consulta);
             rs = st.executeQuery();
             while(rs.next()){
@@ -763,7 +784,14 @@ public class TrabajadorDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            String consulta = "SELECT * FROM TRABAJADOR WHERE F_FIN IS NULL OR F_FIN>SYSDATE";
+            
+            String consulta = "";
+            Configuracion config = new Configuracion();
+            if(config.getTipoServer().equalsIgnoreCase("oracle")){
+                consulta = "SELECT * FROM TRABAJADOR WHERE F_FIN IS NULL OR F_FIN>SYSDATE";
+            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+                consulta = "SELECT * FROM TRABAJADOR WHERE F_FIN IS NULL OR F_FIN>SYSDATE()";
+            }
             
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();
@@ -785,8 +813,16 @@ public class TrabajadorDAO {
         try{
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
-            String consulta = "SELECT * FROM TRABAJADOR WHERE DNI IN "
+            String consulta = "";
+            
+            Configuracion config = new Configuracion();
+            if(config.getTipoServer().equalsIgnoreCase("oracle")){
+                consulta = "SELECT * FROM TRABAJADOR WHERE DNI IN "
                     + "(SELECT DNI FROM FORMA WHERE F_FIN >= SYSDATE OR F_FIN IS NULL)";
+            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
+                consulta = "SELECT * FROM TRABAJADOR WHERE DNI IN "
+                    + "(SELECT DNI FROM FORMA WHERE F_FIN >= SYSDATE() OR F_FIN IS NULL)";
+            }
             
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             ResultSet rs = st.executeQuery();
