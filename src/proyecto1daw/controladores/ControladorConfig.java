@@ -136,7 +136,9 @@ class ControladorConfig implements ActionListener{
     private void cargarConfigActual() {
         Configuracion config = new Configuracion();
         String sistemaBD = config.getTipoServer();
-        if(sistemaBD.equalsIgnoreCase("mysql")){
+        if(sistemaBD == null){
+            
+        }else if(sistemaBD.equalsIgnoreCase("mysql")){
             sistemaBD = "MySQL";
         }else if(sistemaBD.equalsIgnoreCase("oracle")){
             sistemaBD = "Oracle Express";
