@@ -9,6 +9,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.mariadb.jdbc.MariaDbDataSource;
 
 /**
  *
@@ -34,6 +35,8 @@ public class Conexion {
             conn = getConnectionOracle();
         }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
             conn = getConnectionMysql();
+        }else if(config.getTipoServer().equalsIgnoreCase("MariaDB")){
+            conn = getConnectionMariaDb();
         }
         return conn;
     }
@@ -85,6 +88,28 @@ public class Conexion {
             conn = dataSource.getConnection();
         }catch(SQLException e){
             System.out.println("Error al obtener conexion Mysql: "+e);
+        }
+        return conn;
+    }
+
+    private Connection getConnectionMariaDb() {
+        Configuracion config = new Configuracion();
+        String ip = config.getIP();
+        int puerto = Integer.parseInt(config.getPuerto());
+        
+        Connection conn = null;
+        MariaDbDataSource dataSource = new MariaDbDataSource();
+        
+        try{
+            dataSource.setUser("jaime");
+            dataSource.setPassword("1234");
+            dataSource.setServerName(ip);
+            dataSource.setPort(puerto);
+            dataSource.setDatabaseName("agricola");
+            
+            conn = dataSource.getConnection();
+        }catch(SQLException e){
+            System.out.println("Error al obtener conexion MariaDB: "+e);
         }
         return conn;
     }

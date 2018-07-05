@@ -75,6 +75,7 @@ class ControladorConfig implements ActionListener{
     }
 
     private void cargarListaOpcs() {
+        this.modDespBD.addElement("MariaDB");
         this.modDespBD.addElement("MySQL");
         this.modDespBD.addElement("Oracle Express");
     }
@@ -103,9 +104,11 @@ class ControladorConfig implements ActionListener{
         if(isJRadioBDSelected()){
             Configuracion config = new Configuracion();
             String baseDatos = (String) vista.jComboBD.getSelectedItem();
-            if(baseDatos.equalsIgnoreCase("MySQL")){                        //MYSQL
+            if(baseDatos.equalsIgnoreCase("MariaDB")){                        //MariaDB
+                config.setTipoServer("mariadb");
+            }else if(baseDatos.equalsIgnoreCase("MySQL")){                        //MYSQL
                 config.setTipoServer("mysql");
-            }else{                                                          //ORACLE
+            }else if(baseDatos.equalsIgnoreCase("Oracle Express")){                                                          //ORACLE
                 config.setTipoServer("oracle");
             }
             
