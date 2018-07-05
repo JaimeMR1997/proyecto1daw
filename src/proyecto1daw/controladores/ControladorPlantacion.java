@@ -442,7 +442,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     public void actualizarIngresos() {
         double cantidad;
         int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
-        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
+        String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);//ID_EXP
         //Carga ventas de la plantación
         actualizarTablaVentas();
         cantidad = modeloVenta.calcularIngresos(idPlant);
