@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 /**
@@ -308,6 +309,22 @@ public class VentaDAO {
         double res = 0;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
+        String consulta = "SELECT SUM(INGRESOS) AS INGRESOS FROM `INGRESOS_VENTAS` WHERE ID_PLANT = ? GROUP BY ID_PLANT";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idPlant);
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                res = rs.getDouble("INGRESOS");
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. calcular ingresos ventas: "+e.getMessage());
+        }
+        
+        /*
         String consulta = "SELECT INGRESOS FROM INGRESOS_VENTAS WHERE ID_PLANT = ?";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
@@ -321,6 +338,93 @@ public class VentaDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. calcular ingresos ventas: "+e.getMessage());
+        }
+        */
+        
+        return res;
+    }
+
+    public double calcularQuincAnt(String idPlant) {
+        double res = 0;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT SUM(INGRESOS) AS INGRESOS FROM `INGRESOS_VENTAS`"
+                + " WHERE ID_PLANT = ? AND FECHA>= ? AND FECHA< ? GROUP BY ID_PLANT";
+        
+        LocalDate fIn = null;
+        LocalDate fFin = null;
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            
+            if(LocalDate.now().getDayOfMonth()>15){
+                fIn = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+                //Incluye el 15 pero no el 16
+                fFin = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 16);
+            }else{
+                if(LocalDate.now().getMonth() == Month.JANUARY){
+                    fIn = LocalDate.of(LocalDate.now().getYear()-1, Month.DECEMBER, 16);
+                }else{
+                    fIn = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().minusMonths(1).getMonth(), 16);
+                }
+                fFin = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+                
+                
+            }
+            st.setString(1, idPlant);
+            st.setDate(2, Date.valueOf(fIn));
+            st.setDate(3, Date.valueOf(fFin));
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                res = rs.getDouble("INGRESOS");
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. calcular quincena anterior: "+e.getMessage());
+        }
+        return res;
+    }
+
+    public double calcularQuincActual(String idPlant) {
+        double res = 0;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT SUM(INGRESOS) AS INGRESOS FROM `INGRESOS_VENTAS`"
+                + " WHERE ID_PLANT = ? AND FECHA>= ? AND FECHA< ? GROUP BY ID_PLANT";
+        
+        LocalDate fIn = null;
+        LocalDate fFin = null;
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            
+            if(LocalDate.now().getDayOfMonth()<=15){
+                fIn = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
+                //Incluye el 15 pero no el 16
+                fFin = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 16);
+            }else{
+                fIn = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 16);
+                //Hasta el dia 1 del mes siguiente sin incluirlo
+                if(LocalDate.now().getMonth() == Month.DECEMBER){
+                    //Si es diciembre el proximo mes seria enero del año proximo
+                    fFin = LocalDate.of(LocalDate.now().getYear()+1, Month.JANUARY, 1);
+                }else{
+                    fFin = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().plusMonths(1).getMonth(), 1);
+                }
+                
+            }
+            st.setString(1, idPlant);
+            st.setDate(2, Date.valueOf(fIn));
+            st.setDate(3, Date.valueOf(fFin));
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                res = rs.getDouble("INGRESOS");
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. calcular quincena actual: "+e.getMessage());
         }
         return res;
     }

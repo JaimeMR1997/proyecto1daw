@@ -445,8 +445,27 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);//ID_EXP
         //Carga ventas de la plantación
         actualizarTablaVentas();
+        actLabelIngresos(idPlant);
+        actLabelQuincAnt(idPlant);
+        actLabelQuincActual(idPlant);
+    }
+
+    private void actLabelIngresos(String idPlant) {
+        double cantidad;
         cantidad = modeloVenta.calcularIngresos(idPlant);
         vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
+    }
+    
+    private void actLabelQuincAnt(String idPlant) {
+        double cantidad;
+        cantidad = modeloVenta.calcularQuincAnt(idPlant);
+        vistaTabla.jLabelCantidadQAnt.setText(cantidad+"€");
+    }
+    
+    private void actLabelQuincActual(String idPlant) {
+        double cantidad;
+        cantidad = modeloVenta.calcularQuincActual(idPlant);
+        vistaTabla.jLabelCantidadQActual.setText(cantidad+"€");
     }
     
     /**

@@ -26,6 +26,14 @@ public class Fechas {
         }
         return s;
     }
+    
+    public static String toStringMariaDb(LocalDate fecha) {
+        String s = null;
+        if(fecha != null){
+            s = fecha.getYear() + "-" + fecha.getMonthValue() + "-" + fecha.getDayOfMonth();
+        }
+        return s;
+    }
 
     /**
      *

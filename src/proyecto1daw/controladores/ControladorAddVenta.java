@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.Plantacion;
@@ -201,8 +202,16 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "COLOR", v.getColor())){
             res=false;
         }
-        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "FECHA", Fechas.toString(v.getFecha()))){
-            res=false;
+        Configuracion conf = new Configuracion();
+        String fecha = "";
+        if(conf.getTipoServer().equalsIgnoreCase("MariaDB")){
+            fecha = Fechas.toStringMariaDb(v.getFecha());
+        }else{
+            fecha = Fechas.toString(v.getFecha());
+        }
+        
+        if(!modeloVenta.actualizarCampo(v.getId(), v.getIdPlantacion(), "FECHA", fecha)){
+                res=false;
         }
         
         return res;
