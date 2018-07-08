@@ -469,4 +469,107 @@ public class PlantacionDAO {
         }
         return res;
     }
+
+    /**
+     * @param p La plantacion de la que se recuperarán las ventas
+     * @param anio El año en el qeu se buscaran als ventas
+     * @return Devuelve un LinkedHashMap con el mes como clave y como resultado otro
+     * LinkedHashMap con el color como cave y el precio medio como valor.
+     * Enero -> {(Color ->0.324),(Verde ->0.6)}
+     */
+    public LinkedHashMap estadisticasPrecioColorMes(Plantacion p, int anio) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        for (int i = 1; i <= 12; i++) {
+            
+        
+            String consulta = "SELECT AVG(PRECIO),COLOR FROM VENTA WHERE ID_PLANT = ? "
+                    + "AND FECHA>= ? AND FECHA<? AND COLOR <> 'RETENCION' GROUP BY COLOR";
+            LocalDate fInicio = LocalDate.of(anio, i, 1);
+            LocalDate fFin = null;
+            if(i != 12){
+                fFin = LocalDate.of(anio, i+1, 1);
+            }else{
+                fFin = LocalDate.of(anio+1, 1, 1);
+            }
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                double precio = 0;
+                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String color = "";
+                LinkedHashMap parejaPrecioColor = new LinkedHashMap();
+                
+                while(rs.next()){
+                     precio = rs.getDouble(1);
+                     color = rs.getString(2);
+                     
+                     parejaPrecioColor.put(color, precio);
+                     res.put(mes, parejaPrecioColor);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas precio medio mes color: "+e.getMessage());
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas precio medio mes color: "+e.getMessage());
+        }
+        
+        return res;
+    }
+
+    public LinkedHashMap estadisticasKgColorMes(Plantacion p, int anio) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        for (int i = 1; i <= 12; i++) {
+            
+        
+            String consulta = "SELECT SUM(KG),COLOR FROM VENTA WHERE ID_PLANT = ? "
+                    + "AND FECHA>= ? AND FECHA<? AND COLOR <> 'RETENCION' GROUP BY COLOR";
+            LocalDate fInicio = LocalDate.of(anio, i, 1);
+            LocalDate fFin = null;
+            if(i != 12){
+                fFin = LocalDate.of(anio, i+1, 1);
+            }else{
+                fFin = LocalDate.of(anio+1, 1, 1);
+            }
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                double precio = 0;
+                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String color = "";
+                LinkedHashMap parejaPrecioColor = new LinkedHashMap();
+                
+                while(rs.next()){
+                     precio = rs.getDouble(1);
+                     color = rs.getString(2);
+                     
+                     parejaPrecioColor.put(color, precio);
+                     res.put(mes, parejaPrecioColor);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas kg mes color: "+e.getMessage());
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg mes color: "+e.getMessage());
+        }
+        
+        return res;
+    }
 }

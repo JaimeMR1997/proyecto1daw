@@ -62,8 +62,8 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.vista.jComboTipo.addActionListener(this);
         this.vista.jComboSubtipo.addActionListener(this);
         this.vista.jListOpciones.addListSelectionListener(this);
-        //Cargar lista
-        this.cargarLista();
+        //Cargar lista posibles estadisticas
+        this.cargarListaEstad();
         this.vista.jListOpciones.setSelectedIndex(0);
         //Cargar desplegables
         this.cargarTipo();
@@ -122,8 +122,12 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
             cargarGrafColoresQuesito();
         }else if(vista.jListOpciones.getSelectedValue().equals("Kg por mes")){
             cargarGrafKgMes();
-        }else if(vista.jListOpciones.getSelectedValue().equals("Precio por mes")){
-            cargarGrafPrecioMes();
+        }else if(vista.jListOpciones.getSelectedValue().equals("Kg por color al mes")){
+            cargarGrafKgColorMes();
+        }else if(vista.jListOpciones.getSelectedValue().equals("Precio medio total por mes")){
+            cargarGrafPrecioMedioMes();
+        }else if(vista.jListOpciones.getSelectedValue().equals("Precio medio color por mes")){
+            cargarGrafPrecioMedioColorMes();
         }else if(vista.jListOpciones.getSelectedValue().equals("Kg por año")){
             cargarGrafKgAnio();
         }
@@ -147,10 +151,12 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.vista.cargarGrafico(grafico);
     }
 
-    private void cargarLista() {
+    private void cargarListaEstad() {
         this.modLista.addElement("Distribucion colores");
-        this.modLista.addElement("Precio por mes");
+        this.modLista.addElement("Precio medio total por mes");
+        this.modLista.addElement("Precio medio color por mes");
         this.modLista.addElement("Kg por mes");
+        this.modLista.addElement("Kg por color al mes");
         this.modLista.addElement("Kg por año");
     }
 
@@ -176,7 +182,7 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.vista.cargarGrafico(grafico);
     }
 
-    private void cargarGrafPrecioMes() {
+    private void cargarGrafPrecioMedioMes() {
         DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
         
         Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
@@ -215,6 +221,57 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         
         this.vista.cargarGrafico(grafico);
     }
+
+    private void cargarGrafPrecioMedioColorMes() {
+        DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
+        
+        Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
+        LinkedHashMap valores = modeloPlant.estadisticasPrecioColorMes(p, LocalDate.now().getYear());
+        
+        Iterator it = valores.keySet().iterator();
+        String mes = "";
+        while(it.hasNext()){
+            mes = (String) it.next();
+            String color = "";
+            LinkedHashMap colores = (LinkedHashMap) valores.get(mes);
+            Iterator itColor = colores.keySet().iterator();
+            while(itColor.hasNext()){
+                color = (String) itColor.next();
+                datosGraf.setValue((double)colores.get(color), color, mes);
+            }
+            
+        }
+        
+        JFreeChart grafico = ChartFactory.createBarChart("Precio(€/Kg) por mes", "Meses", "Precio(€)", datosGraf);
+        
+        this.vista.cargarGrafico(grafico);
+    }
+
+    private void cargarGrafKgColorMes() {
+        DefaultCategoryDataset datosGraf = new DefaultCategoryDataset();
+        
+        Plantacion p = (Plantacion) vista.jComboSubtipo.getSelectedItem();
+        LinkedHashMap valores = modeloPlant.estadisticasKgColorMes(p, LocalDate.now().getYear());
+        
+        Iterator it = valores.keySet().iterator();
+        String mes = "";
+        while(it.hasNext()){
+            mes = (String) it.next();
+            String color = "";
+            LinkedHashMap colores = (LinkedHashMap) valores.get(mes);
+            Iterator itColor = colores.keySet().iterator();
+            while(itColor.hasNext()){
+                color = (String) itColor.next();
+                datosGraf.setValue((double)colores.get(color), color, mes);
+            }
+            
+        }
+        
+        JFreeChart grafico = ChartFactory.createBarChart("Precio(€/Kg) por mes", "Meses", "Precio(€)", datosGraf);
+        
+        this.vista.cargarGrafico(grafico);
+    }
     
     
 }
+
