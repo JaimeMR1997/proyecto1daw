@@ -41,4 +41,12 @@ public class Configuracion {
     public String getPuerto(){
         return pref.get("puerto", null);
     }
+    
+    public void setBd(String bd){
+        pref.put("bd", bd);
+    }
+    
+    public String getBd(){
+        return pref.get("bd", null);
+    }
 }

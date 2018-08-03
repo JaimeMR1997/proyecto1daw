@@ -16,11 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import proyecto1daw.modelo.Conductor;
 import proyecto1daw.modelo.Cuadrilla;
-import proyecto1daw.modelo.CuadrillaDAO;
+import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import proyecto1daw.modelo.Encargado;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
-import proyecto1daw.modelo.TrabajadorDAO;
+import proyecto1daw.modelo.accesobd.TrabajadorDAO;
 import proyecto1daw.vistas.JFCuadAdd;
 import proyecto1daw.vistas.JFEmpleados;
 

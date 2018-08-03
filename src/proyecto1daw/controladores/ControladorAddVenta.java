@@ -19,9 +19,9 @@ import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.Plantacion;
-import proyecto1daw.modelo.PlantacionDAO;
+import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.modelo.Venta;
-import proyecto1daw.modelo.VentaDAO;
+import proyecto1daw.modelo.accesobd.VentaDAO;
 import proyecto1daw.vistas.JFPlantacionAdd;
 import proyecto1daw.vistas.JFVentaAdd;
 

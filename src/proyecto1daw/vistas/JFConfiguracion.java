@@ -41,8 +41,10 @@ public class JFConfiguracion extends javax.swing.JFrame {
         jComboBD = new javax.swing.JComboBox<>();
         campoIp = new javax.swing.JTextField();
         campoPuerto = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelPuerto = new javax.swing.JLabel();
+        jLabelDir = new javax.swing.JLabel();
+        jLabelBd = new javax.swing.JLabel();
+        campoBd = new javax.swing.JTextField();
         jPanelBotones = new javax.swing.JPanel();
         botonAceptar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
@@ -92,9 +94,11 @@ public class JFConfiguracion extends javax.swing.JFrame {
 
         jComboBD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel2.setText("Puerto");
+        jLabelPuerto.setText("Puerto");
 
-        jLabel3.setText("Dirección");
+        jLabelDir.setText("Dirección");
+
+        jLabelBd.setText("Base de datos");
 
         javax.swing.GroupLayout jPanelDerLayout = new javax.swing.GroupLayout(jPanelDer);
         jPanelDer.setLayout(jPanelDerLayout);
@@ -107,8 +111,10 @@ public class JFConfiguracion extends javax.swing.JFrame {
             .addGroup(jPanelDerLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanelDerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
+                    .addComponent(campoBd, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBd)
+                    .addComponent(jLabelDir)
+                    .addComponent(jLabelPuerto)
                     .addGroup(jPanelDerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanelDerLayout.createSequentialGroup()
                             .addComponent(jRadioBD)
@@ -131,14 +137,18 @@ public class JFConfiguracion extends javax.swing.JFrame {
                     .addComponent(jRadioBD)
                     .addComponent(jComboBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(jLabelDir)
                 .addGap(3, 3, 3)
                 .addComponent(campoIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(jLabelPuerto)
                 .addGap(3, 3, 3)
                 .addComponent(campoPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelBd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(campoBd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         botonAceptar.setText("Aceptar");
@@ -252,12 +262,14 @@ public class JFConfiguracion extends javax.swing.JFrame {
     public javax.swing.JButton botonAceptar;
     public javax.swing.JButton botonCancelar;
     private javax.swing.ButtonGroup buttonGroupStorage;
+    public javax.swing.JTextField campoBd;
     public javax.swing.JTextField campoIp;
     public javax.swing.JTextField campoPuerto;
     public javax.swing.JComboBox<String> jComboBD;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelBd;
+    private javax.swing.JLabel jLabelDir;
+    private javax.swing.JLabel jLabelPuerto;
     public javax.swing.JList<String> jListOpcs;
     private javax.swing.JPanel jPanelBotones;
     private javax.swing.JPanel jPanelDer;

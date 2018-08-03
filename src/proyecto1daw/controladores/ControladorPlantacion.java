@@ -5,10 +5,12 @@
  */
 package proyecto1daw.controladores;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,14 +20,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import proyecto1daw.modelo.ExplotacionDAO;
+import javax.swing.table.TableCellRenderer;
+import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.Plantacion;
-import proyecto1daw.modelo.PlantacionDAO;
+import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.modelo.Venta;
-import proyecto1daw.modelo.VentaDAO;
+import proyecto1daw.modelo.accesobd.VentaDAO;
 import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFPlantacion;
 import proyecto1daw.vistas.JFPlantacionAdd;
@@ -83,6 +87,15 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             public boolean isCellEditable(int i, int i1) {
                 return false;
             }
+
+            @Override
+            public Class<?> getColumnClass(int i) {
+                if(this.findColumn("Fecha") == i){
+                    return LocalDate.class;
+                }
+                return super.getColumnClass(i);
+            }
+            
             
         };
         //Crear columnas tabla Plantaciones
@@ -105,7 +118,11 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         //Rellenar tabla Plantaciones
         this.actualizarTablaPlant();
         this.vistaTabla.jTablePlantaciones.setModel(modTablaPlant);
+        //Asignar modelo ,crear renderer para ordenar para fecha
+        FechaSorter ordenaFecha = new FechaSorter();
         this.vistaTabla.jTableVentas.setModel(modTablaVentas);
+        this.vistaTabla.jTableVentas.setDefaultRenderer(LocalDate.class, ordenaFecha);
+        this.vistaTabla.jTableVentas.setAutoCreateRowSorter(true);
         //Añadir listener raton a tablas
         this.vistaTabla.jTablePlantaciones.addMouseListener(this);
         this.vistaTabla.jTableVentas.addMouseListener(this);
@@ -201,7 +218,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private void buscarVenta(int fila) {
         LocalDate fVenta = null;
-        fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVenta.getText());
+        fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVentaInicio.getText());
         String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
         
         this.modTablaVentas.setRowCount(0);
@@ -355,16 +372,20 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(filaSel, 0);
             ArrayList<Venta> listaVentas = modeloVenta.recuperarPorPlant(idPlant);
 
-            String[] s = new String[6];
+            Object[] s = new String[6];
+            int i = 0;
             for (Venta v : listaVentas) {
                 s[0] = v.getId();
                 s[1] = v.getKg() + "";
                 s[2] = v.getPrecio() + "";
                 s[3] = v.getColor() + " " + v.getTamanio();
                 s[4] = (v.getKg() * v.getPrecio()) + "";
-                s[5] = Fechas.toString(v.getFecha());
+                //s[5] = Fechas.toString(v.getFecha());
                 modTablaVentas.addRow(s);
+                modTablaVentas.setValueAt(v.getFecha(), i, 5);
+                i++;
             }
+            this.vistaTabla.jTableVentas.getRowSorter().toggleSortOrder(5);
         }
     }
     
@@ -394,7 +415,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
 
     private boolean validarFVenta() {
         boolean res=true;
-        String s = this.vistaTabla.campoFVenta.getText();
+        String s = this.vistaTabla.campoFVentaInicio.getText();
         if(s.equals("")){
            res=false; 
         }else if(Fechas.toLocalDate(s) == null){
@@ -492,4 +513,14 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         
     }
     
+    public class FechaSorter extends DefaultTableCellRenderer{
+        public void setValue(Object value) {
+            if(value instanceof LocalDate){
+                LocalDate fecha = (LocalDate) value;
+                this.setText(Fechas.toString(fecha));
+            }else{
+                this.setText((String) value);
+            }
+        }
+    }
 }

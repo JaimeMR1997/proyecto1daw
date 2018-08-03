@@ -5,6 +5,7 @@
  */
 package proyecto1daw.modelo;
 
+import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import java.time.LocalDate;
 
 

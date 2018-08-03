@@ -126,6 +126,12 @@ class ControladorConfig implements ActionListener{
                 
             }
             
+            if(!vista.campoBd.equals("")){                               //BASE DATOS
+                String bd = this.vista.campoBd.getText();
+                config.setBd(bd);
+            }else{
+                config.setBd("ramilleteerp");
+            }
         }else{
             JOptionPane.showMessageDialog(vista,"El soporte para ficheros está "
                     + "aún en desarrollo" , "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
@@ -150,6 +156,7 @@ class ControladorConfig implements ActionListener{
         this.vista.jComboBD.setSelectedItem(sistemaBD);
         this.vista.campoIp.setText(config.getIP());
         this.vista.campoPuerto.setText(config.getPuerto());
+        this.vista.campoBd.setText(config.getBd());
     }
     
 }

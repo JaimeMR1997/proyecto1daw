@@ -5,6 +5,7 @@
  */
 package proyecto1daw.modelo;
 
+import proyecto1daw.modelo.accesobd.FincaDAO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 

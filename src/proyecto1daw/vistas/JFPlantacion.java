@@ -50,8 +50,8 @@ public class JFPlantacion extends javax.swing.JFrame {
         campoFFin = new javax.swing.JTextField();
         jLabelFPlant = new javax.swing.JLabel();
         jLabelFFin = new javax.swing.JLabel();
-        campoFVenta = new javax.swing.JTextField();
-        jLabelFVenta = new javax.swing.JLabel();
+        campoFVentaInicio = new javax.swing.JTextField();
+        jLabelFVentaIni = new javax.swing.JLabel();
         botonBuscarPlant = new javax.swing.JButton();
         jLabelPlantacion = new javax.swing.JLabel();
         jLabelIngresos = new javax.swing.JLabel();
@@ -60,6 +60,8 @@ public class JFPlantacion extends javax.swing.JFrame {
         jLabelCantidadQAnt = new javax.swing.JLabel();
         jLabelQuinActual = new javax.swing.JLabel();
         jLabelCantidadQActual = new javax.swing.JLabel();
+        jLabelFVentaFin = new javax.swing.JLabel();
+        campoFVentaFin = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Plantaciones y Ventas");
@@ -257,9 +259,9 @@ public class JFPlantacion extends javax.swing.JFrame {
         jLabelFFin.setForeground(new java.awt.Color(255, 255, 255));
         jLabelFFin.setText("Fecha de fin");
 
-        jLabelFVenta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabelFVenta.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFVenta.setText("Fecha de venta");
+        jLabelFVentaIni.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelFVentaIni.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFVentaIni.setText("Fecha inicio de ventas");
 
         botonBuscarPlant.setForeground(new java.awt.Color(255, 255, 255));
         botonBuscarPlant.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto1daw/img/ico_buscar.png"))); // NOI18N
@@ -303,6 +305,10 @@ public class JFPlantacion extends javax.swing.JFrame {
         jLabelCantidadQActual.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelCantidadQActual.setText("0.0€");
 
+        jLabelFVentaFin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelFVentaFin.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFVentaFin.setText("Fecha fin de ventas");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -325,24 +331,9 @@ public class JFPlantacion extends javax.swing.JFrame {
                         .addComponent(botonEliminarPlant)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(botonBuscarPlant)
-                                .addGap(81, 81, 81))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(botonBuscarVenta)
-                                .addGap(79, 79, 79)))
-                        .addGap(14, 14, 14))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(campoFVenta))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabelFVenta)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addComponent(botonBuscarVenta)
+                        .addGap(93, 93, 93))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,10 +342,6 @@ public class JFPlantacion extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabelFFin)
                                 .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelFPlant)
-                        .addGap(0, 143, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,7 +356,23 @@ public class JFPlantacion extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabelQuinAnt)
                                 .addGap(24, 24, 24)
-                                .addComponent(jLabelCantidadQAnt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(jLabelCantidadQAnt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(campoFVentaInicio)
+                            .addComponent(campoFVentaFin)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelFVentaIni)
+                                    .addComponent(jLabelFVentaFin))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelFPlant))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(82, 82, 82)
+                                .addComponent(botonBuscarPlant)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -387,9 +390,9 @@ public class JFPlantacion extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelVentas)
                     .addComponent(jLabelPlantacion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -404,21 +407,24 @@ public class JFPlantacion extends javax.swing.JFrame {
                                 .addComponent(botonModPlant)
                                 .addComponent(botonEliminarPlant))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
                         .addComponent(jLabelFPlant)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(campoFIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelFFin)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(campoFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8)
-                        .addComponent(botonBuscarPlant)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelFVenta)
+                        .addComponent(campoFIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelFFin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonBuscarPlant)
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabelFVentaIni)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoFVentaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabelFVentaFin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoFVentaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(campoFVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(botonBuscarVenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -511,14 +517,16 @@ public class JFPlantacion extends javax.swing.JFrame {
     public javax.swing.JButton botonVolver;
     public javax.swing.JTextField campoFFin;
     public javax.swing.JTextField campoFIn;
-    public javax.swing.JTextField campoFVenta;
+    public javax.swing.JTextField campoFVentaFin;
+    public javax.swing.JTextField campoFVentaInicio;
     public javax.swing.JLabel jLabelCantidadIngresos;
     public javax.swing.JLabel jLabelCantidadQActual;
     public javax.swing.JLabel jLabelCantidadQAnt;
     public javax.swing.JLabel jLabelExplotacion;
     private javax.swing.JLabel jLabelFFin;
     private javax.swing.JLabel jLabelFPlant;
-    private javax.swing.JLabel jLabelFVenta;
+    private javax.swing.JLabel jLabelFVentaFin;
+    private javax.swing.JLabel jLabelFVentaIni;
     private javax.swing.JLabel jLabelIngresos;
     public javax.swing.JLabel jLabelPlantacion;
     private javax.swing.JLabel jLabelQuinActual;

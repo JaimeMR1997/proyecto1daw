@@ -22,11 +22,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import proyecto1daw.modelo.Explotacion;
-import proyecto1daw.modelo.ExplotacionDAO;
+import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Finca;
-import proyecto1daw.modelo.FincaDAO;
+import proyecto1daw.modelo.accesobd.FincaDAO;
 import proyecto1daw.modelo.Plantacion;
-import proyecto1daw.modelo.PlantacionDAO;
+import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.vistas.JFEstadisticas;
 import proyecto1daw.vistas.JFInicio;
 

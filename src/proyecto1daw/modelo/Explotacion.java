@@ -5,6 +5,7 @@
  */
 package proyecto1daw.modelo;
 
+import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
