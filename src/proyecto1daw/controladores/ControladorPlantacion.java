@@ -217,24 +217,57 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     }
 
     private void buscarVenta(int fila) {
-        LocalDate fVenta = null;
-        fVenta= Fechas.toLocalDate(this.vistaTabla.campoFVentaInicio.getText());
+        LocalDate fVentaInicio = null;
+        LocalDate fVentaFin = null;
+        fVentaInicio= Fechas.toLocalDate(this.vistaTabla.campoFVentaInicio.getText());
+        fVentaFin= Fechas.toLocalDate(this.vistaTabla.campoFVentaFin.getText());
         String idPlant = (String) this.vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
         
+        //Vacia la tabla
         this.modTablaVentas.setRowCount(0);
-        ArrayList<Venta> listaVentas = modeloVenta.recuperarPorFecha(fVenta,idPlant);
-
-        String[] s = new String[6];
-        for (Venta v : listaVentas) {
-            s[0] = v.getId();
-            s[1] = v.getKg() + "";
-            s[2] = v.getPrecio() + "";
-            s[3] = v.getColor() + " " + v.getTamanio();
-            s[4] = (v.getKg() * v.getPrecio()) + "";
-            s[5] = Fechas.toString(v.getFecha());
-            modTablaVentas.addRow(s);
+        //Busca por las fechas
+        ArrayList<Venta> listaVentas = null;
+        if(fVentaFin==null && fVentaInicio!= null){                  //F INICIO SOLO
+            listaVentas = modeloVenta.recuperarPorFecha(fVentaInicio,idPlant);
+        }else if(fVentaInicio == null && fVentaFin != null){          //F FIN SOLO
+            listaVentas = modeloVenta.recuperarPorFecha(fVentaFin,idPlant);
+        }else if(fVentaInicio != null && fVentaFin != null){         //F INICIO Y F FIN
+            listaVentas = modeloVenta.recuperarPorFechas(fVentaInicio,fVentaFin,idPlant);
         }
-        
+
+        if(listaVentas != null){
+            String[] s = new String[6];
+            int i = 0;
+            for (Venta v : listaVentas) {
+                s[0] = v.getId();
+                s[1] = v.getKg() + "";
+                s[2] = v.getPrecio() + "";
+                s[3] = v.getColor() + " " + v.getTamanio();
+                s[4] = (v.getKg() * v.getPrecio()) + "";
+                //s[5] = Fechas.toString(v.getFecha());
+                modTablaVentas.addRow(s);
+                modTablaVentas.setValueAt(v.getFecha(), i, 5);//Se añade como objeto LocalDate
+                
+                i++;
+            }
+            double cantidad=0;
+            if(fVentaFin != null){
+                if(fVentaInicio!=null){//F INI y F FIN
+                    cantidad=this.modeloVenta.calcularIngresos(fVentaInicio,fVentaFin,idPlant);
+                    
+                }else{//Solo F FIN
+                    cantidad=this.modeloVenta.calcularIngresos(LocalDate.of(1950, Month.MARCH, 1),fVentaFin,idPlant);
+                }
+            }else{
+                if(fVentaInicio !=null){//Solo F INI
+                    cantidad=this.modeloVenta.calcularIngresos(fVentaInicio,LocalDate.of(2200, Month.MARCH, 1),idPlant);
+                    
+                }
+            }
+            actLabelIngresos(cantidad);
+        }else{
+            actualizarTablaVentas();
+        }
     }
 
     private void buscarPlantacion() {
@@ -268,7 +301,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
             modeloVenta.borrarVenta(idVenta, idPlant);
             
             this.actualizarTablaVentas();
-            this.actualizarIngresos();
+            this.actualizarEtiquetasIngresos();
         }
     }
 
@@ -445,7 +478,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
                 if(me.getClickCount() == 2){                            //DOBLE CLICK ABRE NUEVA VENTA
                     abrirModPlant();
                 }else{
-                    actualizarIngresos();
+                    actualizarEtiquetasIngresos();
                 }
             }
         }else{
@@ -460,7 +493,7 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
      *
      * @return actaliza el jLabel con los ingresos de la plantacion
      */
-    public void actualizarIngresos() {
+    public void actualizarEtiquetasIngresos() {
         double cantidad;
         int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
         String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);//ID_EXP
@@ -474,6 +507,10 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private void actLabelIngresos(String idPlant) {
         double cantidad;
         cantidad = modeloVenta.calcularIngresos(idPlant);
+        vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
+    }
+    
+    private void actLabelIngresos(double cantidad) {
         vistaTabla.jLabelCantidadIngresos.setText(cantidad+"€");
     }
     

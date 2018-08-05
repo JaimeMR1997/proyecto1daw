@@ -85,6 +85,30 @@ public class VentaDAO {
         return listaVentas;
     }
     
+    public ArrayList<Venta> recuperarPorFechas(LocalDate fVentaInicio, LocalDate fVentaFin, String idPlant) {
+        ArrayList<Venta> listaVentas = new ArrayList<Venta>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            String consulta = "SELECT * FROM VENTA WHERE ID_PLANT = ? AND FECHA >= ? AND FECHA <= ?";
+            
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idPlant);
+            st.setDate(2, Date.valueOf(fVentaInicio));
+            st.setDate(3, Date.valueOf(fVentaFin));
+            
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                listaVentas.add(new Venta(rs.getString("ID_VENTA"), rs.getInt("KG"),
+                        rs.getFloat("PRECIO"), rs.getString("TAMANIO"), rs.getString("COLOR"), rs.getDate("FECHA").toLocalDate(),rs.getString("ID_PLANT")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta ventas por fechas: "+e.getMessage());
+        }
+        return listaVentas;
+    }
+    
     /**
      *
      * @param idPlant
@@ -344,6 +368,30 @@ public class VentaDAO {
         
         return res;
     }
+    
+    public double calcularIngresos(LocalDate fVentaInicio, LocalDate fVentaFin, String idPlant) {
+        double res = 0;
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        String consulta = "SELECT SUM(INGRESOS) AS INGRESOS FROM `INGRESOS_VENTAS` WHERE ID_PLANT = ? AND FECHA >= ? AND FECHA <= ? GROUP BY ID_PLANT";
+        try{
+            PreparedStatement st = accesoBD.prepareStatement(consulta);
+            st.setString(1, idPlant);
+            st.setDate(2, Date.valueOf(fVentaInicio));
+            st.setDate(3, Date.valueOf(fVentaFin));
+            
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                res = rs.getDouble("INGRESOS");
+            }
+            
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. calcular ingresos ventas por fecha: "+e.getMessage());
+        }
+        
+        return res;
+    }
 
     public double calcularQuincAnt(String idPlant) {
         double res = 0;
@@ -429,4 +477,5 @@ public class VentaDAO {
         }
         return res;
     }
+
 }
