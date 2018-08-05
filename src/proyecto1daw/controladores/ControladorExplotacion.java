@@ -33,6 +33,7 @@ import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFExplotacionAdd;
 import proyecto1daw.vistas.JFFinca;
 import proyecto1daw.vistas.JFFincaAdd;
+import proyecto1daw.vistas.JFGasto;
 import proyecto1daw.vistas.JFPlantacion;
 
 /**
@@ -64,6 +65,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         //Asociar actionListener VentanaTabla
         this.vistaTabla.botonAdd.addActionListener(this);
         this.vistaTabla.botonEliminar.addActionListener(this);
+        this.vistaTabla.botonGasto.addActionListener(this);
         this.vistaTabla.botonGestionar.addActionListener(this);
         this.vistaTabla.botonMod.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
@@ -155,6 +157,9 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
                             + " una explotación", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                 }
 
+            }else if (boton.equals(this.vistaTabla.botonGasto)) {                       //GASTOS
+                abrirGastos();
+
             } else if (boton.equals(this.vistaTabla.botonVolver)) {                                    
                 volver();
 
@@ -181,7 +186,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
                     }
                 }
 
-            } else if (boton.equals(this.vistaAdd.botonCancelar)) {                    //AÑADIR CANCELAR
+            }else if (boton.equals(this.vistaAdd.botonCancelar)) {                    //AÑADIR CANCELAR
                 limpiarCamposAdd();
                 this.vistaAdd.dispose();
             }
@@ -512,5 +517,11 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 2);
         s=s.substring(s.indexOf(" ")+1);
         return s;
+    }
+
+    private void abrirGastos() {
+        ControladorGasto contGastos = new ControladorGasto(new JFGasto(), vistaTabla, modeloExp, finca);
+        this.vistaTabla.dispose();
+        this.vistaAdd.dispose();
     }
 }
