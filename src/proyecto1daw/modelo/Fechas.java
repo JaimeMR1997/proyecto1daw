@@ -134,7 +134,7 @@ public class Fechas {
         return res;
     }
 
-    public static String mesToString(int mes) {
+    public static String mesIntToString(int mes) {
         String res = "";
         switch(mes){
             case 1:
@@ -172,6 +172,83 @@ public class Fechas {
                 break;
             case 12:
                 res = "Diciembre";
+                break;
+            default:
+                res = "";
+        }
+        return res;
+    }
+    
+    public static int mesToInt(String mes) {
+        int res = 0;
+        
+        if(mes.equalsIgnoreCase("Enero")){
+            res=1;
+        }else if(mes.equalsIgnoreCase("Febrero")){
+            res=2;
+        }else if(mes.equalsIgnoreCase("Marzo")){
+            res=3;
+        }else if(mes.equalsIgnoreCase("Abril")){
+            res=4;
+        }else if(mes.equalsIgnoreCase("Mayo")){
+            res=5;
+        }else if(mes.equalsIgnoreCase("Junio")){
+            res=6;
+        }else if(mes.equalsIgnoreCase("Julio")){
+            res=7;
+        }else if(mes.equalsIgnoreCase("Agosto")){
+            res=8;
+        }else if(mes.equalsIgnoreCase("Septiembre")){
+            res=9;
+        }else if(mes.equalsIgnoreCase("Octubre")){
+            res=10;
+        }else if(mes.equalsIgnoreCase("Noviembre")){
+            res=11;
+        }else if(mes.equalsIgnoreCase("Diciembre")){
+            res=12;
+        }
+        
+        return res;
+    }
+
+    public static String mesIntToStringAbrv(int mes) {
+        String res = "";
+        switch(mes){
+            case 1:
+                res = "E";
+                break;
+            case 2:
+                res = "F";
+                break;
+            case 3:
+                res = "M";
+                break;
+            case 4:
+                res = "A";
+                break;
+            case 5:
+                res = "MA";
+                break;
+            case 6:
+                res = "J";
+                break;
+            case 7:
+                res = "JL";
+                break;
+            case 8:
+                res = "AG";
+                break;
+            case 9:
+                res = "S";
+                break;
+            case 10:
+                res = "O";
+                break;
+            case 11:
+                res = "N";
+                break;
+            case 12:
+                res = "D";
                 break;
             default:
                 res = "";

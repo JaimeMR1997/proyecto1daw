@@ -369,6 +369,12 @@ public class VentaDAO {
         return res;
     }
     
+    /**
+     * @param fVentaInicio Fecha desde la cual se calculan los ingresos,incluida la fecha
+     * @param fVentaFin Fecha hasta la que se calculan los ingresos,incluida la fecha
+     * @param idPlant El id de la plantacion a calcular sus ingresos
+     * @return Un double con la cantidad de ingresos generada en el correspondiente periodo de tiempo
+     */
     public double calcularIngresos(LocalDate fVentaInicio, LocalDate fVentaFin, String idPlant) {
         double res = 0;
         Conexion c = new Conexion();

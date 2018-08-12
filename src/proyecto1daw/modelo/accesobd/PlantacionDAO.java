@@ -33,7 +33,7 @@ public class PlantacionDAO {
      * @param fFin Fecha maxima en al que se planto. Busca plantaciones plantadas
      * antes de esta fecha, incluyendo esta.
      * @param idExp Id de la explotacin en la que hay que buscar las plantaciones
-     * @return Devuelve un ArrayList de objetos de tipo Explotacion con
+     * @return Devuelve un ArrayList de objetos de tipo Plantacion con
      * objetos Plantacion comprendidos entre las fechas proporcionadas
      */
     public ArrayList<Plantacion> recuperarPorFecha(LocalDate fInicio,LocalDate fFin,String idExp){
@@ -67,6 +67,47 @@ public class PlantacionDAO {
             accesoBD.close();
         }catch(SQLException e){
             System.out.println("Excepcion SQL. Consulta plantaciones por fecha: "+e.getMessage());
+        }
+        return listaPlantaciones;
+    }
+    
+    /**
+     * @param fFin Fecha maxima en al que se planto. Busca plantaciones plantadas
+     * antes de esta fecha, incluyendo esta.
+     * @param idExp Id de la explotacin en la que hay que buscar las plantaciones
+     * @return Devuelve un ArrayList de objetos de tipo Plantacion con
+     * objetos Plantacion comprendidos entre las fechas proporcionadas
+     */
+    
+    public ArrayList<Plantacion> recuperarPorFechaFin(LocalDate fFin,String idExp){
+        ArrayList<Plantacion> listaPlantaciones = new ArrayList<Plantacion>();
+        try{
+            Conexion c = new Conexion();
+            Connection accesoBD = c.getConexion();
+            PreparedStatement st = accesoBD.prepareStatement("SELECT * FROM PLANTACION "
+                    + "WHERE ID_EXPLOTACION = ? AND (F_FIN <= ? OR F_FIN IS NULL)");
+            st.setString(1, idExp);
+            if(fFin != null){
+                st.setDate(2, Date.valueOf(fFin));
+            }else{
+                st.setDate(2, null);
+            }
+            
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                LocalDate fInicio = rs.getDate("F_INICIO").toLocalDate();
+                
+                fFin = null;
+                if(rs.getDate("F_FIN") != null){
+                    fFin = rs.getDate("F_FIN").toLocalDate();
+                }
+                
+                listaPlantaciones.add(new Plantacion(rs.getString("ID_PLANT"), rs.getString("TIPO"), 
+                        rs.getString("VARIEDAD"), fInicio, fFin, rs.getString("ID_EXPLOTACION")));
+            }
+            accesoBD.close();
+        }catch(SQLException e){
+            System.out.println("Excepcion SQL. Consulta plantaciones por fecha fin: "+e.getMessage());
         }
         return listaPlantaciones;
     }
@@ -361,7 +402,7 @@ public class PlantacionDAO {
                 st.setDate(3, Date.valueOf(fFin));
                 ResultSet rs = st.executeQuery();
                 double precio = 0;
-                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String mes = Fechas.mesIntToString(fInicio.getMonthValue());
                 while(rs.next()){
                      precio = rs.getDouble(1);
                      res.put(mes, precio);
@@ -408,7 +449,7 @@ public class PlantacionDAO {
                 st.setDate(2, Date.valueOf(fInicio));
                 st.setDate(3, Date.valueOf(fFin));
                 ResultSet rs = st.executeQuery();
-                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String mes = Fechas.mesIntToString(fInicio.getMonthValue());
                 int cantidad = 0;
                 if(rs.next()){
                     cantidad = rs.getInt(1);
@@ -502,7 +543,7 @@ public class PlantacionDAO {
                 st.setDate(3, Date.valueOf(fFin));
                 ResultSet rs = st.executeQuery();
                 double precio = 0;
-                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String mes = Fechas.mesIntToString(fInicio.getMonthValue());
                 String color = "";
                 LinkedHashMap parejaPrecioColor = new LinkedHashMap();
                 
@@ -550,7 +591,7 @@ public class PlantacionDAO {
                 st.setDate(3, Date.valueOf(fFin));
                 ResultSet rs = st.executeQuery();
                 double precio = 0;
-                String mes = Fechas.mesToString(fInicio.getMonthValue());
+                String mes = Fechas.mesIntToString(fInicio.getMonthValue());
                 String color = "";
                 LinkedHashMap parejaPrecioColor = new LinkedHashMap();
                 
@@ -570,6 +611,208 @@ public class PlantacionDAO {
             accesoBD.close();
         } catch (SQLException e) {
             System.out.println("Excepcion SQL. Plantacion estadisticas kg mes color: "+e.getMessage());
+        }
+        
+        return res;
+    }
+
+    public LinkedHashMap estadisticasKgColorQuincena(Plantacion p, int anio) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        
+        
+        /*
+        this.modLista.addElement(Fechas.toString(LocalDate.of(anio, i, 1))+" - "+Fechas.toString(LocalDate.of(anio, i, 15)));
+        this.modLista.addElement(Fechas.toString(LocalDate.of(anio, i, 16))+" - "
+                    +Fechas.toString(LocalDate.of(anio, i, 1).plusMonths(1).minusDays(1)));
+        */
+        
+        int j = 1;
+        for (int i = 1; i <= 24; i++) {
+            
+        
+            String consulta = "SELECT SUM(KG),COLOR FROM VENTA WHERE ID_PLANT = ? "
+                    + "AND FECHA>= ? AND FECHA<? AND COLOR <> 'RETENCION' GROUP BY COLOR";
+            LocalDate fInicio = null;
+            LocalDate fFin = null;
+            if(i%2!=0){//Es primera quincena
+                fInicio = LocalDate.of(anio, j, 1);
+                fFin = LocalDate.of(anio, j, 16);
+                
+            }else{//Es segunda quincena
+                fInicio = LocalDate.of(anio, j, 16);
+                fFin = LocalDate.of(anio, j, 1).plusMonths(1);
+            }
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                double precio = 0;
+                String quincena = Fechas.mesIntToString(fInicio.getMonthValue());
+             
+                if(i%2!=0){//Es primera quincena
+                    quincena = "1ºQ "+quincena;
+                }else{//Es segunda quincena
+                    quincena = "2ºQ "+quincena;
+                }
+                
+                String color = "";
+                LinkedHashMap parejaPrecioColor = new LinkedHashMap();
+                
+                while(rs.next()){
+                     precio = rs.getDouble(1);
+                     color = rs.getString(2);
+                     
+                     parejaPrecioColor.put(color, precio);
+                     res.put(quincena, parejaPrecioColor);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas kg quincena color: "+e.getMessage());
+            }
+        
+            if(i%2==0){//Cuando i es par es la segunda quincena del mes
+                //Aumentamos j para  que cambie de mes
+                j++;
+            }
+        
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg quincena color: "+e.getMessage());
+        }
+        
+        return res;
+    }
+
+    public LinkedHashMap estadisticasKgQuincena(Plantacion p, int anio) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        
+        int j = 1;
+        for (int i = 1; i <= 24; i++) {
+            
+        
+            String consulta = "SELECT SUM(KG) FROM VENTA WHERE ID_PLANT = ?"
+                    + " AND FECHA>= ? AND FECHA<?";
+            LocalDate fInicio = null;
+            LocalDate fFin = null;
+            
+            if(i%2!=0){//Es primera quincena
+                fInicio = LocalDate.of(anio, j, 1);
+                fFin = LocalDate.of(anio, j, 16);
+                
+            }else{//Es segunda quincena
+                fInicio = LocalDate.of(anio, j, 16);
+                fFin = LocalDate.of(anio, j, 1).plusMonths(1);
+            }
+            
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                
+                String quincena = Fechas.mesIntToStringAbrv(fInicio.getMonthValue());
+                
+                if(i%2!=0){//Es primera quincena
+                    quincena = "1"+quincena;
+                }else{//Es segunda quincena
+                    quincena = "2"+quincena;
+                }
+                
+                int cantidad = 0;
+                if(rs.next()){
+                    cantidad = rs.getInt(1);
+                    if(cantidad!=0) res.put(quincena, cantidad);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas kg/quincena: "+e.getMessage());
+            }
+            
+            if(i%2==0){//Cuando i es par es la segunda quincena del mes
+                //Aumentamos j para  que cambie de mes
+                j++;
+            }
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas kg/quincena: "+e.getMessage());
+        }
+        return res;
+    }
+
+    public LinkedHashMap estadisticasPrecioColorQuincena(Plantacion p, int anio) {
+        LinkedHashMap res = new LinkedHashMap();
+        Conexion c = new Conexion();
+        Connection accesoBD = c.getConexion();
+        
+        int j = 1;
+        for (int i = 1; i <= 24; i++) {
+            
+        
+            String consulta = "SELECT AVG(PRECIO),COLOR FROM VENTA WHERE ID_PLANT = ? "
+                    + "AND FECHA>= ? AND FECHA<? AND COLOR <> 'RETENCION' GROUP BY COLOR";
+            LocalDate fInicio = null;
+            LocalDate fFin = null;
+            
+            if(i%2!=0){//Es primera quincena
+                fInicio = LocalDate.of(anio, j, 1);
+                fFin = LocalDate.of(anio, j, 16);
+                
+            }else{//Es segunda quincena
+                fInicio = LocalDate.of(anio, j, 16);
+                fFin = LocalDate.of(anio, j, 1).plusMonths(1);
+            }
+            
+            try{
+                PreparedStatement st = accesoBD.prepareStatement(consulta);
+                st.setString(1, p.getId());
+                st.setDate(2, Date.valueOf(fInicio));
+                st.setDate(3, Date.valueOf(fFin));
+                ResultSet rs = st.executeQuery();
+                double precio = 0;
+                
+                String quincena = Fechas.mesIntToStringAbrv(fInicio.getMonthValue());
+                if(i%2!=0){//Es primera quincena
+                    quincena = "1Q "+quincena;
+                }else{//Es segunda quincena
+                    quincena = "2Q "+quincena;
+                }
+                
+                String color = "";
+                LinkedHashMap parejaPrecioColor = new LinkedHashMap();
+                
+                while(rs.next()){
+                     precio = rs.getDouble(1);
+                     color = rs.getString(2);
+                     
+                     parejaPrecioColor.put(color, precio);
+                     res.put(quincena, parejaPrecioColor);
+                }
+
+            }catch(SQLException e){
+                System.out.println("Excepcion SQL. Plantacion estadisticas precio medio quincena color: "+e.getMessage());
+            }
+            
+            if(i%2==0){//Cuando i es par es la segunda quincena del mes
+                //Aumentamos j para  que cambie de mes
+                j++;
+            }
+            
+        }
+        try {
+            accesoBD.close();
+        } catch (SQLException e) {
+            System.out.println("Excepcion SQL. Plantacion estadisticas precio medio quincena color: "+e.getMessage());
         }
         
         return res;
