@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.Plantacion;
@@ -151,11 +152,28 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         if(!modeloPlant.actualizarCampo(p.getId(), "VARIEDAD", p.getVariedad())){
             res=false;
         }
-        if(!modeloPlant.actualizarCampo(p.getId(), "F_INICIO", Fechas.toString(p.getfInicio()))){
+        
+        Configuracion conf = new Configuracion();
+        String fecha = "";
+        if(conf.getTipoServer().equalsIgnoreCase("MariaDB")){
+            fecha = Fechas.toStringMariaDb(p.getfInicio());
+        }else{
+            fecha = Fechas.toString(p.getfInicio());
+        }
+        
+        if(!modeloPlant.actualizarCampo(p.getId(), "F_INICIO", fecha)){
             res=false;
         }
+        
+        fecha = "";
+        if(conf.getTipoServer().equalsIgnoreCase("MariaDB")){
+            fecha = Fechas.toStringMariaDb(p.getfFin());
+        }else{
+            fecha = Fechas.toString(p.getfFin());
+        }
+        
         if(isFechaFinSelected()){
-            if(!modeloPlant.actualizarCampo(p.getId(), "F_FIN", Fechas.toString(p.getfFin()))){
+            if(!modeloPlant.actualizarCampo(p.getId(), "F_FIN", fecha)){
                 res=false;
             }
         }

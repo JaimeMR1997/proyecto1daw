@@ -45,6 +45,8 @@ class ControladorConfig implements ActionListener{
         this.vista.jComboBD.addActionListener(this);
         //Cargar configuración actual
         this.cargarConfigActual();
+        //Seleccionar el boton princiap que se accionará al pulsar enter
+        this.vista.getRootPane().setDefaultButton(this.vista.botonAceptar);
         //Mostrar ventana
         this.vista.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.vista.setLocationRelativeTo(null);
