@@ -133,7 +133,8 @@ public class ControladorGasto implements ActionListener,MouseListener,ListSelect
         if(vista.jListPeriodos.getSelectedIndex() != -1){
             //Recupera de cada explotacion sus plantaciones 
             for (Explotacion exp : listaExp) {
-                listaPlant = modeloPlant.recuperarPorFechaFin(fechaFin, exp.getId());
+                //Se le suman dos meses porque se pueden realizar ventas aunque la plantacion se haya arrancado
+                listaPlant = modeloPlant.recuperarPorFechaFin(fechaFin.plusMonths(2), exp.getId());
             //De cada plantacion recupera los ingresos del periodo abarcado
                 for (Plantacion p : listaPlant) {
                     cantidad+=modeloVenta.calcularIngresos(fechaInicio, fechaFin, p.getId());
