@@ -12,14 +12,11 @@ import proyecto1daw.modelo.Gasto;
  *
  * @author Jaime
  */
-public class GastoDAO {
+public abstract class GastoDAO {
 
-    public void borrarGasto(String idGasto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public abstract void borrarGasto(String idGasto);
+    //To change body of generated methods, choose Tools | Templates.
 
-    public ArrayList<Gasto> recuperarPorFinca(String id) {
-        return new ArrayList<Gasto>();
-    }
+    public abstract ArrayList<Gasto> recuperarPorFinca(String id);
     
 }

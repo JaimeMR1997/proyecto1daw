@@ -22,6 +22,10 @@ public class Configuracion {
         pref.put("tiposerver", tipo);
     }
     
+    /**
+     * 
+     * @return El tipo de BD en minuscula. Puede ser: "oracle", "mysql", "mariadb", "sqlite"
+     */
     public String getTipoServer(){
         return pref.get("tiposerver", null);
     }

@@ -6,9 +6,17 @@
 package proyecto1daw.modelo.accesobd;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mariadb.jdbc.MariaDbDataSource;
 import proyecto1daw.modelo.Configuracion;
 
@@ -36,8 +44,10 @@ public class Conexion {
             conn = getConnectionOracle();
         }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
             conn = getConnectionMysql();
-        }else if(config.getTipoServer().equalsIgnoreCase("MariaDB")){
+        }else if(config.getTipoServer().equalsIgnoreCase("mariadb")){
             conn = getConnectionMariaDb();
+        }else if(config.getTipoServer().equalsIgnoreCase("sqlite")){
+            conn = getConnectionSqlite();
         }
         return conn;
     }
@@ -120,5 +130,64 @@ public class Conexion {
             System.out.println("Error al obtener conexion MariaDB: "+e);
         }
         return conn;
+    }
+
+    private Connection getConnectionSqlite() {
+        Connection conn= null;
+        Configuracion config = new Configuracion();
+        String nombreBd = config.getBd();
+        
+        String url = "jdbc:sqlite:" + nombreBd + ".bd";
+        
+        try{            
+            conn = DriverManager.getConnection(url);
+            if (conn != null) {
+                System.out.println("Conexion establecida");
+                
+                String script = this.getScriptSqlite();
+                System.out.println(script);
+                System.out.println("\n-----\n\n");
+                try{
+                    Statement stmt = conn.createStatement();
+                    stmt.execute(script);
+                    //stmt.executeUpdate("INSERT INTO FINCA(ID_FINCA) VALUES('hola')");
+                    
+                    System.out.println("SCRIPT EJECUTADO CORRECTAMENTE");
+                }catch (SQLException e){
+                    System.out.println("Error al ejecutar script creacion SQLite: "+e);
+                }
+                
+                
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al obtener conexion SQLite: "+e);
+        }
+        
+        return conn;
+    }
+
+    private String getScriptSqlite() {
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        File f = new File("ScriptCreateTableSqlite.sql");
+        
+        StringBuffer StringScript= new StringBuffer("");
+        if(f.exists() && f.canRead()){
+            try{
+                fr = new FileReader(f);
+                br = new BufferedReader(fr);
+                
+                while(br.ready()){
+                    StringScript.append(br.readLine()+"\n");
+                }
+                
+            }catch(FileNotFoundException e){
+                System.out.println("Error al recuperar el fichero de creacion de la BD");
+            } catch (IOException ex) {
+                System.out.println("Error al leer el fichero de creacion de la BD");
+            }
+        }
+        return StringScript.toString();
     }
 }

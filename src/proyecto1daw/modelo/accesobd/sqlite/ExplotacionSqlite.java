@@ -19,42 +19,40 @@ import proyecto1daw.modelo.Explotacion;
  *
  * @author Jaime
  */
-public class ExplotacionSqlite extends ExplotacionDAO{
+public class ExplotacionSqlite extends ExplotacionDAO{    
 
     @Override
-    public Explotacion recuperarPorId(String idExp) {
-        return super.recuperarPorId(idExp); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int contarPorFinca(String idFinca) {
-        return super.contarPorFinca(idFinca); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Explotacion> recuperarPorFinca(String idFinca) {
-        return super.recuperarPorFinca(idFinca); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarCampo(String id, String campo, String nuevoValor) {
-        return super.actualizarCampo(id, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void borrarExplotacion(String id) {
-        super.borrarExplotacion(id); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Explotacion> recuperarTodas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean addExplotacion(Explotacion exp) {
-        return super.addExplotacion(exp); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Explotacion> recuperarTodas() {
-        return super.recuperarTodas(); //To change body of generated methods, choose Tools | Templates.
+    public void borrarExplotacion(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
+    @Override
+    public boolean actualizarCampo(String id, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Explotacion> recuperarPorFinca(String idFinca) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int contarPorFinca(String idFinca) {
+        return 0;
+    }
+
+    @Override
+    public Explotacion recuperarPorId(String idExp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

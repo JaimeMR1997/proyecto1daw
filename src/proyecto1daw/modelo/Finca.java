@@ -8,6 +8,8 @@ package proyecto1daw.modelo;
 import proyecto1daw.modelo.accesobd.FincaDAO;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import proyecto1daw.modelo.accesobd.mysql.FincaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.FincaSqlite;
 
 /**
  *
@@ -37,7 +39,15 @@ public class Finca {
         this.fFin = fFin;
         
         //Cargar lista encargados
-        FincaDAO modeloFinca = new FincaDAO();
+        FincaDAO modeloFinca;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            modeloFinca = new FincaMysql();
+        }else{
+            modeloFinca = new FincaSqlite();
+        }
+        
         this.listaEncargados = modeloFinca.recuperarEncargadosFinca(this.id);
     }
     

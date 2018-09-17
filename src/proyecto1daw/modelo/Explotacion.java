@@ -9,6 +9,8 @@ import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import proyecto1daw.modelo.accesobd.mysql.PlantacionMysql;
+import proyecto1daw.modelo.accesobd.sqlite.PlantacionSqlite;
 
 /**
  *
@@ -40,7 +42,13 @@ public class Explotacion {
         this.fFin = fFin;
         this.idFinca = idFinca;
         
-        PlantacionDAO modeloPlant = new PlantacionDAO();
+        PlantacionDAO modeloPlant;
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            modeloPlant = new PlantacionMysql();
+        }else{
+            modeloPlant = new PlantacionSqlite();
+        }
         this.listaPlant = modeloPlant.recuperarPorExp(this.id);
     }
     

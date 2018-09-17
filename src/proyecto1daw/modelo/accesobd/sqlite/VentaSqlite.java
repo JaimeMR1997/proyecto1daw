@@ -23,69 +23,78 @@ import proyecto1daw.modelo.Venta;
 public class VentaSqlite extends VentaDAO{
 
     @Override
-    public double calcularQuincActual(String idPlant) {
-        return super.calcularQuincActual(idPlant); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double calcularQuincAnt(String idPlant) {
-        return super.calcularQuincAnt(idPlant); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double calcularIngresos(String idPlant) {
-        return super.calcularIngresos(idPlant); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int contarVentas(String idPlant, LocalDate fecha) {
-        return super.contarVentas(idPlant, fecha); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String buscar(String idVenta, String idPlant, String campo) {
-        return super.buscar(idVenta, idPlant, campo); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarCampo(String id, String idPlant, String campo, String nuevoValor) {
-        return super.actualizarCampo(id, idPlant, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean borrarVentasPlantacion(String idPlant) {
-        return super.borrarVentasPlantacion(idPlant); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean borrarVenta(String id, String idPlant) {
-        return super.borrarVenta(id, idPlant); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean addVenta(Venta v) {
-        return super.addVenta(v); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Venta> recuperarTodas() {
-        return super.recuperarTodas(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Venta> recuperarPorPlant(String idPlant) {
-        return super.recuperarPorPlant(idPlant); //To change body of generated methods, choose Tools | Templates.
+    public Venta recuperarPorId(String idVenta, String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public ArrayList<Venta> recuperarPorFecha(LocalDate fecha, String idPlant) {
-        return super.recuperarPorFecha(fecha, idPlant); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Venta recuperarPorId(String idVenta, String idPlant) {
-        return super.recuperarPorId(idVenta, idPlant); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Venta> recuperarPorFechas(LocalDate fVentaInicio, LocalDate fVentaFin, String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public ArrayList<Venta> recuperarPorPlant(String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Venta> recuperarTodas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addVenta(Venta v) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrarVenta(String id, String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrarVentasPlantacion(String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean actualizarCampo(String id, String idPlant, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String buscar(String idVenta, String idPlant, String campo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int contarVentas(String idPlant, LocalDate fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double calcularIngresos(String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double calcularIngresos(LocalDate fVentaInicio, LocalDate fVentaFin, String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double calcularQuincAnt(String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double calcularQuincActual(String idPlant) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

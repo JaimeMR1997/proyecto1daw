@@ -22,23 +22,23 @@ import proyecto1daw.modelo.Tractor;
 public class TractorSqlite extends TractorDAO{
 
     @Override
-    public void actualizarCampo(String id, String campo, String nuevoValor) {
-        super.actualizarCampo(id, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void borrarTractor(String matricula) {
-        super.borrarTractor(matricula); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Tractor> recuperarTodos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void addTractor(Tractor t) {
-        super.addTractor(t); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Tractor> recuperarTodos() {
-        return super.recuperarTodos(); //To change body of generated methods, choose Tools | Templates.
+    public void borrarTractor(String matricula) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void actualizarCampo(String id, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

@@ -7,6 +7,8 @@ package proyecto1daw.modelo;
 
 import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import java.time.LocalDate;
+import proyecto1daw.modelo.accesobd.mysql.CuadrillaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.CuadrillaSqlite;
 
 
 
@@ -31,7 +33,14 @@ public class Cuadrilla {
         this.fInicio = fInicio;
         this.fFin = fFin;
         
-        CuadrillaDAO modeloCuad = new CuadrillaDAO();
+        CuadrillaDAO modeloCuad;
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            modeloCuad = new CuadrillaMysql();
+        }else{
+            modeloCuad = new CuadrillaSqlite();
+        }
+        
         String dni = modeloCuad.getDniEncargado(this);
         enc = modeloCuad.recuperarEncargado(dni);
     }

@@ -26,144 +26,148 @@ import proyecto1daw.modelo.Trabajador;
 public class TrabajadorSqlite extends TrabajadorDAO{
 
     @Override
-    public boolean asignarCuad(String dni, String idCuad) {
-        return super.asignarCuad(dni, idCuad); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean finAsigCuadrilla(String dni, String idCuad) {
-        return super.finAsigCuadrilla(dni, idCuad); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Trabajador> recuperarTrabajadoresLibres() {
-        return super.recuperarTrabajadoresLibres(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean finAsignacionFinca(String dni, String idFinca) {
-        return super.finAsignacionFinca(dni, idFinca); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean finAsignacionFinca(String dni, String idFinca, LocalDate fFin) {
-        return super.finAsignacionFinca(dni, idFinca, fFin); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Encargado> recuperarEncargadosLibres() {
-        return super.recuperarEncargadosLibres(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarCampoCond(String dni, String campo, String nuevoValor) {
-        return super.actualizarCampoCond(dni, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarCampoEnc(String id, String campo, String nuevoValor) {
-        return super.actualizarCampoEnc(id, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarCampoTrab(String dni, String campo, String nuevoValor) {
-        return super.actualizarCampoTrab(dni, campo, nuevoValor); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean borrarConductor(String dni) {
-        return super.borrarConductor(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean borrarEncargado(String dni) {
-        return super.borrarEncargado(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean borrarTrabajador(String dni) {
-        return super.borrarTrabajador(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean addEncargado(Encargado enc) {
-        return super.addEncargado(enc); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean addConductor(Conductor conduct) {
-        return super.addConductor(conduct); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean addTrabajador(Trabajador t) {
-        return super.addTrabajador(t); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Encargado> recuperarEncargadosVigentes() {
-        return super.recuperarEncargadosVigentes(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Encargado> recuperarEncargados() {
-        return super.recuperarEncargados(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Encargado recuperarEncargado(String dni) {
-        return super.recuperarEncargado(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Conductor> recuperarConductores() {
-        return super.recuperarConductores(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Conductor recuperarConductor(String dni) {
-        return super.recuperarConductor(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Trabajador> recuperarTrabajadores() {
-        return super.recuperarTrabajadores(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Trabajador recuperarTrabajador(String dni) {
-        return super.recuperarTrabajador(dni); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Trabajador> recuperarTodos() {
-        return super.recuperarTodos(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean asignarFinca(String dni, String idFinca) {
-        return super.asignarFinca(dni, idFinca); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean asignarEncargado(String dni, String idFinca, LocalDate fInicio) {
-        return super.asignarEncargado(dni, idFinca, fInicio); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean ascensoEncargado(Trabajador t, LocalDate fFin) {
-        return super.ascensoEncargado(t, fFin); //To change body of generated methods, choose Tools | Templates.
+    public boolean ascensoTrabajador(Trabajador t, LocalDate fFin) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean ascensoConductor(Trabajador t, LocalDate fFin) {
-        return super.ascensoConductor(t, fFin); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean ascensoTrabajador(Trabajador t, LocalDate fFin) {
-        return super.ascensoTrabajador(t, fFin); //To change body of generated methods, choose Tools | Templates.
+    public boolean ascensoEncargado(Trabajador t, LocalDate fFin) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public boolean asignarEncargado(String dni, String idFinca, LocalDate fInicio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean asignarFinca(String dni, String idFinca) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Trabajador> recuperarTodos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Trabajador recuperarTrabajador(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Trabajador> recuperarTrabajadores() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Conductor recuperarConductor(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Conductor> recuperarConductores() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Encargado recuperarEncargado(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Encargado> recuperarEncargados() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Encargado> recuperarEncargadosVigentes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addTrabajador(Trabajador t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addConductor(Conductor conduct) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addEncargado(Encargado enc) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrarTrabajador(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrarEncargado(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean borrarConductor(String dni) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void actualizarCampo(String tabla, String dni, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean actualizarCampoTrab(String dni, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean actualizarCampoEnc(String id, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean actualizarCampoCond(String dni, String campo, String nuevoValor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Encargado> recuperarEncargadosLibres() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean finAsignacionFinca(String dni, String idFinca, LocalDate fFin) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean finAsignacionFinca(String dni, String idFinca) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Trabajador> recuperarTrabajadoresLibres() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean finAsigCuadrilla(String dni, String idCuad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean asignarCuad(String dni, String idCuad) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
