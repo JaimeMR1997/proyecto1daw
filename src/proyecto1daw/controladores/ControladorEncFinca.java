@@ -12,11 +12,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Encargado;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.accesobd.FincaDAO;
 import proyecto1daw.modelo.accesobd.TrabajadorDAO;
+import proyecto1daw.modelo.accesobd.mysql.TrabajadorMysql;
+import proyecto1daw.modelo.accesobd.sqlite.TrabajadorSqlite;
 import proyecto1daw.vistas.JFEncFinca;
 import proyecto1daw.vistas.JFFinca;
 import proyecto1daw.vistas.JFFincaAdd;
@@ -49,8 +52,14 @@ public class ControladorEncFinca implements ActionListener{
         this.vistaEnc = new JFEncFinca();
         this.modeloFinca = modeloFinca;
         this.modeloExp = modeloExp;
-        this.modeloTrab = new TrabajadorDAO();
         this.finca = finca;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloTrab = new TrabajadorMysql();
+        }else{
+            this.modeloTrab = new TrabajadorSqlite();
+        }
         
         this.listaParaAniadir = new ArrayList<Encargado>();
         this.listaParaQuitar = new ArrayList<Encargado>();

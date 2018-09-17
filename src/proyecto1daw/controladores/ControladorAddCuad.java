@@ -15,12 +15,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import proyecto1daw.modelo.Conductor;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Cuadrilla;
 import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import proyecto1daw.modelo.Encargado;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.accesobd.TrabajadorDAO;
+import proyecto1daw.modelo.accesobd.mysql.TrabajadorMysql;
+import proyecto1daw.modelo.accesobd.sqlite.TrabajadorSqlite;
 import proyecto1daw.vistas.JFCuadAdd;
 import proyecto1daw.vistas.JFEmpleados;
 
@@ -46,7 +49,14 @@ public class ControladorAddCuad implements ActionListener, FocusListener {
         this.vistaAdd = new JFCuadAdd();
         this.contEmple = contEmple;
         this.modeloCuad = modelo;
-        this.modeloTrab = new TrabajadorDAO();
+
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloTrab = new TrabajadorMysql();
+        }else{
+            this.modeloTrab = new TrabajadorSqlite();
+        }
+        
         this.modLista = new DefaultListModel<Trabajador>();
         boolean accionEsMod = false;
         

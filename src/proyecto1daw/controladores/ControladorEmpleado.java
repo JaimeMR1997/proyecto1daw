@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyecto1daw.modelo.Conductor;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Cuadrilla;
 import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import proyecto1daw.modelo.Encargado;
@@ -23,6 +24,10 @@ import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.accesobd.TrabajadorDAO;
 import proyecto1daw.modelo.Trabajo;
+import proyecto1daw.modelo.accesobd.mysql.CuadrillaMysql;
+import proyecto1daw.modelo.accesobd.mysql.TrabajadorMysql;
+import proyecto1daw.modelo.accesobd.sqlite.CuadrillaSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.TrabajadorSqlite;
 import proyecto1daw.vistas.JFEmpleados;
 import proyecto1daw.vistas.JFInicio;
 
@@ -44,8 +49,17 @@ public class ControladorEmpleado implements ActionListener,MouseListener{
      */
     public ControladorEmpleado(JFEmpleados vistaTabla) {
         this.vistaTabla = vistaTabla;
-        this.modeloCuad = new CuadrillaDAO();
-        this.modeloEmple = new TrabajadorDAO();
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloEmple = new TrabajadorMysql();
+            this.modeloCuad = new CuadrillaMysql();
+        }else{
+            this.modeloEmple = new TrabajadorSqlite();
+            this.modeloCuad = new CuadrillaSqlite();
+        }
+        
+        
         //Asociar listener a botones
         this.vistaTabla.botonVolver.addActionListener(this);
         this.vistaTabla.botonGestionarCuad.addActionListener(this);

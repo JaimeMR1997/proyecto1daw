@@ -13,6 +13,10 @@ import proyecto1daw.modelo.accesobd.Conexion;
 import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.accesobd.FincaDAO;
+import proyecto1daw.modelo.accesobd.mysql.ExplotacionMysql;
+import proyecto1daw.modelo.accesobd.mysql.FincaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.ExplotacionSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.FincaSqlite;
 import proyecto1daw.vistas.JFConfiguracion;
 import proyecto1daw.vistas.JFEmpleados;
 import proyecto1daw.vistas.JFFinca;
@@ -43,9 +47,16 @@ public class ControladorInicio implements ActionListener{
         this.vista.botonTrabajadores.addActionListener(this);
         this.vista.botonTractores.addActionListener(this);
         this.vista.botonConfig.addActionListener(this);
-        //Crear modelo
-        this.modeloFinca = new FincaDAO();
-        this.modeloExp = new ExplotacionDAO();
+        
+        //Crear modelo;
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloFinca = new FincaMysql();
+            this.modeloExp = new ExplotacionMysql();
+        }else{
+            this.modeloFinca = new FincaSqlite();
+            this.modeloExp = new ExplotacionSqlite();
+        }
     }
 
     /**

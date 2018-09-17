@@ -21,12 +21,15 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.accesobd.FincaDAO;
 import proyecto1daw.modelo.Plantacion;
 import proyecto1daw.modelo.accesobd.PlantacionDAO;
+import proyecto1daw.modelo.accesobd.mysql.PlantacionMysql;
+import proyecto1daw.modelo.accesobd.sqlite.PlantacionSqlite;
 import proyecto1daw.vistas.JFEstadisticas;
 import proyecto1daw.vistas.JFInicio;
 
@@ -47,7 +50,15 @@ class ControladorEstadisticas implements ActionListener, ListSelectionListener{
         this.vista = new JFEstadisticas();
         this.modeloFinca = modeloFinca;
         this.modeloExp = modeloExp;
-        this.modeloPlant = new PlantacionDAO();
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloPlant = new PlantacionMysql();
+        }else{
+            this.modeloPlant = new PlantacionSqlite();
+        }
+        
+        
         //Crear modelos jcombo
         this.modTipo = new DefaultComboBoxModel();
         this.modSubtipo = new DefaultComboBoxModel();

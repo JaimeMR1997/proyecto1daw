@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
@@ -30,6 +31,12 @@ import proyecto1daw.modelo.Plantacion;
 import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.modelo.Venta;
 import proyecto1daw.modelo.accesobd.VentaDAO;
+import proyecto1daw.modelo.accesobd.mysql.ExplotacionMysql;
+import proyecto1daw.modelo.accesobd.mysql.PlantacionMysql;
+import proyecto1daw.modelo.accesobd.mysql.VentaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.ExplotacionSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.PlantacionSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.VentaSqlite;
 import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFPlantacion;
 import proyecto1daw.vistas.JFPlantacionAdd;
@@ -59,10 +66,17 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     public ControladorPlantacion(JFPlantacion vistaTabla,String idExplotacion,Finca finca) {
         this.vistaTabla = vistaTabla;
         this.vistaAddVenta = new JFVentaAdd();
-        this.modeloPlant = new PlantacionDAO();
-        this.modeloVenta = new VentaDAO();
         this.idExplotacion = idExplotacion;
         this.finca = finca;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloPlant = new PlantacionMysql();
+            this.modeloVenta = new VentaMysql();
+        }else{
+            this.modeloPlant = new PlantacionSqlite();
+            this.modeloVenta = new VentaSqlite();
+        }
         
         //Asociar listener a botones vistaTabla
         this.vistaTabla.botonAddPlant.addActionListener(this);
@@ -341,7 +355,16 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     }
 
     private void volver() {
-        ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion(), new ExplotacionDAO(), this.finca);
+        ExplotacionDAO modeloExp;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            modeloExp = new ExplotacionMysql();
+        }else{
+            modeloExp = new ExplotacionSqlite();
+        }
+        
+        ControladorExplotacion contExp = new ControladorExplotacion(new JFExplotacion(), modeloExp, this.finca);
         this.vistaTabla.dispose();
     }
 

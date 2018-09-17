@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.Finca;
@@ -28,6 +29,12 @@ import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.accesobd.GastoDAO;
 import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.modelo.accesobd.VentaDAO;
+import proyecto1daw.modelo.accesobd.mysql.GastoMysql;
+import proyecto1daw.modelo.accesobd.mysql.PlantacionMysql;
+import proyecto1daw.modelo.accesobd.mysql.VentaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.GastoSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.PlantacionSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.VentaSqlite;
 import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFExplotacionAdd;
 import proyecto1daw.vistas.JFGasto;
@@ -54,10 +61,19 @@ public class ControladorGasto implements ActionListener,MouseListener,ListSelect
         this.vista = vista;
         this.vistaTablaExp = vistaTablaExp;
         this.modeloExp = modeloExp;
-        this.modeloPlant = new PlantacionDAO();
-        this.modeloVenta = new VentaDAO();
-        this.modeloGasto = new GastoDAO();
         this.finca = finca;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloPlant = new PlantacionMysql();
+            this.modeloVenta = new VentaMysql();
+            this.modeloGasto = new GastoMysql();
+        }else{
+            this.modeloPlant = new PlantacionSqlite();
+            this.modeloVenta = new VentaSqlite();
+            this.modeloGasto = new GastoSqlite();
+        }
+        
         //Crear modelo lista y asociarlo
         this.modLista = new DefaultListModel();
         this.vista.jListPeriodos.setModel(modLista);

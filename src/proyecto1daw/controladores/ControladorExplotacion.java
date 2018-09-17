@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Explotacion;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
@@ -29,6 +30,8 @@ import proyecto1daw.modelo.accesobd.FincaDAO;
 import proyecto1daw.modelo.accesobd.PlantacionDAO;
 import proyecto1daw.modelo.Trabajador;
 import proyecto1daw.modelo.accesobd.VentaDAO;
+import proyecto1daw.modelo.accesobd.mysql.FincaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.FincaSqlite;
 import proyecto1daw.vistas.JFExplotacion;
 import proyecto1daw.vistas.JFExplotacionAdd;
 import proyecto1daw.vistas.JFFinca;
@@ -232,7 +235,16 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
 
     private void volver() {
         //VOLVER
-        ControladorFinca conFinca = new ControladorFinca(new JFFinca(), new FincaDAO(), modeloExp);
+        FincaDAO modeloFinca;
+        
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            modeloFinca = new FincaMysql();
+        }else{
+            modeloFinca = new FincaSqlite();
+        }
+        
+        ControladorFinca conFinca = new ControladorFinca(new JFFinca(), modeloFinca, modeloExp);
         this.vistaTabla.dispose();
     }
 

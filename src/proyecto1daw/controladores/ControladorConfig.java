@@ -103,8 +103,9 @@ class ControladorConfig implements ActionListener{
     }
 
     private void comprobarConfig() {
+        Configuracion config = new Configuracion();
+        
         if(isJRadioBDSelected()){
-            Configuracion config = new Configuracion();
             String baseDatos = (String) vista.jComboBD.getSelectedItem();
             if(baseDatos.equalsIgnoreCase("MariaDB")){                        //MariaDB
                 config.setTipoServer("mariadb");
@@ -135,8 +136,15 @@ class ControladorConfig implements ActionListener{
                 config.setBd("ramilleteerp");
             }
         }else{
-            JOptionPane.showMessageDialog(vista,"El soporte para ficheros está "
-                    + "aún en desarrollo" , "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+            //Ficheros, base de datos SQLite
+            config.setTipoServer("sqlite");
+            if(!vista.campoBd.equals("")){                               //BASE DATOS
+                String bd = this.vista.campoBd.getText();
+                config.setBd(bd);
+            }else{
+                config.setBd("ramilleteerp");
+            }
+            
         }
     }
 

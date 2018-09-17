@@ -15,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.Cuadrilla;
 import proyecto1daw.modelo.accesobd.CuadrillaDAO;
 import proyecto1daw.modelo.Explotacion;
@@ -24,6 +25,10 @@ import proyecto1daw.modelo.Finca;
 import proyecto1daw.modelo.accesobd.FincaDAO;
 import proyecto1daw.modelo.accesobd.TrabajadorDAO;
 import proyecto1daw.modelo.Trabajo;
+import proyecto1daw.modelo.accesobd.mysql.ExplotacionMysql;
+import proyecto1daw.modelo.accesobd.mysql.FincaMysql;
+import proyecto1daw.modelo.accesobd.sqlite.ExplotacionSqlite;
+import proyecto1daw.modelo.accesobd.sqlite.FincaSqlite;
 import proyecto1daw.vistas.JFEmpleados;
 import proyecto1daw.vistas.JFTrabajoAdd;
 
@@ -51,9 +56,17 @@ public class ControladorAddTrabajo implements ActionListener,FocusListener{
         this.contEmple = contEmple;
         this.vistaAdd = new JFTrabajoAdd();
         this.modeloCuad = modeloCuad;
+                
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            this.modeloFinca = new FincaMysql();
+            this.modeloExp = new ExplotacionMysql();
+        }else{
+            this.modeloFinca = new FincaSqlite();
+            this.modeloExp = new ExplotacionSqlite();
+        }
         
-        this.modeloFinca = new FincaDAO();
-        this.modeloExp = new ExplotacionDAO();
+        
         this.modComboCuad = new DefaultComboBoxModel();
         this.modComboFinca = new DefaultComboBoxModel();
         this.modComboExp = new DefaultComboBoxModel();
