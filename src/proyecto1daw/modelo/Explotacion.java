@@ -24,6 +24,7 @@ public class Explotacion {
     private LocalDate fFin;
     private String idFinca;
     private ArrayList<Plantacion> listaPlant;
+    private String alias;
 
     /**
      *
@@ -34,13 +35,14 @@ public class Explotacion {
      * @param fFin
      * @param idFinca
      */
-    public Explotacion(String id, int superficie, String tipo, LocalDate fCreacion, LocalDate fFin, String idFinca) {
+    public Explotacion(String id, int superficie, String tipo, LocalDate fCreacion, LocalDate fFin, String idFinca,String alias) {
         this.id = id;
         this.superficie = superficie;
         this.tipo = tipo;
         this.fCreacion = fCreacion;
         this.fFin = fFin;
         this.idFinca = idFinca;
+        this.alias = alias;
         
         PlantacionDAO modeloPlant;
         Configuracion config = new Configuracion();
@@ -210,6 +212,14 @@ public class Explotacion {
      */
     public String toString() {
         return getNum() + " - " + getTipo() + " " + getSuperficie()+" ha";
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     

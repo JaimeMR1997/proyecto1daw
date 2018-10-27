@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import proyecto1daw.modelo.Configuracion;
 import proyecto1daw.modelo.accesobd.ExplotacionDAO;
 import proyecto1daw.modelo.Fechas;
 import proyecto1daw.modelo.accesobd.FincaDAO;
@@ -32,12 +33,21 @@ import proyecto1daw.vistas.JFInicio;
  * @author alumno
  */
 public class ControladorFinca implements ActionListener,MouseListener,FocusListener{
+    private final int FILA_ID = 0;
+    private final int FILA_ALIAS = 1;
+    private final int FILA_LOCALIDAD = 2;
+    private final int FILA_SUPERFICIE = 3;
+    private final int FILA_FCOMPRA = 4;
+    private final int FILA_NENCARGADOS = 5;
+    private final int FILA_NEXPLOTACIONES = 6;
+    private final int FILA_NTRACTORES = 6;
+    
     private JFFinca vistaTabla;
     private JFFincaAdd vistaAdd;
     private FincaDAO modeloFinca;
     private ExplotacionDAO modeloExp;
     private DefaultTableModel modTabla;
-
+    
     /**
      *
      * @param vistaTabla Ventana de tipo JFFinca contiene la tabla con las fincas y
@@ -86,6 +96,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         };
         this.vistaTabla.jTableFincas.getTableHeader().setReorderingAllowed(false);
         modTabla.addColumn("ID");
+        modTabla.addColumn("Alias");
         modTabla.addColumn("Localización");
         modTabla.addColumn("Superficie");
         modTabla.addColumn("Fecha de Compra");
@@ -131,7 +142,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         }else if(ae.getSource().equals(vistaTabla.botonEncargados)){              //ABRIR ENCARGADOS
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
                 int fila = this.vistaTabla.jTableFincas.getSelectedRow();
-                String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
+                String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, FILA_ID);
                 Finca finca = modeloFinca.recuperarPorId(idFinca);
                 ControladorEncFinca contEnc = new ControladorEncFinca(this, modeloFinca, modeloExp, finca);
             }else{
@@ -153,7 +164,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
             String nombreBoton=((JButton)ae.getSource()).getText();
             if(this.validarDatosAdd()){
                 Finca f = getFinca();
-                if(nombreBoton.equalsIgnoreCase("Aceptar")){        //NUEVA FINCA
+                if(nombreBoton.equalsIgnoreCase("Aceptar")){                   //NUEVA FINCA
                     if(modeloFinca.addFinca(f)){
                         JOptionPane.showMessageDialog(vistaAdd, "Finca añadida correctamente");
                         actualizarTabla();
@@ -161,7 +172,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
                         JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
                     }
                     
-                }else if(nombreBoton.equalsIgnoreCase("Modificar")){    //MODIFICAR FINCA                    
+                }else if(nombreBoton.equalsIgnoreCase("Modificar")){           //MODIFICAR FINCA                    
                     String s = modificarFinca(f);
                     if(s.charAt(0) == 'E'){//Se ha producido error
                         JOptionPane.showMessageDialog(vistaAdd, s, "Error", JOptionPane.ERROR_MESSAGE);
@@ -210,7 +221,8 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         int superficie = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
         LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
         LocalDate fFin = Fechas.toLocalDate(this.vistaAdd.campoFechaFin.getText());
-        Finca f = new Finca(id, localidad, superficie, fCreacion, fFin);
+        String alias = this.vistaAdd.campoAlias.getText();
+        Finca f = new Finca(id, localidad, superficie, fCreacion, fFin, alias);
         return f;
     }
 
@@ -231,7 +243,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     
     private void eliminarFinca(int confirmacion) {
         if(confirmacion==JOptionPane.YES_OPTION){
-            String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),0);
+            String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),FILA_ID);
             modeloFinca.borrarFinca(idFinca);
             this.limpiarCamposAdd();
             actualizarTabla();
@@ -245,15 +257,17 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     private void abrirModificar() {
         //Carga los datos de la tabla al formulario
         int filaSelec=this.vistaTabla.jTableFincas.getSelectedRow();
-        String id=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,0);
-        String localizacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,1);
-        String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,2);
-        String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,3);
+        String id=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_ID);
+        String localizacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_LOCALIDAD);
+        String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_SUPERFICIE);
+        String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_FCOMPRA);
+        String alias=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_ALIAS);
         this.vistaAdd.campoId.setText(id);
         this.vistaAdd.campoId.setEnabled(false);
         this.vistaAdd.campoLocalidad.setText(localizacion);
         this.vistaAdd.campoSuperficie.setText(superficie);
         this.vistaAdd.campoFechaC.setText(fCreacion);
+        this.vistaAdd.campoAlias.setText(alias);
         this.vistaAdd.etiquetaId.setText(id);
         
         vistaAdd.botonAceptar.setText("Modificar");
@@ -279,7 +293,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     private void abrirVentanaExplotaciones() {
         //Abre explotaciones de esa Finca
         int fila = this.vistaTabla.jTableFincas.getSelectedRow();
-        String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, 0);
+        String idFinca = (String) this.vistaTabla.jTableFincas.getValueAt(fila, FILA_ID);
         Finca finca = modeloFinca.recuperarPorId(idFinca);
         ControladorExplotacion conExplotacion = new ControladorExplotacion(new JFExplotacion(),modeloExp, finca);
         this.vistaTabla.dispose();
@@ -296,12 +310,27 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         if(!modeloFinca.actualizarCampo(idAnt, "SUPERFICIE", f.getSuperficie()+"")){
             res+="\nAl actualizar la superficie";
         }
-        if(!modeloFinca.actualizarCampo(idAnt, "F_COMPRA", Fechas.toString(f.getfCompra()))){
+        
+        Configuracion config = new Configuracion();
+        String fCompra;
+        String fFin;
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            fCompra = Fechas.toStringMariaDb(f.getfCompra());
+            fFin = Fechas.toStringMariaDb(f.getfFin());
+        }else{
+            fCompra = Fechas.toString(f.getfCompra());
+            fFin = Fechas.toString(f.getfFin());
+        }
+        
+        if(!modeloFinca.actualizarCampo(idAnt, "F_COMPRA", fCompra)){
             res+="\nAl actualizar la fecha de compra";
         }
-        if(isFFinSelected() && !modeloFinca.actualizarCampo(idAnt, "F_FIN", Fechas.toString(f.getfFin()))){
+        if(isFFinSelected() && !modeloFinca.actualizarCampo(idAnt, "F_FIN", fFin)){
             //Si no esta FFin seleccionado no se ejecuta el metodo actualizarCampo
             res+="\nAl actualizar la fecha de fin";
+        }
+        if(!modeloFinca.actualizarCampo(idAnt, "ALIAS", f.getAlias())){
+            res+="\nAl actualizar el alias";
         }
         if(!modeloFinca.actualizarCampo(idAnt, "ID_FINCA", f.getId())){
             res+="\nAl actualizar el ID de la finca";
@@ -350,13 +379,14 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     public void rellenarTabla(ArrayList<Finca> listaFincas){
         String[] fila = new String[7];
         for (Finca f : listaFincas) {
-            fila[0]=f.getId();
-            fila[1]=f.getLocalidad();
-            fila[2]=f.getSuperficie()+"";
-            fila[3]=Fechas.toString(f.getfCompra());
-            fila[4]=f.getListaEncargados().size()+"";//Num encargados
-            //fila[5]="";//NUM TRACTORES
-            fila[5]=modeloExp.contarPorFinca(f.getId())+"";//NUM EXPLOTACIONES
+            fila[FILA_ID]=f.getId();
+            fila[FILA_ALIAS]=f.getAlias();
+            fila[FILA_LOCALIDAD]=f.getLocalidad();
+            fila[FILA_SUPERFICIE]=f.getSuperficie()+"";
+            fila[FILA_FCOMPRA]=Fechas.toString(f.getfCompra());
+            fila[FILA_NENCARGADOS]=f.getListaEncargados().size()+"";//Num encargados
+            //fila[FILA_NTRACTORES]="";//NUM TRACTORES
+            fila[FILA_NEXPLOTACIONES]=modeloExp.contarPorFinca(f.getId())+"";//NUM EXPLOTACIONES
             modTabla.addRow(fila);
         }
         

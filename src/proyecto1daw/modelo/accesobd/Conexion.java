@@ -119,8 +119,10 @@ public class Conexion {
         MariaDbDataSource dataSource = new MariaDbDataSource();
         
         try{
-            dataSource.setUser("jaime");
-            dataSource.setPassword("1234");
+            //dataSource.setUser("jaime");
+            //dataSource.setPassword("1234");
+            dataSource.setUser("root");
+            dataSource.setPassword("");
             dataSource.setServerName(ip);
             dataSource.setPort(puerto);
             dataSource.setDatabaseName(nombreBd);

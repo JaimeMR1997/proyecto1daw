@@ -41,7 +41,7 @@ public class FincaMysql extends FincaDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 listaFincas.add(new Finca(rs.getString("ID_FINCA"), rs.getString("LOCALIDAD"),
-                        rs.getInt("SUPERFICIE"),fCompra, fFin));
+                        rs.getInt("SUPERFICIE"),fCompra, fFin,rs.getString("ALIAS")));
             }
             accesoBD.close();
         }catch(SQLException e){
@@ -71,7 +71,7 @@ public class FincaMysql extends FincaDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 finca = new Finca(rs.getString("ID_FINCA"), rs.getString("LOCALIDAD"),
-                        rs.getInt("SUPERFICIE"),fCompra, fFin);
+                        rs.getInt("SUPERFICIE"),fCompra, fFin,rs.getString("ALIAS"));
             }
             accesoBD.close();
         }catch(SQLException e){
@@ -154,8 +154,8 @@ public class FincaMysql extends FincaDAO {
         boolean res=true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO FINCA(ID_FINCA,LOCALIDAD,SUPERFICIE,F_COMPRA,F_FIN) "
-                + "VALUES(?,?,?,?,?)";
+        String consulta = "INSERT INTO FINCA(ID_FINCA,LOCALIDAD,SUPERFICIE,F_COMPRA,F_FIN,ALIAS) "
+                + "VALUES(?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, f.getId());
@@ -164,6 +164,7 @@ public class FincaMysql extends FincaDAO {
             st.setDate(4, Date.valueOf(f.getfCompra()));
 //          st.setDate(5, Date.valueOf(f.getfFin()));
             st.setDate(5, null);
+            st.setString(6, f.getAlias());
             st.executeUpdate();
             accesoBD.close();
         }catch(SQLException e){

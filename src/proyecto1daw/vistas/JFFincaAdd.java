@@ -38,6 +38,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
         jLabelFC = new javax.swing.JLabel();
         etiquetaId = new javax.swing.JLabel();
         jCheckBoxFFin = new javax.swing.JCheckBox();
+        jLabelAlias = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         campoId = new javax.swing.JTextField();
         campoFechaC = new javax.swing.JTextField();
@@ -51,6 +52,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
         errSuperficie = new javax.swing.JLabel();
         errFInicio = new javax.swing.JLabel();
         errFFin = new javax.swing.JLabel();
+        campoAlias = new javax.swing.JTextField();
+        errAlias = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Añadir Finca");
@@ -80,6 +83,9 @@ public class JFFincaAdd extends javax.swing.JFrame {
             }
         });
 
+        jLabelAlias.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelAlias.setText("Alias");
+
         javax.swing.GroupLayout jPanelIzqLayout = new javax.swing.GroupLayout(jPanelIzq);
         jPanelIzq.setLayout(jPanelIzqLayout);
         jPanelIzqLayout.setHorizontalGroup(
@@ -87,23 +93,27 @@ public class JFFincaAdd extends javax.swing.JFrame {
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelLocalidad)
-                    .addComponent(jLabelSuperficie)
-                    .addComponent(jLabelFC)
                     .addGroup(jPanelIzqLayout.createSequentialGroup()
                         .addComponent(jLabelId)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
-                        .addComponent(etiquetaId))
-                    .addComponent(jCheckBoxFFin))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(etiquetaId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelIzqLayout.createSequentialGroup()
+                        .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelLocalidad)
+                            .addComponent(jLabelSuperficie)
+                            .addComponent(jLabelFC)
+                            .addComponent(jCheckBoxFFin)
+                            .addComponent(jLabelAlias))
+                        .addGap(0, 49, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanelIzqLayout.setVerticalGroup(
             jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIzqLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelId)
-                    .addComponent(etiquetaId))
+                .addGroup(jPanelIzqLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(etiquetaId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27)
                 .addComponent(jLabelLocalidad)
                 .addGap(27, 27, 27)
@@ -112,6 +122,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addComponent(jLabelFC)
                 .addGap(27, 27, 27)
                 .addComponent(jCheckBoxFFin)
+                .addGap(30, 30, 30)
+                .addComponent(jLabelAlias)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -151,6 +163,15 @@ public class JFFincaAdd extends javax.swing.JFrame {
         errFFin.setForeground(java.awt.Color.red);
         errFFin.setText(" ");
 
+        campoAlias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoAliasActionPerformed(evt);
+            }
+        });
+
+        errAlias.setForeground(java.awt.Color.red);
+        errAlias.setText(" ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -166,6 +187,8 @@ public class JFFincaAdd extends javax.swing.JFrame {
                         .addGap(27, 27, 27))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(errAlias, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(campoAlias)
                             .addComponent(errFFin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(errFInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(errSuperficie, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -202,6 +225,10 @@ public class JFFincaAdd extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(errFFin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(campoAlias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errAlias)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonAceptar)
                     .addComponent(botonCancelar))
@@ -241,6 +268,10 @@ public class JFFincaAdd extends javax.swing.JFrame {
     private void jCheckBoxFFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxFFinActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxFFinActionPerformed
+
+    private void campoAliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoAliasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoAliasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,11 +313,13 @@ public class JFFincaAdd extends javax.swing.JFrame {
     public javax.swing.JButton botonAceptar;
     public javax.swing.JButton botonCancelar;
     private javax.swing.ButtonGroup buttonGroupTipoEncargado;
+    public javax.swing.JTextField campoAlias;
     public javax.swing.JTextField campoFechaC;
     public javax.swing.JTextField campoFechaFin;
     public javax.swing.JTextField campoId;
     public javax.swing.JTextField campoLocalidad;
     public javax.swing.JTextField campoSuperficie;
+    public javax.swing.JLabel errAlias;
     public javax.swing.JLabel errFFin;
     public javax.swing.JLabel errFInicio;
     public javax.swing.JLabel errId;
@@ -294,6 +327,7 @@ public class JFFincaAdd extends javax.swing.JFrame {
     public javax.swing.JLabel errSuperficie;
     public javax.swing.JLabel etiquetaId;
     public javax.swing.JCheckBox jCheckBoxFFin;
+    private javax.swing.JLabel jLabelAlias;
     private javax.swing.JLabel jLabelFC;
     private javax.swing.JLabel jLabelId;
     private javax.swing.JLabel jLabelLocalidad;

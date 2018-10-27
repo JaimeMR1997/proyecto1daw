@@ -39,7 +39,7 @@ public class ExplotacionMysql extends ExplotacionDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 listaExplotaciones.add(new Explotacion(rs.getString("ID_EXPLOTACION"), rs.getInt("SUPERFICIE"),
-                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA")));
+                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA"),rs.getString("ALIAS")));
             }
             accesoBD.close();
         }catch(SQLException e){
@@ -57,8 +57,8 @@ public class ExplotacionMysql extends ExplotacionDAO {
         boolean res=true;
         Conexion c = new Conexion();
         Connection accesoBD = c.getConexion();
-        String consulta = "INSERT INTO EXPLOTACION(ID_EXPLOTACION,SUPERFICIE,TIPO,F_CREACION,F_FIN,ID_FINCA) "
-                + "VALUES(?,?,?,?,?,?)";
+        String consulta = "INSERT INTO EXPLOTACION(ID_EXPLOTACION,SUPERFICIE,TIPO,F_CREACION,F_FIN,ID_FINCA,ALIAS) "
+                + "VALUES(?,?,?,?,?,?,?)";
         try{
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, exp.getId());
@@ -68,6 +68,7 @@ public class ExplotacionMysql extends ExplotacionDAO {
             //st.setDate(5, Date.valueOf(exp.getfFin()));
             st.setDate(5, null);
             st.setString(6, exp.getIdFinca());
+            st.setString(7,exp.getAlias());
             
             st.executeUpdate();
             accesoBD.close();
@@ -142,7 +143,7 @@ public class ExplotacionMysql extends ExplotacionDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 listaExplotaciones.add(new Explotacion(rs.getString("ID_EXPLOTACION"), rs.getInt("SUPERFICIE"),
-                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA")));
+                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA"),rs.getString("ALIAS")));
             }
             accesoBD.close();
         }catch(SQLException e){
@@ -195,7 +196,7 @@ public class ExplotacionMysql extends ExplotacionDAO {
                     fFin = rs.getDate("F_FIN").toLocalDate();
                 }
                 exp = new Explotacion(rs.getString("ID_EXPLOTACION"), rs.getInt("SUPERFICIE"),
-                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA"));
+                        rs.getString("TIPO"),fCreacion, fFin,rs.getString("ID_FINCA"),rs.getString("ALIAS"));
             }
             accesoBD.close();
         }catch(SQLException e){

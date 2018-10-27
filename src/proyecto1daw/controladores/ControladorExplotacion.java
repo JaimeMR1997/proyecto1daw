@@ -99,6 +99,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         this.vistaTabla.jTableExplotaciones.getTableHeader().setReorderingAllowed(false);
         //Añadir columnas
         this.modTabla.addColumn("ID");
+        this.modTabla.addColumn("Alias");
         this.modTabla.addColumn("Plant.");
         this.modTabla.addColumn("Tipo");
         this.modTabla.addColumn("Superficie");
@@ -210,13 +211,14 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         
         ArrayList<Explotacion> listaExp = modeloExp.recuperarPorFinca(finca.getId());
         
-        String[] s = new String[5];
+        String[] s = new String[6];
         for (Explotacion exp : listaExp) {
             s[0] = exp.getId();
-            s[1] = exp.calcularEstado();//Iconos
-            s[2] = exp.getTipo();
-            s[3] = exp.getSuperficie() + "";
-            s[4] = Fechas.toString(exp.getfCreacion());
+            s[1] = exp.getAlias();
+            s[2] = exp.calcularEstado();//Iconos
+            s[3] = exp.getTipo();
+            s[4] = exp.getSuperficie() + "";
+            s[5] = Fechas.toString(exp.getfCreacion());
             this.modTabla.addRow(s);
         }
     }
@@ -229,7 +231,9 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         String tipo = (String) this.vistaAdd.jComboBoxTipo.getSelectedItem();
         tipo = tipo + " " + (String) this.vistaAdd.jComboBoxSubtipo.getSelectedItem();
         LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
-        Explotacion exp = new Explotacion(id, superficie, tipo, fCreacion, null, finca.getId());
+        String alias = this.vistaAdd.campoAlias.getText();
+        Explotacion exp = new Explotacion(id, superficie, tipo, fCreacion, null, finca.getId(),alias);
+        
         return exp;
     }
 
@@ -251,8 +255,8 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
     private void abrirModExp() {
         int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
         String idExp = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 0);
-        String superficie = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 3);
-        String fechaC = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 4);
+        String superficie = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 4);
+        String fechaC = (String) this.vistaTabla.jTableExplotaciones.getValueAt(filaSel, 5);
         
         this.vistaAdd.campoId.setText(idExp);
         this.vistaAdd.campoSuperficie.setText(superficie);
@@ -297,9 +301,18 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
         if (!modeloExp.actualizarCampo(exp.getId(), "SUPERFICIE", exp.getSuperficie() + "")) {
             s += "\nAl modificar la superficie";
         }
-        if (!modeloExp.actualizarCampo(exp.getId(), "F_CREACION", Fechas.toString(exp.getfCreacion()))) {
+        
+        String fecha = "";
+        Configuracion config = new Configuracion();
+        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
+            fecha = Fechas.toStringMariaDb(exp.getfCreacion());
+        }else{
+            fecha = Fechas.toString(exp.getfCreacion());
+        }
+        if (!modeloExp.actualizarCampo(exp.getId(), "F_CREACION", fecha)) {
             s += "\nAl modificar la fecha de creación";
         }
+        
         if (!modeloExp.actualizarCampo(exp.getId(), "TIPO", exp.getTipo())) {
             s += "\nAl modificar el tipo";
         }
@@ -348,6 +361,7 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
             this.vistaAdd.errFCreacion.setText(" ");
         }else{
             this.vistaAdd.errFCreacion.setText("La fecha debe ser dd/mm/aaaa");
+            res = false;
         }
         return res;
     }
@@ -519,14 +533,14 @@ public class ControladorExplotacion implements ActionListener, MouseListener,Foc
 
     private Object getTipo() {
         int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
-        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 2);
+        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 3);
         s=s.substring(0, s.indexOf(" "));
         return s;
     }
 
     private Object getSubtipo() {
         int filaSel = this.vistaTabla.jTableExplotaciones.getSelectedRow();
-        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 2);
+        String s=(String) vistaTabla.jTableExplotaciones.getValueAt(filaSel, 3);
         s=s.substring(s.indexOf(" ")+1);
         return s;
     }

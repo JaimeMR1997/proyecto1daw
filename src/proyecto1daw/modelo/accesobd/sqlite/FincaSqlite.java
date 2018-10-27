@@ -34,7 +34,7 @@ public class FincaSqlite extends FincaDAO{
             Statement stmt = accesoBd.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT ID_FINCA FROM FINCA");
             if(rs.next()){
-                Finca f = new Finca(rs.getString("ID_FINCA"),"no", 0, LocalDate.MIN, LocalDate.MIN);
+                Finca f = new Finca(rs.getString("ID_FINCA"),"no", 0, LocalDate.MIN, LocalDate.MIN,rs.getString("alias"));
                 listaFincas.add(f);
             }
         }catch(SQLException e){

@@ -22,6 +22,7 @@ public class Finca {
     private int superficie;
     private LocalDate fCompra;
     private LocalDate fFin;
+    private String alias;
 
     /**
      *
@@ -31,12 +32,13 @@ public class Finca {
      * @param fCompra
      * @param fFin
      */
-    public Finca(String id, String localidad, int superficie, LocalDate fCompra, LocalDate fFin) {
+    public Finca(String id, String localidad, int superficie, LocalDate fCompra, LocalDate fFin,String alias) {
         this.id = id;
         this.localidad = localidad;
         this.superficie = superficie;
         this.fCompra = fCompra;
         this.fFin = fFin;
+        this.alias = alias;
         
         //Cargar lista encargados
         FincaDAO modeloFinca;
@@ -154,6 +156,13 @@ public class Finca {
     public String toString() {
         return id +" - "+ superficie + " ha";
     }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
  
-    
 }
