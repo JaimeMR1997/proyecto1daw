@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -30,9 +32,9 @@ import proyecto1daw.vistas.JFVentaAdd;
  *
  * @author Jaime
  */
-public class ControladorAddPlant implements ActionListener,FocusListener{
+public class ControladorAddPlant implements ActionListener,FocusListener,KeyListener{
     private ControladorPlantacion contPlant;
-    private JFPlantacionAdd vistaAddPlant;
+    private JFPlantacionAdd vistaAdd;
     private PlantacionDAO modeloPlant;
     private String idExplotacion;
     private Finca finca;
@@ -47,28 +49,36 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
      */
     public ControladorAddPlant(ControladorPlantacion contPlant, PlantacionDAO modeloPlant, String idExplotacion, Finca finca) {
         this.contPlant = contPlant;
-        this.vistaAddPlant = new JFPlantacionAdd();
+        this.vistaAdd = new JFPlantacionAdd();
         this.modeloPlant = modeloPlant;
         this.idExplotacion = idExplotacion;
         this.finca = finca;
         
         //Asociar action listener  
-        this.vistaAddPlant.botonAceptar.addActionListener(this);
-        this.vistaAddPlant.botonCancelar.addActionListener(this);
-        this.vistaAddPlant.jCheckBoxFFin.addActionListener(this);
+        this.vistaAdd.botonAceptar.addActionListener(this);
+        this.vistaAdd.botonCancelar.addActionListener(this);
+        this.vistaAdd.jCheckBoxFFin.addActionListener(this);
         
         //Asociar focus listener a campos
-        this.vistaAddPlant.campoTipo.addFocusListener(this);
-        this.vistaAddPlant.campoVariedad.addFocusListener(this);
-        this.vistaAddPlant.campoFPlant.addFocusListener(this);
-        this.vistaAddPlant.campoFechaFin.addFocusListener(this);
+        this.vistaAdd.campoTipo.addFocusListener(this);
+        this.vistaAdd.campoVariedad.addFocusListener(this);
+        this.vistaAdd.campoFPlant.addFocusListener(this);
+        this.vistaAdd.campoFechaFin.addFocusListener(this);
         
-        this.vistaAddPlant.campoFPlant.setText(Fechas.toString(LocalDate.now()));
+        //Asociar keylistener a frame y campos
+        this.vistaAdd.addKeyListener(this);
+        this.vistaAdd.setFocusable(true);
+        this.vistaAdd.campoTipo.addKeyListener(this);
+        this.vistaAdd.campoVariedad.addKeyListener(this);
+        this.vistaAdd.campoFPlant.addKeyListener(this);
+        this.vistaAdd.campoFechaFin.addKeyListener(this);
+        
+        this.vistaAdd.campoFPlant.setText(Fechas.toString(LocalDate.now()));
         
         //Mostrar
-        this.vistaAddPlant.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.vistaAddPlant.setLocationRelativeTo(null);
-        this.vistaAddPlant.setVisible(true);
+        this.vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.vistaAdd.setLocationRelativeTo(null);
+        this.vistaAdd.setVisible(true);
     }
     
     /**
@@ -84,13 +94,13 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         this(contPlant, modeloPlant, idExplotacion, finca);
         
         this.plant = plant;
-        this.vistaAddPlant.campoTipo.setText(plant.getTipo());
-        this.vistaAddPlant.campoVariedad.setText(plant.getVariedad());
-        this.vistaAddPlant.campoFPlant.setText(Fechas.toString(plant.getfInicio()));
+        this.vistaAdd.campoTipo.setText(plant.getTipo());
+        this.vistaAdd.campoVariedad.setText(plant.getVariedad());
+        this.vistaAdd.campoFPlant.setText(Fechas.toString(plant.getfInicio()));
         if(plant.getfFin() != null){
-            this.vistaAddPlant.campoFechaFin.setText(Fechas.toString(plant.getfFin()));
+            this.vistaAdd.campoFechaFin.setText(Fechas.toString(plant.getfFin()));
         }
-        this.vistaAddPlant.botonAceptar.setText("Modificar");
+        this.vistaAdd.botonAceptar.setText("Modificar");
     }
 
     /**
@@ -98,35 +108,35 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
      * @param ae
      */
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource().equals(vistaAddPlant.botonAceptar)){                  //ACEPTAR
+        if(ae.getSource().equals(vistaAdd.botonAceptar)){                  //ACEPTAR
             JButton boton = (JButton) ae.getSource();
             if(validarDatos()){
                 if(boton.getText().equalsIgnoreCase("Aceptar")){            //AÑADIR
                     if(addPlant()){
-                        JOptionPane.showMessageDialog(vistaAddPlant, "Plantacion añadida correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "Plantacion añadida correctamente");
                         this.contPlant.actualizarTablaPlant();
-                        this.vistaAddPlant.dispose();
+                        this.vistaAdd.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(vistaAddPlant, "Error al añadir la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(vistaAdd, "Error al añadir la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }else if(boton.getText().equalsIgnoreCase("Modificar")){    //MODIFICAR
                     if(modPlant()){
-                        JOptionPane.showMessageDialog(vistaAddPlant, "Plantacion modificada correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "Plantacion modificada correctamente");
                         this.contPlant.actualizarTablaPlant();
-                        this.vistaAddPlant.dispose();
+                        this.vistaAdd.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(vistaAddPlant, "Error al modificar la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(vistaAdd, "Error al modificar la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
-        }else if(ae.getSource().equals(vistaAddPlant.botonCancelar)){           //CANCELAR
-            vistaAddPlant.dispose();
-        }else if(ae.getSource().equals(vistaAddPlant.jCheckBoxFFin)){           //JCHECHBOX
+        }else if(ae.getSource().equals(vistaAdd.botonCancelar)){           //CANCELAR
+            vistaAdd.dispose();
+        }else if(ae.getSource().equals(vistaAdd.jCheckBoxFFin)){           //JCHECHBOX
             JCheckBox checkbox = (JCheckBox) ae.getSource();
             if (checkbox.isSelected()) {
-                    this.vistaAddPlant.campoFechaFin.setEnabled(true);
+                    this.vistaAdd.campoFechaFin.setEnabled(true);
                 } else {
-                    this.vistaAddPlant.campoFechaFin.setEnabled(false);
+                    this.vistaAdd.campoFechaFin.setEnabled(false);
             }
         }
     }
@@ -192,21 +202,21 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
 
     private boolean validarFFin(boolean res) {
         if(this.isFechaFinSelected()){
-            if(this.vistaAddPlant.campoFechaFin.getText().equals("") || this.vistaAddPlant.campoFechaFin.getText() == null){
+            if(this.vistaAdd.campoFechaFin.getText().equals("") || this.vistaAdd.campoFechaFin.getText() == null){
                 res=false;
-                vistaAddPlant.errFFin.setText("Debes introducir una fecha");
+                vistaAdd.errFFin.setText("Debes introducir una fecha");
             }else{
-                if(Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText()) == null){
+                if(Fechas.toLocalDate(vistaAdd.campoFechaFin.getText()) == null){
                     res=false;
-                    vistaAddPlant.errFFin.setText("Debe tener formato dd/mm/aaaa");
+                    vistaAdd.errFFin.setText("Debe tener formato dd/mm/aaaa");
                 }else{
-                    LocalDate fFin = Fechas.toLocalDate(vistaAddPlant.campoFechaFin.getText());
-                    LocalDate fInicio = Fechas.toLocalDate(vistaAddPlant.campoFPlant.getText());
+                    LocalDate fFin = Fechas.toLocalDate(vistaAdd.campoFechaFin.getText());
+                    LocalDate fInicio = Fechas.toLocalDate(vistaAdd.campoFPlant.getText());
                     if(fInicio != null && fFin.isBefore(fInicio)){
                         res=false;
-                        vistaAddPlant.errFFin.setText("No puede ser menor a F.Plant");
+                        vistaAdd.errFFin.setText("No puede ser menor a F.Plant");
                     }else{
-                        vistaAddPlant.errFFin.setText(" ");
+                        vistaAdd.errFFin.setText(" ");
                     }
                     
                 }
@@ -216,51 +226,51 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
     }
 
     private boolean validarVariedad(boolean res) {
-        if(this.vistaAddPlant.campoVariedad.getText().equals("")){
+        if(this.vistaAdd.campoVariedad.getText().equals("")){
             res=false;
-            vistaAddPlant.errVariedad.setText("La variedad es obligatoria");
+            vistaAdd.errVariedad.setText("La variedad es obligatoria");
         }else{
-            vistaAddPlant.errVariedad.setText(" ");
+            vistaAdd.errVariedad.setText(" ");
         }
         return res;
     }
 
     private boolean validarTipo(boolean res) {
-        if(this.vistaAddPlant.campoTipo.getText().equals("")){
+        if(this.vistaAdd.campoTipo.getText().equals("")){
             res=false;
-            vistaAddPlant.errTipo.setText("El tipo es obligatorio");
+            vistaAdd.errTipo.setText("El tipo es obligatorio");
         }else{
-            String tipo = this.vistaAddPlant.campoTipo.getText();
+            String tipo = this.vistaAdd.campoTipo.getText();
             for (int i = 0; i < tipo.length(); i++) {
                 if(Character.isDigit(tipo.charAt(i))){
                     res=false;
-                    vistaAddPlant.errTipo.setText("No puede contener números");
+                    vistaAdd.errTipo.setText("No puede contener números");
                 }
             }
             if(res){
-                vistaAddPlant.errTipo.setText(" ");
+                vistaAdd.errTipo.setText(" ");
             }
         }
         return res;
     }
 
     private boolean validarFInicio(boolean res) {
-        if(this.vistaAddPlant.campoFPlant.getText().equals("")){
+        if(this.vistaAdd.campoFPlant.getText().equals("")){
             res=false;
-            vistaAddPlant.errFPlant.setText("La fecha es obligatoria");
+            vistaAdd.errFPlant.setText("La fecha es obligatoria");
         }else{
-            if(Fechas.toLocalDate(this.vistaAddPlant.campoFPlant.getText()) == null){
-                vistaAddPlant.errFPlant.setText("Debe ser formato dd/mm/aaaa");
+            if(Fechas.toLocalDate(this.vistaAdd.campoFPlant.getText()) == null){
+                vistaAdd.errFPlant.setText("Debe ser formato dd/mm/aaaa");
                 res=false;
             }else{
-                vistaAddPlant.errFPlant.setText(" ");
+                vistaAdd.errFPlant.setText(" ");
             }
         }
         return res;
     }
 
     private boolean isFechaFinSelected() {
-        return vistaAddPlant.jCheckBoxFFin.isSelected();
+        return vistaAdd.jCheckBoxFFin.isSelected();
     }
     
     private Plantacion getPlantacion() {
@@ -271,11 +281,11 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
         }else{
             idPlant = this.plant.getId();
         }
-        String tipo = this.vistaAddPlant.campoTipo.getText();
-        String variedad = this.vistaAddPlant.campoVariedad.getText();
-        String fPlantSt = this.vistaAddPlant.campoFPlant.getText();
+        String tipo = this.vistaAdd.campoTipo.getText();
+        String variedad = this.vistaAdd.campoVariedad.getText();
+        String fPlantSt = this.vistaAdd.campoFPlant.getText();
         LocalDate fPlant = Fechas.toLocalDate(fPlantSt);
-        String fFinSt = this.vistaAddPlant.campoFechaFin.getText();
+        String fFinSt = this.vistaAdd.campoFechaFin.getText();
         LocalDate fFin = Fechas.toLocalDate(fFinSt);
         Plantacion p = new Plantacion(idPlant, tipo, variedad, fPlant, fFin, idExplotacion);
         return p;
@@ -306,14 +316,55 @@ public class ControladorAddPlant implements ActionListener,FocusListener{
      * @param fe
      */
     public void focusLost(FocusEvent fe) {
-        if(fe.getSource().equals(vistaAddPlant.campoTipo)){
+        if(fe.getSource().equals(vistaAdd.campoTipo)){
             validarTipo(true);
-        }else if(fe.getSource().equals(vistaAddPlant.campoVariedad)){
+        }else if(fe.getSource().equals(vistaAdd.campoVariedad)){
             validarVariedad(true);
-        }else if(fe.getSource().equals(vistaAddPlant.campoFPlant)){
+        }else if(fe.getSource().equals(vistaAdd.campoFPlant)){
             validarFInicio(true);
-        }else if(fe.getSource().equals(vistaAddPlant.campoFechaFin)){
+        }else if(fe.getSource().equals(vistaAdd.campoFechaFin)){
             validarFFin(true);
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyCode()==KeyEvent.VK_ENTER){
+            //Invoca el metodo que maneja los eventos y le pasa un "ActionEvent"
+            // cuyo origen es el boton Aceptar/Modificar segun el caso
+            //Son el mismo objeto solo cambia el texto que se le muestra al usuario
+            actionPerformed(new ActionEvent(this.vistaAdd.botonAceptar, 0, ""));
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        
+    }
+    
+    /**
+     * Hace que la ventana JFFincaAdd gane el foco y se ponga en primer plano
+     */
+    public void setFocused(){
+        this.vistaAdd.requestFocus();
+    }
+    /**
+     * 
+     * @return Devuelve true si la ventana es visible y false si no lo es(está cerrada)
+     */
+    public boolean isVentanaAbierta(){
+        boolean res = this.vistaAdd.isVisible();
+        return res;
+    }
+    /**
+     * Realiza un dispose a la ventana JFFincaAdd
+     */
+    public void close(){
+        this.vistaAdd.dispose();
     }
 }

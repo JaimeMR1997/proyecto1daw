@@ -32,7 +32,7 @@ import proyecto1daw.vistas.JFInicio;
  *
  * @author alumno
  */
-public class ControladorFinca implements ActionListener,MouseListener,FocusListener{
+public class ControladorFinca implements ActionListener,MouseListener{
     private final int FILA_ID = 0;
     private final int FILA_ALIAS = 1;
     private final int FILA_LOCALIDAD = 2;
@@ -43,10 +43,10 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
     private final int FILA_NTRACTORES = 6;
     
     private JFFinca vistaTabla;
-    private JFFincaAdd vistaAdd;
     private FincaDAO modeloFinca;
     private ExplotacionDAO modeloExp;
     private DefaultTableModel modTabla;
+    private ControladorAddFinca controladorAdd;
     
     /**
      *
@@ -62,9 +62,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaTabla = vistaTabla;
         this.modeloFinca = modeloFinca;
         this.modeloExp = modeloExp;
-        this.vistaAdd= new JFFincaAdd();
         this.vistaTabla.setLocationRelativeTo(null);
-        this.vistaAdd.setLocationRelativeTo(null);
         
         //Asignar action listener a botones
         this.vistaTabla.botonAdd.addActionListener(this);
@@ -73,16 +71,6 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaTabla.botonEncargados.addActionListener(this);
         this.vistaTabla.botonMod.addActionListener(this);
         this.vistaTabla.botonVolver.addActionListener(this);
-        //Los de AddFinca tambien
-        this.vistaAdd.botonAceptar.addActionListener(this);
-        this.vistaAdd.botonCancelar.addActionListener(this);
-        this.vistaAdd.jCheckBoxFFin.addActionListener(this);
-        //Añadir focus listener a campos
-        this.vistaAdd.campoId.addFocusListener(this);
-        this.vistaAdd.campoFechaC.addFocusListener(this);
-        this.vistaAdd.campoFechaFin.addFocusListener(this);
-        this.vistaAdd.campoLocalidad.addFocusListener(this);
-        this.vistaAdd.campoSuperficie.addFocusListener(this);
         //Añadir mouse listener a tabla
         this.vistaTabla.jTableFincas.addMouseListener(this);
         
@@ -104,12 +92,9 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         //modTabla.addColumn("NºTractores");
         modTabla.addColumn("NºExplotaciones");
         rellenarTabla(modeloFinca.recuperarTodas());
+        
         this.vistaTabla.jTableFincas.setModel(modTabla);
-        
-        this.vistaAdd.campoFechaFin.setEnabled(false);
-        
         this.vistaTabla.setVisible(true);
-        vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     /**
@@ -153,85 +138,38 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         }else if(ae.getSource().equals(vistaTabla.botonEliminar)){          //ELIMINAR
             //Pregunta antes de eliminar completamente
             if(this.vistaTabla.jTableFincas.getSelectedRow() != -1){
-                int confirmacion = JOptionPane.showConfirmDialog(vistaAdd,
+                int confirmacion = JOptionPane.showConfirmDialog(vistaTabla,
                         "¿Estás seguro de eliminar esta finca?");
                 eliminarFinca(confirmacion);
             }else{
                 JOptionPane.showMessageDialog(vistaTabla, "Necesitas seleccionar"
                         + " una finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
             }
-        }else if(ae.getSource().equals(vistaAdd.botonAceptar)){                 //ACEPTAR_AÑADIR
-            String nombreBoton=((JButton)ae.getSource()).getText();
-            if(this.validarDatosAdd()){
-                Finca f = getFinca();
-                if(nombreBoton.equalsIgnoreCase("Aceptar")){                   //NUEVA FINCA
-                    if(modeloFinca.addFinca(f)){
-                        JOptionPane.showMessageDialog(vistaAdd, "Finca añadida correctamente");
-                        actualizarTabla();
-                    }else{
-                        JOptionPane.showMessageDialog(vistaTabla, "Error al añadir la finca", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
-                    }
-                    
-                }else if(nombreBoton.equalsIgnoreCase("Modificar")){           //MODIFICAR FINCA                    
-                    String s = modificarFinca(f);
-                    if(s.charAt(0) == 'E'){//Se ha producido error
-                        JOptionPane.showMessageDialog(vistaAdd, s, "Error", JOptionPane.ERROR_MESSAGE);
-                    }else{//Todo correcto
-                        JOptionPane.showMessageDialog(vistaAdd, s);
-                        actualizarTabla();
-                    }
-                    
-                }
-            }
-            
-        }else if(ae.getSource().equals(vistaAdd.botonCancelar)){                 //CANCELAR_AÑADIR
-            limpiarCamposAdd();
-            this.vistaAdd.dispose();
-            
-        }else if(ae.getSource().equals(this.vistaAdd.jCheckBoxFFin)){           //CHECBOX FECHA FIN
-            if(this.isFFinSelected()){
-                this.vistaAdd.campoFechaFin.setEnabled(true);
-            }else{
-                this.vistaAdd.campoFechaFin.setEnabled(false);
-            }
         }
     }
     /**
-     * @return Abre la ventana para añadir nuevas fincas
+     * @return Crea un nuevo contgorladorAddFinca que abre una ventna con un formulario
      * @see JFFincaAdd
+     * @see ControladorAddFinca
      */
     private void abrirAdd() {
         //ABRIR AÑADIR
-        //Llamar a ventanaAñadir
-        this.vistaAdd.campoId.setEnabled(true);
-        vistaAdd.botonAceptar.setText("Aceptar");
-        this.limpiarCamposAdd();
-        vistaAdd.setVisible(true);
-        vistaAdd.setAlwaysOnTop(true);
+        //Llamar a ventana Añadir
+        if(this.controladorAdd == null){
+            this.controladorAdd = new ControladorAddFinca(this, modeloFinca);
+        }else if(this.controladorAdd.isVentanaAbierta()){
+            this.controladorAdd.setFocused();
+        }else{
+            this.controladorAdd = new ControladorAddFinca(this, modeloFinca);
+        }
+        
     }
-    /**
-     * @return Devuelve un objeto Finca recuperador a aprtir de los campos de
-     * la ventana JFFincaAdd
-     * @see JFFincaAdd
-     */
-    private Finca getFinca(){
-        //Recupera campos
-        String id = this.vistaAdd.campoId.getText();
-        String localidad = this.vistaAdd.campoLocalidad.getText();
-        int superficie = Integer.parseInt(this.vistaAdd.campoSuperficie.getText());
-        LocalDate fCreacion = Fechas.toLocalDate(this.vistaAdd.campoFechaC.getText());
-        LocalDate fFin = Fechas.toLocalDate(this.vistaAdd.campoFechaFin.getText());
-        String alias = this.vistaAdd.campoAlias.getText();
-        Finca f = new Finca(id, localidad, superficie, fCreacion, fFin, alias);
-        return f;
-    }
-
+    
     /**
      * @return Recarga la tabla de la ventana JFFinca
      * @see JFFinca
      */
     public void actualizarTabla() {
-        this.vistaAdd.dispose();
         this.modTabla.setRowCount(0);
         this.rellenarTabla(modeloFinca.recuperarTodas());
     }
@@ -245,33 +183,29 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         if(confirmacion==JOptionPane.YES_OPTION){
             String idFinca=(String) this.vistaTabla.jTableFincas.getValueAt(this.vistaTabla.jTableFincas.getSelectedRow(),FILA_ID);
             modeloFinca.borrarFinca(idFinca);
-            this.limpiarCamposAdd();
             actualizarTabla();
         }
     }
     /**
-     * @return Abre la ventana JFFincaAdd en modo modificar
+     * @return Crea un nuevo contgorladorAddFinca que abre una ventana con un formulario
+     * con  los datos de la finca recien recuperada de la BD con la información actualizada.
      * @see JFFincaAdd
+     * @see ControladorAddFinca
      */
 
     private void abrirModificar() {
         //Carga los datos de la tabla al formulario
         int filaSelec=this.vistaTabla.jTableFincas.getSelectedRow();
         String id=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_ID);
-        String localizacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_LOCALIDAD);
-        String superficie=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_SUPERFICIE);
-        String fCreacion=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_FCOMPRA);
-        String alias=(String) this.vistaTabla.jTableFincas.getValueAt(filaSelec,FILA_ALIAS);
-        this.vistaAdd.campoId.setText(id);
-        this.vistaAdd.campoId.setEnabled(false);
-        this.vistaAdd.campoLocalidad.setText(localizacion);
-        this.vistaAdd.campoSuperficie.setText(superficie);
-        this.vistaAdd.campoFechaC.setText(fCreacion);
-        this.vistaAdd.campoAlias.setText(alias);
-        this.vistaAdd.etiquetaId.setText(id);
-        
-        vistaAdd.botonAceptar.setText("Modificar");
-        vistaAdd.setVisible(true);
+        Finca f = modeloFinca.recuperarPorId(id);
+               
+        if(this.controladorAdd == null){
+            this.controladorAdd = new ControladorAddFinca(this, modeloFinca,f);
+        }else if(this.controladorAdd.isVentanaAbierta()){
+            this.controladorAdd.setFocused();
+        }else{
+            this.controladorAdd = new ControladorAddFinca(this, modeloFinca,f);
+        }
     }
 
     /**
@@ -280,7 +214,6 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
      */
     
     private void volver() {
-        //VOLVER
         //Volver a Inicio
         ControladorInicio conInicio = new ControladorInicio(new JFInicio());
         this.vistaTabla.dispose();
@@ -299,78 +232,7 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         this.vistaTabla.dispose();
     }
 
-    private String modificarFinca(Finca f) {
-        //Como mensaje de error la primera letra debe ser 'E' no puede cambiarse
-        String res="Error:";
-        String idAnt = this.vistaAdd.etiquetaId.getText();
-        
-        if(!modeloFinca.actualizarCampo(idAnt, "LOCALIDAD", f.getLocalidad())){
-            res+="\nAl actualizar la localidad";
-        }
-        if(!modeloFinca.actualizarCampo(idAnt, "SUPERFICIE", f.getSuperficie()+"")){
-            res+="\nAl actualizar la superficie";
-        }
-        
-        Configuracion config = new Configuracion();
-        String fCompra;
-        String fFin;
-        if(config.getTipoServer().equalsIgnoreCase("mysql") || config.getTipoServer().equalsIgnoreCase("mariadb")){
-            fCompra = Fechas.toStringMariaDb(f.getfCompra());
-            fFin = Fechas.toStringMariaDb(f.getfFin());
-        }else{
-            fCompra = Fechas.toString(f.getfCompra());
-            fFin = Fechas.toString(f.getfFin());
-        }
-        
-        if(!modeloFinca.actualizarCampo(idAnt, "F_COMPRA", fCompra)){
-            res+="\nAl actualizar la fecha de compra";
-        }
-        if(isFFinSelected() && !modeloFinca.actualizarCampo(idAnt, "F_FIN", fFin)){
-            //Si no esta FFin seleccionado no se ejecuta el metodo actualizarCampo
-            res+="\nAl actualizar la fecha de fin";
-        }
-        if(!modeloFinca.actualizarCampo(idAnt, "ALIAS", f.getAlias())){
-            res+="\nAl actualizar el alias";
-        }
-        if(!modeloFinca.actualizarCampo(idAnt, "ID_FINCA", f.getId())){
-            res+="\nAl actualizar el ID de la finca";
-        }
-        
-        if(res.equals("Error:")){
-            res="La finca se ha actualizado correctamente.";
-        }
-        return res;
-    }
-
-    private void limpiarCamposAdd() {
-        //CANCELAR_AÑADIR
-        this.vistaAdd.campoId.setText("");
-        this.vistaAdd.campoLocalidad.setText("");
-        this.vistaAdd.campoSuperficie.setText("");
-        this.vistaAdd.campoFechaC.setText("");
-        this.vistaAdd.campoFechaFin.setText("");
-        this.vistaAdd.etiquetaId.setText("");
-        this.vistaAdd.jCheckBoxFFin.setSelected(false);
-        
-        this.vistaAdd.errFFin.setText(" ");
-        this.vistaAdd.errFInicio.setText(" ");
-        this.vistaAdd.errId.setText(" ");
-        this.vistaAdd.errLocalidad.setText(" ");
-        this.vistaAdd.errSuperficie.setText(" ");
-    }
-    
-    /**
-     *
-     * @return true si el Checkbox de Fecha Fin de JFFincaAdd está activado
-     */
-    public boolean isFFinSelected(){
-        boolean res=false;
-        if(this.vistaAdd.jCheckBoxFFin.isSelected()){
-            res=true;
-        }
-        return res;
-    }
-    
+      
     /**
      *
      * @param listaFincas La lista de fincas a ser cargada en la tabla
@@ -392,112 +254,6 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         
     }
     
-    /**
-     *
-     * @return true si todos los campos de JFFincaAdd son correctos y false si 
-     * alguno no lo es, está compuesto por submétodos que comprueban cada campo 
-     * y si es incorrecto activar un jLabel con un mensaje de error
-     */
-    public boolean validarDatosAdd(){
-        boolean res=true;
-        res = validarId(res);
-        res = validarLocalidad(res);
-        res = validarSuperficie(res);
-        res = validarFInicio(res);
-        res = validarFFin(res);
-        return res;
-    }
-
-    private boolean validarFFin(boolean res) {
-        if(this.isFFinSelected()){
-            if(this.vistaAdd.campoFechaFin.equals("") || vistaAdd.campoFechaFin == null){
-                res=false;
-                vistaAdd.errFFin.setText("Escribe una fecha o desmarca la opción");
-            }else if(Fechas.toLocalDate(vistaAdd.campoFechaFin.getText()) == null){
-                res=false;
-                vistaAdd.errFFin.setText("La fecha debe ser formato dd/mm/aaaa");
-            }else{
-                vistaAdd.errFFin.setText(" ");
-            }
-        }
-        return res;
-    }
-
-    private boolean validarFInicio(boolean res) {
-        if(vistaAdd.campoFechaC.getText().equals("") || vistaAdd.campoFechaC == null){
-            res=false;
-            vistaAdd.errFInicio.setText("La fecha es obligatoria");
-        }else if(Fechas.toLocalDate(vistaAdd.campoFechaC.getText()) == null){
-            res=false;
-            vistaAdd.errFInicio.setText("La fecha debe ser formato dd/mm/aaaa");
-        }else{
-            vistaAdd.errFInicio.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarSuperficie(boolean res) {
-        if(vistaAdd.campoSuperficie.getText().equals("") || vistaAdd.campoSuperficie == null){
-            res=false;
-            vistaAdd.errSuperficie.setText("La superficie es obligatoria");
-        }else{
-            try{
-                int num=Integer.parseInt(vistaAdd.campoSuperficie.getText());
-                if(num<1){
-                    res=false;
-                }
-            }catch(NumberFormatException e){
-                res=false;
-                vistaAdd.errSuperficie.setText("La superficie debe ser un entero");
-            }
-        }
-        if(res){
-            vistaAdd.errSuperficie.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarLocalidad(boolean res) {
-        if(vistaAdd.campoLocalidad.getText().equals("") || vistaAdd.campoLocalidad == null){
-            res=false;
-            vistaAdd.errLocalidad.setText("Localidad es obligatoria");
-        }else if(vistaAdd.campoLocalidad.getText().length() >20){
-            vistaAdd.errLocalidad.setText("Localidad debe tener menos de 20 caracteres");
-        }else{
-            String s = vistaAdd.campoLocalidad.getText();
-            for (int i = 0; i < s.length(); i++) {
-                if(!Character.isAlphabetic(s.charAt(i))){
-                    if(s.charAt(i) != '-' || s.charAt(i) != ' '){
-                        res=false;
-                        vistaAdd.errLocalidad.setText("Localidad contiene caracteres no permitidos");
-                        break;
-                    }
-                }
-            }
-        }
-        if(res){
-            vistaAdd.errLocalidad.setText(" ");
-        }
-        return res;
-    }
-
-    private boolean validarId(boolean res) {
-        if(vistaAdd.campoId.getText().equals("") || vistaAdd.campoId == null){
-            res=false;
-            vistaAdd.errId.setText("El ID es obligatorio");
-        }else if(vistaAdd.campoId.getText().length()>20){
-            vistaAdd.errId.setText("ID debe tener menos de 20 caracteres");
-            res=false;
-        }else{
-            String id = vistaAdd.campoId.getText();
-            for (int i = 0; i < id.length(); i++) {
-                //if(Character.)
-            }
-            vistaAdd.errId.setText(" ");
-        }
-        return res;
-    }
-
     /**
      *
      * @param me evento generado por el click del raton
@@ -544,30 +300,4 @@ public class ControladorFinca implements ActionListener,MouseListener,FocusListe
         
     }
 
-    /**
-     *
-     * @param fe
-     */
-    public void focusGained(FocusEvent fe) {
-        
-    }
-
-    /**
-     *
-     * @param fe objeto generado al perder el foco un campo de JFFincaAdd
-     * lo uqe hace es validar el campo que ha generado el objeto FocusEvent
-     */
-    public void focusLost(FocusEvent fe) {
-        if(fe.getSource().equals(vistaAdd.campoId)){
-            validarId(true);
-        }else if(fe.getSource().equals(vistaAdd.campoFechaC)){
-            validarFInicio(true);
-        }else if(fe.getSource().equals(vistaAdd.campoFechaFin)){
-            validarFFin(true);
-        }else if(fe.getSource().equals(vistaAdd.campoLocalidad)){
-            validarLocalidad(true);
-        }else if(fe.getSource().equals(vistaAdd.campoSuperficie)){
-            validarSuperficie(true);
-        }
-    }
 }

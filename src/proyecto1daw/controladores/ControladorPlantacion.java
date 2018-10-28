@@ -56,6 +56,8 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     private DefaultTableModel modTablaVentas;
     private String idExplotacion;
     private Finca finca;
+    private ControladorAddPlant ControladorPlant;
+    private ControladorAddVenta ControladorVenta;
 
     /**
      *
@@ -327,15 +329,28 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
         int filaVenta = vistaTabla.jTableVentas.getSelectedRow();
         String idVenta = (String) vistaTabla.jTableVentas.getValueAt(filaVenta, 0);
         Venta vent = modeloVenta.recuperarPorId(idVenta, idPlant);
-        
-        ControladorAddVenta contAddVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant, vent);
+           
+        if(this.ControladorVenta == null){
+            this.ControladorVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant, vent);
+        }else if(this.ControladorVenta.isVentanaAbierta()){
+            this.ControladorVenta.setFocused();
+        }else{
+            this.ControladorVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant, vent);
+        }
     }
 
     private void abrirAddVenta() {
         int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
         String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
         Plantacion plant = modeloPlant.recuperarPorId(idPlant);
-        ControladorAddVenta contAddVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant);
+                
+        if(this.ControladorVenta == null){
+            this.ControladorVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant);
+        }else if(this.ControladorVenta.isVentanaAbierta()){
+            this.ControladorVenta.setFocused();
+        }else{
+            this.ControladorVenta = new ControladorAddVenta(this, modeloVenta, idExplotacion, finca,plant);
+        }
     }
 
     private void eliminarPlant(int confirmacion) {
@@ -369,14 +384,29 @@ public class ControladorPlantacion implements ActionListener,MouseListener {
     }
 
     private void abrirAddPlant() {
-        ControladorAddPlant contAddPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca);
+        if(this.ControladorPlant == null){
+            this.ControladorPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca);
+        }else if(this.ControladorPlant.isVentanaAbierta()){
+            this.ControladorPlant.setFocused();
+        }else{
+            this.ControladorPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca);
+        }
     }
     
     private void abrirModPlant() {
         int fila = vistaTabla.jTablePlantaciones.getSelectedRow();
         String idPlant = (String) vistaTabla.jTablePlantaciones.getValueAt(fila, 0);
         Plantacion plant = modeloPlant.recuperarPorId(idPlant);
-        ControladorAddPlant contAddPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca, plant);
+        
+        
+        
+        if(this.ControladorPlant == null){
+            this.ControladorPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca, plant);
+        }else if(this.ControladorPlant.isVentanaAbierta()){
+            this.ControladorPlant.setFocused();
+        }else{
+            this.ControladorPlant = new ControladorAddPlant(this, modeloPlant, idExplotacion, finca, plant);
+        }
     }
 
     /**

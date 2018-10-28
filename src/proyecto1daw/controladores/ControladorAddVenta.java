@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -29,9 +31,9 @@ import proyecto1daw.vistas.JFVentaAdd;
  *
  * @author Jaime
  */
-public class ControladorAddVenta implements ActionListener,FocusListener{
+public class ControladorAddVenta implements ActionListener,FocusListener,KeyListener{
     private ControladorPlantacion contPlant;
-    private JFVentaAdd vistaAddVenta;
+    private JFVentaAdd vistaAdd;
     private VentaDAO modeloVenta;
     private String idExplotacion;
     private Finca finca;
@@ -49,7 +51,7 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
      */
     public ControladorAddVenta(ControladorPlantacion contPlant, VentaDAO modeloVenta, String idExplotacion, Finca finca,Plantacion plant) {
         this.contPlant = contPlant;
-        this.vistaAddVenta = new JFVentaAdd();
+        this.vistaAdd = new JFVentaAdd();
         this.modeloVenta = modeloVenta;
         this.idExplotacion = idExplotacion;
         this.finca = finca;
@@ -62,26 +64,35 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         opcsTam.addElement("M");
         opcsTam.addElement("G");
         opcsTam.addElement("GG");
-        this.vistaAddVenta.jComboTam.setModel(opcsTam);
+        this.vistaAdd.jComboTam.setModel(opcsTam);
         this.opcsTam.setSelectedItem("G");
         
         //Asociar action listener  
-        this.vistaAddVenta.botonAceptar.addActionListener(this);
-        this.vistaAddVenta.botonCancelar.addActionListener(this);
+        this.vistaAdd.botonAceptar.addActionListener(this);
+        this.vistaAdd.botonCancelar.addActionListener(this);
         
         //Asociar focus listener a campos
-        this.vistaAddVenta.jSpinnerKg.addFocusListener(this);
-        this.vistaAddVenta.campoColor.addFocusListener(this);
-        this.vistaAddVenta.jComboTam.addFocusListener(this);
-        this.vistaAddVenta.campoFecha.addFocusListener(this);
-        this.vistaAddVenta.campoPrecio.addFocusListener(this);
+        this.vistaAdd.jSpinnerKg.addFocusListener(this);
+        this.vistaAdd.campoColor.addFocusListener(this);
+        this.vistaAdd.jComboTam.addFocusListener(this);
+        this.vistaAdd.campoFecha.addFocusListener(this);
+        this.vistaAdd.campoPrecio.addFocusListener(this);
         
-        this.vistaAddVenta.campoFecha.setText(Fechas.toString(LocalDate.now()));
+        //Asociar key listener a frame y campos
+        this.vistaAdd.addKeyListener(this);
+        this.vistaAdd.setFocusable(true);
+        this.vistaAdd.jSpinnerKg.addKeyListener(this);
+        this.vistaAdd.campoColor.addKeyListener(this);
+        this.vistaAdd.jComboTam.addKeyListener(this);
+        this.vistaAdd.campoFecha.addKeyListener(this);
+        this.vistaAdd.campoPrecio.addKeyListener(this);
+        
+        this.vistaAdd.campoFecha.setText(Fechas.toString(LocalDate.now()));
         
         //Mostrar
-        this.vistaAddVenta.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.vistaAddVenta.setLocationRelativeTo(null);
-        this.vistaAddVenta.setVisible(true);
+        this.vistaAdd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.vistaAdd.setLocationRelativeTo(null);
+        this.vistaAdd.setVisible(true);
     }
     
     /**
@@ -98,14 +109,14 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         
         this.vent = vent;
         if(this.vent != null){
-            this.vistaAddVenta.jSpinnerKg.setValue(Integer.valueOf(vent.getKg()));
-            this.vistaAddVenta.campoColor.setText(vent.getColor());
-            this.vistaAddVenta.jComboTam.setSelectedItem(vent.getTamanio());
-            this.vistaAddVenta.campoFecha.setText(Fechas.toString(vent.getFecha()));
-            this.vistaAddVenta.campoPrecio.setText(vent.getPrecio()+"");
-            this.vistaAddVenta.botonAceptar.setText("Modificar");
+            this.vistaAdd.jSpinnerKg.setValue(Integer.valueOf(vent.getKg()));
+            this.vistaAdd.campoColor.setText(vent.getColor());
+            this.vistaAdd.jComboTam.setSelectedItem(vent.getTamanio());
+            this.vistaAdd.campoFecha.setText(Fechas.toString(vent.getFecha()));
+            this.vistaAdd.campoPrecio.setText(vent.getPrecio()+"");
+            this.vistaAdd.botonAceptar.setText("Modificar");
         }else{
-            this.vistaAddVenta.dispose();
+            this.vistaAdd.dispose();
             JOptionPane.showMessageDialog(null, "Error inesperado al cargar la venta", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -115,30 +126,30 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
      * @param ae
      */
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource().equals(vistaAddVenta.botonAceptar)){                  //ACEPTAR
+        if(ae.getSource().equals(vistaAdd.botonAceptar)){                  //ACEPTAR
             JButton boton = (JButton) ae.getSource();
             if(validarDatos()){
                 if(boton.getText().equalsIgnoreCase("Aceptar")){            //AÑADIR
                     if(addVenta()){
-                        JOptionPane.showMessageDialog(vistaAddVenta, "Plantacion añadida correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "Plantacion añadida correctamente");
                         this.contPlant.actualizarTablaVentas();
                         this.contPlant.actualizarEtiquetasIngresos();
-                        this.vistaAddVenta.dispose();
+                        this.vistaAdd.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(vistaAddVenta, "Error al añadir la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(vistaAdd, "Error al añadir la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }else if(boton.getText().equalsIgnoreCase("Modificar")){    //MODIFICAR
                     if(modVenta()){
-                        JOptionPane.showMessageDialog(vistaAddVenta, "Plantacion modificada correctamente");
+                        JOptionPane.showMessageDialog(vistaAdd, "Plantacion modificada correctamente");
                         this.contPlant.actualizarTablaVentas();
-                        this.vistaAddVenta.dispose();
+                        this.vistaAdd.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(vistaAddVenta, "Error al modificar la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(vistaAdd, "Error al modificar la plantacion", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
-        }else if(ae.getSource().equals(vistaAddVenta.botonCancelar)){           //CANCELAR
-            vistaAddVenta.dispose();
+        }else if(ae.getSource().equals(vistaAdd.botonCancelar)){           //CANCELAR
+            vistaAdd.dispose();
         }
     }
 
@@ -164,24 +175,24 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
     }
 
     private boolean validarCantidad(boolean res) {
-        int kg = (int) this.vistaAddVenta.jSpinnerKg.getValue();
+        int kg = (int) this.vistaAdd.jSpinnerKg.getValue();
         if(kg <= 0){
             res=false;
-            vistaAddVenta.errCantidad.setText("La cantidad debe ser entera");
+            vistaAdd.errCantidad.setText("La cantidad debe ser entera");
         }else if(kg >100000){
-            vistaAddVenta.errCantidad.setText("La cantidad es demasiado grande");
+            vistaAdd.errCantidad.setText("La cantidad es demasiado grande");
         }else{
-            vistaAddVenta.errCantidad.setText(" ");
+            vistaAdd.errCantidad.setText(" ");
         }
         return res;
     }
 
     private boolean validarTam(boolean res) {
-        if(this.vistaAddVenta.jComboTam.getSelectedIndex() == -1){
+        if(this.vistaAdd.jComboTam.getSelectedIndex() == -1){
             res=false;
-            vistaAddVenta.errTam.setText("El tamaño es obligatorio");
+            vistaAdd.errTam.setText("El tamaño es obligatorio");
         }else{
-            vistaAddVenta.errTam.setText(" ");
+            vistaAdd.errTam.setText(" ");
         }
         return res;
     }
@@ -219,53 +230,53 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
 
     
     private boolean validarPrecio(boolean res) {
-        if(this.vistaAddVenta.campoPrecio.getText().equals("")){
+        if(this.vistaAdd.campoPrecio.getText().equals("")){
             res=false;
-            vistaAddVenta.errPrecio.setText("El precio es obligatorio");
+            vistaAdd.errPrecio.setText("El precio es obligatorio");
         }else{
             try{
-                double num = Double.parseDouble(this.vistaAddVenta.campoPrecio.getText());
+                double num = Double.parseDouble(this.vistaAdd.campoPrecio.getText());
             }catch(NumberFormatException e){
                 res=false;
-                vistaAddVenta.errPrecio.setText("El precio debe ser decimal");
+                vistaAdd.errPrecio.setText("El precio debe ser decimal");
             }
             if(res){
-                vistaAddVenta.errPrecio.setText(" ");
+                vistaAdd.errPrecio.setText(" ");
             }
         }
         return res;
     }
 
     private boolean validarColor(boolean res) {
-        if(this.vistaAddVenta.campoColor.getText().equals("")){
+        if(this.vistaAdd.campoColor.getText().equals("")){
             res=false;
-            vistaAddVenta.errColor.setText("El color es obligatorio");
-        }else if(this.vistaAddVenta.campoColor.getText().length()>20){
-            vistaAddVenta.errColor.setText("Máximo 20 caracteres");
+            vistaAdd.errColor.setText("El color es obligatorio");
+        }else if(this.vistaAdd.campoColor.getText().length()>20){
+            vistaAdd.errColor.setText("Máximo 20 caracteres");
         }else{
-            vistaAddVenta.errColor.setText(" ");
+            vistaAdd.errColor.setText(" ");
         }
         return res;
     }
 
     private boolean validarFecha(boolean res) {
-        String fechaSt = this.vistaAddVenta.campoFecha.getText();
+        String fechaSt = this.vistaAdd.campoFecha.getText();
         if(fechaSt.equals("") ||fechaSt == null){
             res=false;
-            vistaAddVenta.errFecha.setText("La fecha es obligatoria");
+            vistaAdd.errFecha.setText("La fecha es obligatoria");
         }else{
             if(Fechas.toLocalDate(fechaSt) == null){
                 res=false;
-                vistaAddVenta.errFecha.setText("Debe ser formato dd/mm/aaaa");
+                vistaAdd.errFecha.setText("Debe ser formato dd/mm/aaaa");
             }else{
                 LocalDate fecha = Fechas.toLocalDate(fechaSt);
                 if(plant.getfFin() != null && fecha.isAfter(plant.getfFin().plusMonths(1))){
                     //Se le suma un mes porque puede que haya alguna ventaq después de arrancar
                     //la plantación pero no más tarde de 1 mes
                     res=false;
-                    vistaAddVenta.errFecha.setText("La fecha es después de la F.Fin");
+                    vistaAdd.errFecha.setText("La fecha es después de la F.Fin");
                 }else{
-                    vistaAddVenta.errFecha.setText(" ");
+                    vistaAdd.errFecha.setText(" ");
                 }
                 
             }
@@ -286,11 +297,11 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
         }else{ //Modificar venta
             idVenta = this.vent.getId();
         }
-        int cantidad = (int) this.vistaAddVenta.jSpinnerKg.getValue();
-        String color = (String) this.vistaAddVenta.campoColor.getText();
-        String tamanio = (String) this.vistaAddVenta.jComboTam.getSelectedItem();
-        String fechaSt = this.vistaAddVenta.campoFecha.getText();
-        float precio = Float.parseFloat(this.vistaAddVenta.campoPrecio.getText());
+        int cantidad = (int) this.vistaAdd.jSpinnerKg.getValue();
+        String color = (String) this.vistaAdd.campoColor.getText();
+        String tamanio = (String) this.vistaAdd.jComboTam.getSelectedItem();
+        String fechaSt = this.vistaAdd.campoFecha.getText();
+        float precio = Float.parseFloat(this.vistaAdd.campoPrecio.getText());
         LocalDate fecha=Fechas.toLocalDate(fechaSt);
         Venta v = new Venta(idVenta, cantidad, precio, tamanio, color, fecha, idPlant);
         return v;
@@ -299,7 +310,7 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
     private String generarIdVenta() {
         String idVenta = null;
         String idPlant = plant.getId();
-        LocalDate fecha = Fechas.toLocalDate(this.vistaAddVenta.campoFecha.getText());
+        LocalDate fecha = Fechas.toLocalDate(this.vistaAdd.campoFecha.getText());
         int num = modeloVenta.contarVentas(idPlant, fecha)+1;
         idVenta=Fechas.toString(fecha)+"-"+num;
         while(modeloVenta.recuperarPorId(idVenta, idPlant) != null){
@@ -322,18 +333,57 @@ public class ControladorAddVenta implements ActionListener,FocusListener{
      * @param fe
      */
     public void focusLost(FocusEvent fe) {
-        if(fe.getSource().equals(vistaAddVenta.jSpinnerKg)){
+        if(fe.getSource().equals(vistaAdd.jSpinnerKg)){
             validarCantidad(true);
-        }else if(fe.getSource().equals(vistaAddVenta.campoColor)){
+        }else if(fe.getSource().equals(vistaAdd.campoColor)){
             validarColor(true);
-        }else if(fe.getSource().equals(vistaAddVenta.jComboTam)){
+        }else if(fe.getSource().equals(vistaAdd.jComboTam)){
             validarTam(true);
-        }else if(fe.getSource().equals(vistaAddVenta.campoFecha)){
+        }else if(fe.getSource().equals(vistaAdd.campoFecha)){
             validarFecha(true);
-        }else if(fe.getSource().equals(vistaAddVenta.campoPrecio)){
+        }else if(fe.getSource().equals(vistaAdd.campoPrecio)){
             validarPrecio(true);
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyCode()==KeyEvent.VK_ENTER){
+            //Invoca el metodo que maneja los eventos y le pasa un "ActionEvent"
+            // cuyo origen es el boton Aceptar/Modificar segun el caso
+            //Son el mismo objeto solo cambia el texto que se le muestra al usuario
+            actionPerformed(new ActionEvent(this.vistaAdd.botonAceptar, 0, ""));
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        
+    }
     
-    
+    /**
+     * Hace que la ventana JFFincaAdd gane el foco y se ponga en primer plano
+     */
+    public void setFocused(){
+        this.vistaAdd.requestFocus();
+    }
+    /**
+     * 
+     * @return Devuelve true si la ventana es visible y false si no lo es(está cerrada)
+     */
+    public boolean isVentanaAbierta(){
+        boolean res = this.vistaAdd.isVisible();
+        return res;
+    }
+    /**
+     * Realiza un dispose a la ventana JFFincaAdd
+     */
+    public void close(){
+        this.vistaAdd.dispose();
+    }
 }
