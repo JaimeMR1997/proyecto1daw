@@ -92,17 +92,9 @@ public class FincaMysql extends FincaDAO {
             Conexion c = new Conexion();
             Connection accesoBD = c.getConexion();
             
-            String consulta = "";
-            Configuracion config = new Configuracion();
-            if(config.getTipoServer().equalsIgnoreCase("oracle")){
-                consulta = "SELECT * FROM ENCARGADO"
-                    + " WHERE DNI = (SELECT DNI FROM DIRIGE "
-                                    + "WHERE ID_FINCA = ? AND F_FIN>SYSDATE OR F_FIN IS NULL)";
-            }else if(config.getTipoServer().equalsIgnoreCase("mysql")){
-                consulta = "SELECT * FROM ENCARGADO"
-                    + " WHERE DNI = (SELECT DNI FROM DIRIGE "
-                                    + "WHERE ID_FINCA = ? AND F_FIN>SYSDATE() OR F_FIN IS NULL)";
-            }
+            String consulta = "SELECT * FROM ENCARGADO WHERE DNI = (SELECT"
+                    + " DNI FROM DIRIGE WHERE ID_FINCA = ? AND F_FIN>SYSDATE()"
+                    + " OR F_FIN IS NULL)";
             
             PreparedStatement st = accesoBD.prepareStatement(consulta);
             st.setString(1, idFinca);
